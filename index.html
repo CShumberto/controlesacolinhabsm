@@ -181,13 +181,15 @@
         }
 
         // Chame a função para mostrar dados quando a página for carregada
-        window.addEventListener('load', mostrarDados);
+       document.addEventListener('DOMContentLoaded', function () {
+    mostrarDados();
 
-        // Inicialize o Datepicker
-        $('.datepicker').datepicker({
-            format: 'dd/mm/yyyy',
-            autoclose: true
-        });
+    // Inicialize o Datepicker
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true
+    });
+});
 
         // Função para inserir dados do modal
         function inserirDados() {
