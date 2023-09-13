@@ -41,9 +41,9 @@
         <table class="table table-bordered" id="dadosTable">
             <thead>
                 <tr>
+                      <th>Dia</th>
                     <th>Número da Loja</th>
                     <th>Nome do Operador</th>
-                    <th>Dia</th>
                     <th>Total Easy Open Bag G</th>
                     <th>Total Planeta Agradece P</th>
                     <th>Total de Sacolinhas (UN)</th>
@@ -160,9 +160,9 @@
                     const data = doc.data();
                     const row = document.createElement('tr');
                     row.innerHTML = `
+                             <td>${data.dia}</td>
                         <td>${data.numeroLoja}</td>
                         <td>${data.nomeOperador}</td>
-                        <td>${data.dia}</td>
                         <td>${data.easyOpenBagG}</td>
                         <td>${data.planetaAgradeceP}</td>
                         <td>${data.totalSacolinhasUN}</td>
@@ -194,9 +194,9 @@
         // Função para inserir dados do modal
         function inserirDados() {
             // Obtenha os valores dos campos do modal
+            const dia = document.getElementById('dia').value;
             const numeroLoja = document.getElementById('numeroLoja').value;
             const nomeOperador = document.getElementById('nomeOperador').value;
-            const dia = document.getElementById('dia').value;
             const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
             const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
             const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
@@ -218,9 +218,9 @@
 
             // Crie um objeto com os dados a serem inseridos
             const dados = {
+                    dia: dia,
                 numeroLoja: numeroLoja,
                 nomeOperador: nomeOperador,
-                dia: dia,
                 easyOpenBagG: easyOpenBagG,
                 planetaAgradeceP: planetaAgradeceP,
                 totalSacolinhasUN: totalSacolinhasUN,
@@ -237,9 +237,9 @@
                 .then(function (docRef) {
                     console.log("Documento adicionado com ID: ", docRef.id);
                     // Limpe os campos do modal após a inserção
+                     document.getElementById('dia').value = '';
                     document.getElementById('numeroLoja').value = '';
                     document.getElementById('nomeOperador').value = '';
-                    document.getElementById('dia').value = '';
                     document.getElementById('easyOpenBagG').value = '';
                     document.getElementById('planetaAgradeceP').value = '';
                     document.getElementById('totalSacolinhasUN').value = '';
