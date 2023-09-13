@@ -13,6 +13,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+
+    <!-- Inclua o CSS do Datepicker -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <!-- Inclua o JavaScript do Datepicker -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
     <div class="container mt-5">
@@ -36,11 +41,11 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+                    <th>Número da Loja</th>
+                    <th>Nome do Operador</th>
                     <th>Dia</th>
-                      <th>Número da Loja</th>
-                      <th>Nome do Operador</th>
-                      <th>Total Easy Open Bag G</th>
-                     <th>Total Planeta Agradece P</th>
+                    <th>Total Easy Open Bag G</th>
+                    <th>Total Planeta Agradece P</th>
                     <th>Total de Sacolinhas (UN)</th>
                     <th>Valor total sacolinha G</th>
                     <th>Valor total sacolinha P</th>
@@ -75,6 +80,10 @@
                             <input type="text" class="form-control" id="nomeOperador">
                         </div>
                         <div class="mb-3">
+                            <label for="dia">Dia:</label>
+                            <input type="text" class="form-control" id="dia" data-provide="datepicker">
+                        </div>
+                        <div class="mb-3">
                             <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
                             <input type="number" class="form-control" id="easyOpenBagG">
                         </div>
@@ -100,92 +109,102 @@
         </div>
     </div>
 
-   <script>
-    // Sua configuração do Firebase
-    const firebaseConfig = {
-          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
     storageBucket: "controlemensal-sacolinhas.appspot.com",
     messagingSenderId: "925424065013",
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
-    };
-
-    // Inicialize o Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Obtenha uma referência para a coleção onde deseja armazenar os dados
-    const db = firebase.firestore();
-    const dadosCollection = db.collection('controlemensal-sacolinhas');
- // Função para buscar e exibir os dados na tabela
-    function mostrarDados() {
-        // Limpar os dados da tabela
-        const tbody = document.querySelector('tbody');
-        tbody.innerHTML = '';
-
-        // Buscar os dados do Firestore
-        dadosCollection.get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${data.numeroLoja}</td>
-                    <td>${data.nomeOperador}</td>
-                    <td>${data.easyOpenBagG}</td>
-                    <td>${data.planetaAgradeceP}</td>
-                    <td>${data.vendaMensal}</td>
-                    <td>${data.observacao}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }).catch((error) => {
-            console.error("Erro ao buscar dados: ", error);
-        });
-    }
-
-    // Chame a função para mostrar dados quando a página for carregada
-    window.addEventListener('load', mostrarDados);
-       
-    // Função para inserir dados do modal
-    function inserirDados() {
-        // Obtenha os valores dos campos do modal
-          const numeroLoja = document.getElementById('numeroLoja').value;
-    const nomeOperador = document.getElementById('nomeOperador').value;
-    const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
-    const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
-    const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
-    const observacao = document.getElementById('observacao').value;
-
-        // Crie um objeto com os dados a serem inseridos
-        const dados = {
-           "Número da Loja": numeroLoja,
-        "Nome do Operador": nomeOperador,
-        "TOTAL Easy Open Bag G": easyOpenBagG,
-        "TOTAL Planeta Agradece P": planetaAgradeceP,
-        "VENDA TOTAL MENSAL (R$)": vendaMensal,
-        "OBSERVAÇÃO": observacao
         };
 
-        // Adicione os dados ao Firestore
-        dadosCollection.add(dados)
-     dadosCollection.add(dados)
-        .then(function (docRef) {
-            console.log("Documento adicionado com ID: ", docRef.id);
-            // Limpe os campos do modal após a inserção
-            document.getElementById('numeroLoja').value = '';
-            document.getElementById('nomeOperador').value = '';
-            document.getElementById('easyOpenBagG').value = '';
-            document.getElementById('planetaAgradeceP').value = '';
-            document.getElementById('vendaMensal').value = '';
-            document.getElementById('observacao').value = '';
-            // Feche o modal
-                $('#adicionarDadosModal').modal('hide');
-            })
-            .catch(function (error) {
-                console.error("Erro ao adicionar documento: ", error);
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
+        const db = firebase.firestore();
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+        // Função para buscar e exibir os dados na tabela
+        function mostrarDados() {
+            // Limpar os dados da tabela
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = '';
+
+            // Buscar os dados do Firestore
+            dadosCollection.get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.numeroLoja}</td>
+                        <td>${data.nomeOperador}</td>
+                        <td>${data.dia}</td>
+                        <td>${data.easyOpenBagG}</td>
+                        <td>${data.planetaAgradeceP}</td>
+                        <td>${data.vendaMensal}</td>
+                        <td>${data.observacao}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }).catch((error) => {
+                console.error("Erro ao buscar dados: ", error);
             });
-    }
-</script>
+        }
+
+        // Chame a função para mostrar dados quando a página for carregada
+        window.addEventListener('load', mostrarDados);
+
+        // Inicialize o Datepicker
+        $('#dia').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
+
+        // Função para inserir dados do modal
+        function inserirDados() {
+            // Obtenha os valores dos campos do modal
+            const numeroLoja = document.getElementById('numeroLoja').value;
+            const nomeOperador = document.getElementById('nomeOperador').value;
+            const dia = document.getElementById('dia').value;
+            const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
+            const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
+            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
+            const observacao = document.getElementById('observacao').value;
+
+            // Crie um objeto com os dados a serem inseridos
+            const dados = {
+                numeroLoja: numeroLoja,
+                nomeOperador: nomeOperador,
+                dia: dia,
+                easyOpenBagG: easyOpenBagG,
+                planetaAgradeceP: planetaAgradeceP,
+                vendaMensal: vendaMensal,
+                observacao: observacao
+            };
+
+            // Adicione os dados ao Firestore
+            dadosCollection.add(dados)
+                .then(function (docRef) {
+                    console.log("Documento adicionado com ID: ", docRef.id);
+                    // Limpe os campos do modal após a inserção
+                    document.getElementById('numeroLoja').value = '';
+                    document.getElementById('nomeOperador').value = '';
+                    document.getElementById('dia').value = '';
+                    document.getElementById('easyOpenBagG').value = '';
+                    document.getElementById('planetaAgradeceP').value = '';
+                    document.getElementById('vendaMensal').value = '';
+                    document.getElementById('observacao').value = '';
+                    // Feche o modal
+                    $('#adicionarDadosModal').modal('hide');
+                })
+                .catch(function (error) {
+                    console.error("Erro ao adicionar documento: ", error);
+                });
+        }
+    </script>
 </body>
 </html>
