@@ -98,30 +98,63 @@
         </div>
     </div>
 
-    <script>
-        // Sua configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+   <script>
+    // Sua configuração do Firebase
+    const firebaseConfig = {
+          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
     storageBucket: "controlemensal-sacolinhas.appspot.com",
     messagingSenderId: "925424065013",
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+    };
+
+    // Inicialize o Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Obtenha uma referência para a coleção onde deseja armazenar os dados
+    const db = firebase.firestore();
+    const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+    // Função para inserir dados do modal
+    function inserirDados() {
+        // Obtenha os valores dos campos do modal
+        const numeroLoja = document.getElementById('numeroLoja').value;
+        const nomeOperador = document.getElementById('nomeOperador').value;
+        const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
+        const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
+        const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
+        const observacao = document.getElementById('observacao').value;
+
+        // Crie um objeto com os dados a serem inseridos
+        const dados = {
+            numeroLoja: numeroLoja,
+            nomeOperador: nomeOperador,
+            easyOpenBagG: easyOpenBagG,
+            planetaAgradeceP: planetaAgradeceP,
+            vendaMensal: vendaMensal,
+            observacao: observacao
         };
 
-        // Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Obtenha uma referência para a coleção onde deseja armazenar os dados
-        const db = firebase.firestore();
-        const dadosCollection = db.collection('controlemensal-sacolinhas');
-
-        // Função para inserir dados do modal
-        function inserirDados() {
-            // Seu código de inserção de dados aqui
-            // Certifique-se de que esta função seja chamada apenas após a inicialização do Firebase
-        }
-    </script>
+        // Adicione os dados ao Firestore
+        dadosCollection.add(dados)
+            .then(function (docRef) {
+                console.log("Documento adicionado com ID: ", docRef.id);
+                // Limpe os campos do modal após a inserção
+                document.getElementById('numeroLoja').value = '';
+                document.getElementById('nomeOperador').value = '';
+                document.getElementById('easyOpenBagG').value = '';
+                document.getElementById('planetaAgradeceP').value = '';
+                document.getElementById('vendaMensal').value = '';
+                document.getElementById('observacao').value = '';
+                // Feche o modal
+                $('#adicionarDadosModal').modal('hide');
+            })
+            .catch(function (error) {
+                console.error("Erro ao adicionar documento: ", error);
+            });
+    }
+</script>
 </body>
 </html>
