@@ -44,8 +44,8 @@
                     <th>Dia</th>
                     <th>Número da Loja</th>
                     <th>Nome do Operador</th>
-                    <th>Total Easy Open Bag G</th>
-                    <th>Total Planeta Agradece P</th>
+                    <th>TOTAL Easy Open Bag G</th>
+                    <th>TOTAL Planeta Agradece P</th>
                     <th>Total de Sacolinhas (UN)</th>
                     <th>Valor total sacolinha G</th>
                     <th>Valor total sacolinha P</th>
@@ -86,11 +86,11 @@
                  
                         <div class="mb-3">
                             <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
-                            <input type="number" class="form-control" id="easyOpenBagG">
+                            <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
                         </div>
                         <div class="mb-3">
                             <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="planetaAgradeceP">
+                            <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
                         </div>
                         <div class="mb-3">
                             <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
@@ -133,7 +133,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-   apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -190,15 +190,37 @@
             autoclose: true
         });
 
+        // Função para calcular valores automaticamente
+        function calcularValores() {
+            // Obtenha os valores dos campos "easyOpenBagG" e "planetaAgradeceP"
+            const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
+            const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
+
+            // Realize os cálculos
+            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+            const valorTotalSacolinhaG = easyOpenBagG * 0.07;
+            const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
+            const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
+            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
+            const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
+
+            // Preencha os campos calculados
+            document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
+            document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
+            document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
+            document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
+            document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
+        }
+
         // Função para inserir dados do modal
         function inserirDados() {
             // Obtenha os valores dos campos do modal
             const dia = document.getElementById('dia').value;
             const numeroLoja = document.getElementById('numeroLoja').value;
             const nomeOperador = document.getElementById('nomeOperador').value;
-            const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
-            const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
-            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
+            const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
+            const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
+            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
             const observacao = document.getElementById('observacao').value;
 
             // Realize os cálculos
