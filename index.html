@@ -15,12 +15,93 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
 </head>
 <body>
-    <!-- Seu código HTML continua aqui como está -->
+    <div class="container mt-5">
+        <h1>Gerenciamento de Dados</h1>
+        
+        <div class="row mb-3">
+            <!-- Adicionar botão para abrir o modal -->
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adicionarDadosModal">Adicionar Dados</button>
+            </div>
+            <div class="col-md-4">
+                <label for="operador">Operador:</label>
+                <input type="text" class="form-control" id="operador">
+            </div>
+            <div class="col-md-4">
+                <label for="loja">Loja:</label>
+                <input type="text" class="form-control" id="loja">
+            </div>
+        </div>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Dia</th>
+                    <th>Total Easy Open Bag G</th>
+                    <th>Total Planeta Agradece P</th>
+                    <th>Total de Sacolinhas (UN)</th>
+                    <th>Valor total sacolinha G</th>
+                    <th>Valor total sacolinha P</th>
+                    <th>Valor total sacolinha TOTAL</th>
+                    <th>Venda total mensal (R$)</th>
+                    <th>% Faturamento</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados da tabela serão preenchidos aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal para adicionar dados -->
+    <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adicionarDadosModalLabel">Adicionar Dados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="numeroLoja">Número da Loja:</label>
+                            <input type="text" class="form-control" id="numeroLoja">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomeOperador">Nome do Operador:</label>
+                            <input type="text" class="form-control" id="nomeOperador">
+                        </div>
+                        <div class="mb-3">
+                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
+                            <input type="number" class="form-control" id="easyOpenBagG">
+                        </div>
+                        <div class="mb-3">
+                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
+                            <input type="number" class="form-control" id="planetaAgradeceP">
+                        </div>
+                        <div class="mb-3">
+                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
+                            <input type="number" class="form-control" id="vendaMensal">
+                        </div>
+                        <div class="mb-3">
+                            <label for="observacao">OBSERVAÇÃO:</label>
+                            <textarea class="form-control" id="observacao"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Sua configuração do Firebase
         const firebaseConfig = {
-          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
