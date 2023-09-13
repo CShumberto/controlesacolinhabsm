@@ -37,8 +37,10 @@
             <thead>
                 <tr>
                     <th>Dia</th>
-                    <th>Total Easy Open Bag G</th>
-                    <th>Total Planeta Agradece P</th>
+                      <th>Número da Loja</th>
+                      <th>Nome do Operador</th>
+                      <th>Total Easy Open Bag G</th>
+                     <th>Total Planeta Agradece P</th>
                     <th>Total de Sacolinhas (UN)</th>
                     <th>Valor total sacolinha G</th>
                     <th>Valor total sacolinha P</th>
@@ -148,35 +150,36 @@
     // Função para inserir dados do modal
     function inserirDados() {
         // Obtenha os valores dos campos do modal
-        const numeroLoja = document.getElementById('numeroLoja').value;
-        const nomeOperador = document.getElementById('nomeOperador').value;
-        const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
-        const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
-        const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
-        const observacao = document.getElementById('observacao').value;
+          const numeroLoja = document.getElementById('numeroLoja').value;
+    const nomeOperador = document.getElementById('nomeOperador').value;
+    const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value);
+    const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value);
+    const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
+    const observacao = document.getElementById('observacao').value;
 
         // Crie um objeto com os dados a serem inseridos
         const dados = {
-            numeroLoja: numeroLoja,
-            nomeOperador: nomeOperador,
-            easyOpenBagG: easyOpenBagG,
-            planetaAgradeceP: planetaAgradeceP,
-            vendaMensal: vendaMensal,
-            observacao: observacao
+           "Número da Loja": numeroLoja,
+        "Nome do Operador": nomeOperador,
+        "TOTAL Easy Open Bag G": easyOpenBagG,
+        "TOTAL Planeta Agradece P": planetaAgradeceP,
+        "VENDA TOTAL MENSAL (R$)": vendaMensal,
+        "OBSERVAÇÃO": observacao
         };
 
         // Adicione os dados ao Firestore
         dadosCollection.add(dados)
-            .then(function (docRef) {
-                console.log("Documento adicionado com ID: ", docRef.id);
-                // Limpe os campos do modal após a inserção
-                document.getElementById('numeroLoja').value = '';
-                document.getElementById('nomeOperador').value = '';
-                document.getElementById('easyOpenBagG').value = '';
-                document.getElementById('planetaAgradeceP').value = '';
-                document.getElementById('vendaMensal').value = '';
-                document.getElementById('observacao').value = '';
-                // Feche o modal
+     dadosCollection.add(dados)
+        .then(function (docRef) {
+            console.log("Documento adicionado com ID: ", docRef.id);
+            // Limpe os campos do modal após a inserção
+            document.getElementById('numeroLoja').value = '';
+            document.getElementById('nomeOperador').value = '';
+            document.getElementById('easyOpenBagG').value = '';
+            document.getElementById('planetaAgradeceP').value = '';
+            document.getElementById('vendaMensal').value = '';
+            document.getElementById('observacao').value = '';
+            // Feche o modal
                 $('#adicionarDadosModal').modal('hide');
             })
             .catch(function (error) {
