@@ -8,7 +8,6 @@
     <!-- Inclua os links para o CSS e JavaScript do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
     <!-- Inclua os links para as bibliotecas do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
@@ -18,87 +17,143 @@
     <div class="container mt-5">
         <h1>Gerenciamento de Dados</h1>
         
-        <!-- Adicione o seu formulário aqui -->
-        <form>
-            <!-- Adicione os campos do formulário aqui -->
-            <label for="numeroLoja">Número da Loja:</label>
-            <input type="text" id="numeroLoja" name="numeroLoja"><br><br>
-            
-            <label for="nomeOperador">Nome do Operador:</label>
-            <input type="text" id="nomeOperador" name="nomeOperador"><br><br>
-            
-            <label for="easyOpenBagG">Easy Open Bag G:</label>
-            <input type="text" id="easyOpenBagG" name="easyOpenBagG"><br><br>
-            
-            <label for="planetaAgradeceP">Planeta Agradece P:</label>
-            <input type="text" id="planetaAgradeceP" name="planetaAgradeceP"><br><br>
-            
-            <label for="vendaMensal">Venda Mensal:</label>
-            <input type="text" id="vendaMensal" name="vendaMensal"><br><br>
-            
-            <label for="observacao">Observação:</label>
-            <textarea id="observacao" name="observacao"></textarea><br><br>
+        <div class="row mb-3">
+            <!-- Adicionar botão para abrir o modal -->
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adicionarDadosModal">Adicionar Dados</button>
+            </div>
+            <div class="col-md-4">
+                <label for="operador">Operador:</label>
+                <input type="text" class="form-control" id="operador">
+            </div>
+            <div class="col-md-4">
+                <label for="loja">Loja:</label>
+                <input type="text" class="form-control" id="loja">
+            </div>
+        </div>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Dia</th>
+                    <th>Total Easy Open Bag G</th>
+                    <th>Total Planeta Agradece P</th>
+                    <th>Total de Sacolinhas (UN)</th>
+                    <th>Valor total sacolinha G</th>
+                    <th>Valor total sacolinha P</th>
+                    <th>Valor total sacolinha TOTAL</th>
+                    <th>Venda total mensal (R$)</th>
+                    <th>% Faturamento</th>
+                    <th>Observação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados da tabela serão preenchidos aqui -->
+            </tbody>
+        </table>
+    </div>
 
-            <!-- Adicione um botão para inserir dados -->
-            <button type="button" onclick="inserirDados()">Inserir Dados</button>
-        </form>
+    <!-- Modal para adicionar dados -->
+    <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adicionarDadosModalLabel">Adicionar Dados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="numeroLoja">Número da Loja:</label>
+                            <input type="text" class="form-control" id="numeroLoja">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomeOperador">Nome do Operador:</label>
+                            <input type="text" class="form-control" id="nomeOperador">
+                        </div>
+                        <div class="mb-3">
+                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
+                            <input type="number" class="form-control" id="easyOpenBagG">
+                        </div>
+                        <div class="mb-3">
+                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
+                            <input type="number" class="form-control" id="planetaAgradeceP">
+                        </div>
+                        <div class="mb-3">
+                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
+                            <input type="number" class="form-control" id="vendaMensal">
+                        </div>
+                        <div class="mb-3">
+                            <label for="observacao">OBSERVAÇÃO:</label>
+                            <textarea class="form-control" id="observacao"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <script>
-            // Your web app's Firebase configuration
-            const firebaseConfig = {
-               apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
     storageBucket: "controlemensal-sacolinhas.appspot.com",
     messagingSenderId: "925424065013",
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
+        const db = firebase.firestore();
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+        // Função para inserir dados do modal
+        function inserirDados() {
+            const numeroLoja = document.getElementById("numeroLoja").value;
+            const nomeOperador = document.getElementById("nomeOperador").value;
+            const easyOpenBagG = document.getElementById("easyOpenBagG").value;
+            const planetaAgradeceP = document.getElementById("planetaAgradeceP").value;
+            const vendaMensal = document.getElementById("vendaMensal").value;
+            const observacao = document.getElementById("observacao").value;
+
+            // Crie um objeto com os dados do formulário
+            const dados = {
+                numeroLoja,
+                nomeOperador,
+                easyOpenBagG,
+                planetaAgradeceP,
+                vendaMensal,
+                observacao
             };
 
-            // Initialize Firebase
-            firebase.initializeApp(firebaseConfig);
-
-            // Obtenha uma referência para a coleção onde deseja armazenar os dados
-            const db = firebase.firestore();
-            const dadosCollection = db.collection('controlemensal-sacolinhas');
-
-            // Função para inserir dados do modal
-            function inserirDados() {
-                const numeroLoja = document.getElementById("numeroLoja").value;
-                const nomeOperador = document.getElementById("nomeOperador").value;
-                const easyOpenBagG = document.getElementById("easyOpenBagG").value;
-                const planetaAgradeceP = document.getElementById("planetaAgradeceP").value;
-                const vendaMensal = document.getElementById("vendaMensal").value;
-                const observacao = document.getElementById("observacao").value;
-
-                // Crie um objeto com os dados do formulário
-                const dados = {
-                    numeroLoja,
-                    nomeOperador,
-                    easyOpenBagG,
-                    planetaAgradeceP,
-                    vendaMensal,
-                    observacao
-                };
-
-                // Adicione os dados ao Firestore
-                dadosCollection.add(dados)
-                    .then(() => {
-                        // Dados inseridos com sucesso, pode fazer algo após a inserção
-                        console.log("Dados inseridos com sucesso!");
-                        // Limpe os campos do formulário após a inserção, se necessário
-                        document.getElementById("numeroLoja").value = "";
-                        document.getElementById("nomeOperador").value = "";
-                        document.getElementById("easyOpenBagG").value = "";
-                        document.getElementById("planetaAgradeceP").value = "";
-                        document.getElementById("vendaMensal").value = "";
-                        document.getElementById("observacao").value = "";
-                    })
-                    .catch((error) => {
-                        console.error("Erro ao inserir dados: ", error);
-                    });
-            }
-        </script>
-    </div>
+            // Adicione os dados ao Firestore
+            dadosCollection.add(dados)
+                .then(() => {
+                    // Dados inseridos com sucesso, pode fazer algo após a inserção
+                    console.log("Dados inseridos com sucesso!");
+                    // Limpe os campos do formulário após a inserção, se necessário
+                    document.getElementById("numeroLoja").value = "";
+                    document.getElementById("nomeOperador").value = "";
+                    document.getElementById("easyOpenBagG").value = "";
+                    document.getElementById("planetaAgradeceP").value = "";
+                    document.getElementById("vendaMensal").value = "";
+                    document.getElementById("observacao").value = "";
+                    // Feche o modal
+                    $('#adicionarDadosModal').modal('hide');
+                })
+                .catch((error) => {
+                    console.error("Erro ao inserir dados: ", error);
+                });
+        }
+    </script>
 </body>
 </html>
