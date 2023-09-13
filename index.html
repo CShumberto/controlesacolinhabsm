@@ -161,18 +161,13 @@
                     const data = doc.data();
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                             <td>${data.dia}</td>
+                        <td>${data.dia}</td>
                         <td>${data.numeroLoja}</td>
                         <td>${data.nomeOperador}</td>
                         <td>${data.easyOpenBagG}</td>
                         <td>${data.planetaAgradeceP}</td>
-                        <td>${data.totalSacolinhasUN}</td>
-                        <td>${data.valorTotalSacolinhaG.toFixed(2)}</td>
-                        <td>${data.valorTotalSacolinhaP.toFixed(2)}</td>
-                        <td>${data.valorTotalSacolinhaTOTAL.toFixed(2)}</td>
                         <td>${data.vendaMensal}</td>
-                        <td>${data.percentualFaturamento.toFixed(2)}</td>
-                        <td>${data.observacao}</td>
+                      <td>${data.observacao}</td>
                     `;
                     tbody.appendChild(row);
                 });
