@@ -111,9 +111,7 @@
                         <div class="mb-3">
                             <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
                             <input type="number" class="form-control" id="vendaMensal">
-                            <div class="alert alert-danger mt-2" id="vendaMensalError" style="display: none;">
-                                Este campo é obrigatório.
-                            </div>
+                            <div id="vendaMensalError" class="text-danger" style="display: none;">Este campo é obrigatório.</div>
                         </div>
                         <div class="mb-3">
                             <label for="percentualFaturamento">% Faturamento:</label>
@@ -136,7 +134,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-               apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -236,7 +234,61 @@
                 const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
                 const observacao = document.getElementById('observacao').value;
 
-                // ... restante do código para calcular valores e adicionar dados ao Firestore ...
+                // Realize os cálculos
+                const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+                const valorTotalSacolinhaG = easyOpenBagG * 0.07;
+                const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
+                const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
+                const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
+
+                // Preencha os campos calculados
+                document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
+                document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
+                document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
+                document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
+                document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
+
+                // Crie um objeto com os dados a serem inseridos
+                const dados = {
+                    dia: dia,
+                    numeroLoja: numeroLoja,
+                    nomeOperador: nomeOperador,
+                    easyOpenBagG: easyOpenBagG,
+                    planetaAgradeceP: planetaAgradeceP,
+                    totalSacolinhasUN: totalSacolinhasUN,
+                    valorTotalSacolinhaG: valorTotalSacolinhaG,
+                    valorTotalSacolinhaP: valorTotalSacolinhaP,
+                    valorTotalSacolinhaTOTAL: valorTotalSacolinhaTOTAL,
+                    vendaMensal: vendaMensal,
+                    percentualFaturamento: percentualFaturamento,
+                    observacao: observacao
+                };
+
+                // Adicione os dados ao Firestore
+                dadosCollection.add(dados)
+                    .then(function (docRef) {
+                        console.log("Documento adicionado com ID: ", docRef.id);
+                        // Limpe os campos do modal após a inserção
+                        document.getElementById('dia').value = '';
+                        document.getElementById('numeroLoja').value = '';
+                        document.getElementById('nomeOperador').value = '';
+                        document.getElementById('easyOpenBagG').value = '';
+                        document.getElementById('planetaAgradeceP').value = '';
+                        document.getElementById('totalSacolinhasUN').value = '';
+                        document.getElementById('valorTotalSacolinhaG').value = '';
+                        document.getElementById('valorTotalSacolinhaP').value = '';
+                        document.getElementById('valorTotalSacolinhaTOTAL').value = '';
+                        document.getElementById('vendaMensal').value = '';
+                        document.getElementById('percentualFaturamento').value = '';
+                        document.getElementById('observacao').value = '';
+                        // Feche o modal
+                        $('#adicionarDadosModal').modal('hide');
+                        // Atualize a tabela
+                        mostrarDados();
+                    })
+                    .catch(function (error) {
+                        console.error("Erro ao adicionar documento: ", error);
+                    });
             }
         }
     </script>
