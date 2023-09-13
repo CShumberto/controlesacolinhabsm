@@ -81,7 +81,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="dia">Dia:</label>
-                            <input type="text" class="form-control" id="dia" data-provide="datepicker">
+                            <input type="text" class="form-control datepicker" id="dia">
                         </div>
                         <div class="mb-3">
                             <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
@@ -159,7 +159,7 @@
         window.addEventListener('load', mostrarDados);
 
         // Inicialize o Datepicker
-        $('#dia').datepicker({
+        $('.datepicker').datepicker({
             format: 'dd/mm/yyyy',
             autoclose: true
         });
