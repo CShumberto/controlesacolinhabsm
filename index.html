@@ -49,7 +49,7 @@
                     <th>Total de Sacolinhas (UN)</th>
                     <th>Valor total sacolinha G</th>
                     <th>Valor total sacolinha P</th>
-                    <th>Valor total sacolinha TOTAL</th>
+                    <th>Valor Total sacolinha</th>
                     <th>Venda total mensal (R$)</th>
                     <th>% Faturamento</th>
                     <th>Observação</th>
@@ -92,8 +92,28 @@
                             <input type="number" class="form-control" id="planetaAgradeceP">
                         </div>
                         <div class="mb-3">
+                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
+                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
+                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
+                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
+                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
+                        </div>
+                        <div class="mb-3">
                             <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
                             <input type="number" class="form-control" id="vendaMensal">
+                        </div>
+                        <div class="mb-3">
+                            <label for="percentualFaturamento">% Faturamento:</label>
+                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="observacao">OBSERVAÇÃO:</label>
@@ -112,7 +132,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -145,7 +165,12 @@
                         <td>${data.dia}</td>
                         <td>${data.easyOpenBagG}</td>
                         <td>${data.planetaAgradeceP}</td>
+                        <td>${data.totalSacolinhasUN}</td>
+                        <td>${data.valorTotalSacolinhaG.toFixed(2)}</td>
+                        <td>${data.valorTotalSacolinhaP.toFixed(2)}</td>
+                        <td>${data.valorTotalSacolinhaTOTAL.toFixed(2)}</td>
                         <td>${data.vendaMensal}</td>
+                        <td>${data.percentualFaturamento.toFixed(2)}</td>
                         <td>${data.observacao}</td>
                     `;
                     tbody.appendChild(row);
@@ -175,6 +200,20 @@
             const vendaMensal = parseFloat(document.getElementById('vendaMensal').value);
             const observacao = document.getElementById('observacao').value;
 
+            // Realize os cálculos
+            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+            const valorTotalSacolinhaG = easyOpenBagG * 0.07;
+            const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
+            const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
+            const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
+
+            // Preencha os campos calculados
+            document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
+            document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
+            document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
+            document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
+            document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
+
             // Crie um objeto com os dados a serem inseridos
             const dados = {
                 numeroLoja: numeroLoja,
@@ -182,7 +221,12 @@
                 dia: dia,
                 easyOpenBagG: easyOpenBagG,
                 planetaAgradeceP: planetaAgradeceP,
+                totalSacolinhasUN: totalSacolinhasUN,
+                valorTotalSacolinhaG: valorTotalSacolinhaG,
+                valorTotalSacolinhaP: valorTotalSacolinhaP,
+                valorTotalSacolinhaTOTAL: valorTotalSacolinhaTOTAL,
                 vendaMensal: vendaMensal,
+                percentualFaturamento: percentualFaturamento,
                 observacao: observacao
             };
 
@@ -196,10 +240,17 @@
                     document.getElementById('dia').value = '';
                     document.getElementById('easyOpenBagG').value = '';
                     document.getElementById('planetaAgradeceP').value = '';
+                    document.getElementById('totalSacolinhasUN').value = '';
+                    document.getElementById('valorTotalSacolinhaG').value = '';
+                    document.getElementById('valorTotalSacolinhaP').value = '';
+                    document.getElementById('valorTotalSacolinhaTOTAL').value = '';
                     document.getElementById('vendaMensal').value = '';
+                    document.getElementById('percentualFaturamento').value = '';
                     document.getElementById('observacao').value = '';
                     // Feche o modal
                     $('#adicionarDadosModal').modal('hide');
+                    // Atualize a tabela
+                    mostrarDados();
                 })
                 .catch(function (error) {
                     console.error("Erro ao adicionar documento: ", error);
