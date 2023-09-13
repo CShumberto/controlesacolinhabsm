@@ -155,6 +155,34 @@
                 console.error("Erro ao adicionar documento: ", error);
             });
     }
+
+       // Função para buscar e exibir os dados na tabela
+function buscarDados() {
+    dadosCollection.get().then((querySnapshot) => {
+        const tabela = document.getElementById('tabela-dados');
+
+        // Limpe a tabela antes de adicionar os novos dados
+        tabela.innerHTML = '';
+
+        querySnapshot.forEach((doc) => {
+            const dados = doc.data();
+
+            // Crie uma nova linha na tabela para cada conjunto de dados
+            const row = tabela.insertRow();
+
+            // Preencha as células da linha com os dados
+            const diaCell = row.insertCell(0);
+            diaCell.innerHTML = dados.numeroLoja; // Altere isso para o campo apropriado
+            // Adicione outras células conforme necessário para os outros campos
+
+            // Repita este processo para preencher todas as células da linha
+        });
+    });
+}
+
+// Chame a função buscarDados() para exibir os dados quando a página carregar
+window.onload = buscarDados;
+
 </script>
 </body>
 </html>
