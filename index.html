@@ -41,7 +41,7 @@
         <table class="table table-bordered" id="dadosTable">
             <thead>
                 <tr>
-                      <th>Dia</th>
+                    <th>Dia</th>
                     <th>Número da Loja</th>
                     <th>Nome do Operador</th>
                     <th>Total Easy Open Bag G</th>
@@ -72,6 +72,10 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
+                            <label for="dia">Dia:</label>
+                            <input type="text" class="form-control datepicker" id="dia">
+                        </div>
+                        <div class="mb-3">
                             <label for="numeroLoja">Número da Loja:</label>
                             <input type="text" class="form-control" id="numeroLoja">
                         </div>
@@ -79,10 +83,7 @@
                             <label for="nomeOperador">Nome do Operador:</label>
                             <input type="text" class="form-control" id="nomeOperador">
                         </div>
-                        <div class="mb-3">
-                            <label for="dia">Dia:</label>
-                            <input type="text" class="form-control datepicker" id="dia">
-                        </div>
+                 
                         <div class="mb-3">
                             <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
                             <input type="number" class="form-control" id="easyOpenBagG">
