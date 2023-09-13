@@ -17,11 +17,35 @@
     <div class="container mt-5">
         <h1>Gerenciamento de Dados</h1>
         
-        <!-- Resto do seu código HTML -->
+        <!-- Adicione o seu formulário aqui -->
+        <form>
+            <!-- Adicione os campos do formulário aqui -->
+            <label for="numeroLoja">Número da Loja:</label>
+            <input type="text" id="numeroLoja" name="numeroLoja"><br><br>
+            
+            <label for="nomeOperador">Nome do Operador:</label>
+            <input type="text" id="nomeOperador" name="nomeOperador"><br><br>
+            
+            <label for="easyOpenBagG">Easy Open Bag G:</label>
+            <input type="text" id="easyOpenBagG" name="easyOpenBagG"><br><br>
+            
+            <label for="planetaAgradeceP">Planeta Agradece P:</label>
+            <input type="text" id="planetaAgradeceP" name="planetaAgradeceP"><br><br>
+            
+            <label for="vendaMensal">Venda Mensal:</label>
+            <input type="text" id="vendaMensal" name="vendaMensal"><br><br>
+            
+            <label for="observacao">Observação:</label>
+            <textarea id="observacao" name="observacao"></textarea><br><br>
+
+            <!-- Adicione um botão para inserir dados -->
+            <button type="button" onclick="inserirDados()">Inserir Dados</button>
+        </form>
 
         <script>
             // Configuração do Firebase (substitua com suas próprias credenciais)
             const firebaseConfig = {
+              const firebaseConfig = {
     apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
@@ -62,8 +86,13 @@
                     .then(() => {
                         // Dados inseridos com sucesso, pode fazer algo após a inserção
                         console.log("Dados inseridos com sucesso!");
-                        // Feche o modal, se necessário
-                        // $('#adicionarDadosModal').modal('hide'); // Se estiver usando jQuery
+                        // Limpe os campos do formulário após a inserção, se necessário
+                        document.getElementById("numeroLoja").value = "";
+                        document.getElementById("nomeOperador").value = "";
+                        document.getElementById("easyOpenBagG").value = "";
+                        document.getElementById("planetaAgradeceP").value = "";
+                        document.getElementById("vendaMensal").value = "";
+                        document.getElementById("observacao").value = "";
                     })
                     .catch((error) => {
                         console.error("Erro ao inserir dados: ", error);
