@@ -14,9 +14,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
 
-    <!-- Inclua o CSS do Datepicker -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Inclua o CSS e JavaScript do Tempus Dominus Datepicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
 </head>
 <body>
     <div class="container mt-5">
@@ -72,7 +73,12 @@
                     <form>
                         <div class="mb-3">
                             <label for="dia">Dia:</label>
-                            <input type="text" class="form-control datepicker" id="dia">
+                            <div class="input-group date" id="datetimepicker" data-target-input="nearest">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker" id="dia" />
+                                <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="numeroLoja">Número da Loja:</label>
@@ -82,43 +88,7 @@
                             <label for="nomeOperador">Nome do Operador:</label>
                             <input type="text" class="form-control" id="nomeOperador">
                         </div>
-                        <div class="mb-3">
-                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
-                            <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
-                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
-                            <input type="number" class="form-control" id="vendaMensal">
-                            <div id="vendaMensalError" class="text-danger" style="display: none;">Este campo é obrigatório.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="percentualFaturamento">% Faturamento:</label>
-                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="observacao">OBSERVAÇÃO:</label>
-                            <textarea class="form-control" id="observacao"></textarea>
-                        </div>
+                        <!-- Outros campos do formulário -->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -132,7 +102,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -160,7 +130,7 @@
                     const data = doc.data();
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                             <td>${data.dia}</td>
+                        <td>${data.dia}</td>
                         <td>${data.numeroLoja}</td>
                         <td>${data.nomeOperador}</td>
                         <td>${data.easyOpenBagG}</td>
@@ -183,113 +153,45 @@
         // Chame a função para mostrar dados quando a página for carregada
         window.addEventListener('load', mostrarDados);
 
-        // Inicialize o Datepicker
+        // Inicialize o Tempus Dominus Datepicker
         $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true
+            $('#datetimepicker').datetimepicker({
+                format: 'DD/MM/YYYY',
             });
         });
 
-        // Função para calcular valores automaticamente
-        function calcularValores() {
-            // Obtenha os valores dos campos "easyOpenBagG" e "planetaAgradeceP"
-            const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
-            const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
-
-            // Realize os cálculos
-            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-            const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-            const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-            const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
-            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
-            const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
-
-            // Preencha os campos calculados
-            document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
-            document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
-            document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
-            document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
-            document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
-        }
-
         // Função para inserir dados do modal
         function inserirDados() {
-            // Obtenha o valor do campo "vendaMensal"
-            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
+            // Obtenha os valores dos campos do formulário
+            const dia = document.getElementById('dia').value;
+            const numeroLoja = document.getElementById('numeroLoja').value;
+            const nomeOperador = document.getElementById('nomeOperador').value;
 
-            // Verifique se o campo "vendaMensal" está vazio
-            if (vendaMensal === 0) {
-                // Exiba o alerta de erro
-                document.getElementById('vendaMensalError').style.display = 'block';
-            } else {
-                // Caso contrário, oculte o alerta de erro (caso esteja visível)
-                document.getElementById('vendaMensalError').style.display = 'none';
+            // Crie um objeto com os dados a serem inseridos
+            const dados = {
+                dia: dia,
+                numeroLoja: numeroLoja,
+                nomeOperador: nomeOperador,
+                // Outros campos do formulário
+            };
 
-                // Continue com a inserção de dados
-                const dia = document.getElementById('dia').value;
-                const numeroLoja = document.getElementById('numeroLoja').value;
-                const nomeOperador = document.getElementById('nomeOperador').value;
-                const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
-                const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
-                const observacao = document.getElementById('observacao').value;
-
-                // Realize os cálculos
-                const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-                const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-                const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-                const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
-                const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
-
-                // Preencha os campos calculados
-                document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
-                document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
-                document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
-                document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
-                document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
-
-                // Crie um objeto com os dados a serem inseridos
-                const dados = {
-                    dia: dia,
-                    numeroLoja: numeroLoja,
-                    nomeOperador: nomeOperador,
-                    easyOpenBagG: easyOpenBagG,
-                    planetaAgradeceP: planetaAgradeceP,
-                    totalSacolinhasUN: totalSacolinhasUN,
-                    valorTotalSacolinhaG: valorTotalSacolinhaG,
-                    valorTotalSacolinhaP: valorTotalSacolinhaP,
-                    valorTotalSacolinhaTOTAL: valorTotalSacolinhaTOTAL,
-                    vendaMensal: vendaMensal,
-                    percentualFaturamento: percentualFaturamento,
-                    observacao: observacao
-                };
-
-                // Adicione os dados ao Firestore
-                dadosCollection.add(dados)
-                    .then(function (docRef) {
-                        console.log("Documento adicionado com ID: ", docRef.id);
-                        // Limpe os campos do modal após a inserção
-                        document.getElementById('dia').value = '';
-                        document.getElementById('numeroLoja').value = '';
-                        document.getElementById('nomeOperador').value = '';
-                        document.getElementById('easyOpenBagG').value = '';
-                        document.getElementById('planetaAgradeceP').value = '';
-                        document.getElementById('totalSacolinhasUN').value = '';
-                        document.getElementById('valorTotalSacolinhaG').value = '';
-                        document.getElementById('valorTotalSacolinhaP').value = '';
-                        document.getElementById('valorTotalSacolinhaTOTAL').value = '';
-                        document.getElementById('vendaMensal').value = '';
-                        document.getElementById('percentualFaturamento').value = '';
-                        document.getElementById('observacao').value = '';
-                        // Feche o modal
-                        $('#adicionarDadosModal').modal('hide');
-                        // Atualize a tabela
-                        mostrarDados();
-                    })
-                    .catch(function (error) {
-                        console.error("Erro ao adicionar documento: ", error);
-                    });
-            }
+            // Adicione os dados ao Firestore
+            dadosCollection.add(dados)
+                .then(function (docRef) {
+                    console.log("Documento adicionado com ID: ", docRef.id);
+                    // Limpe os campos do modal após a inserção
+                    document.getElementById('dia').value = '';
+                    document.getElementById('numeroLoja').value = '';
+                    document.getElementById('nomeOperador').value = '';
+                    // Outros campos do formulário
+                    // Feche o modal
+                    $('#adicionarDadosModal').modal('hide');
+                    // Atualize a tabela
+                    mostrarDados();
+                })
+                .catch(function (error) {
+                    console.error("Erro ao adicionar documento: ", error);
+                });
         }
     </script>
 </body>
