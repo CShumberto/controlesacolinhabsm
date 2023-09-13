@@ -89,32 +89,8 @@
                             <input type="number" class="form-control" id="easyOpenBagG">
                         </div>
                         <div class="mb-3">
-                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="planetaAgradeceP">
-                        </div>
-                        <div class="mb-3">
-                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
-                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
-                        </div>
-                        <div class="mb-3">
                             <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
                             <input type="number" class="form-control" id="vendaMensal">
-                        </div>
-                        <div class="mb-3">
-                            <label for="percentualFaturamento">% Faturamento:</label>
-                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="observacao">OBSERVAÇÃO:</label>
@@ -161,13 +137,18 @@
                     const data = doc.data();
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${data.dia}</td>
+                             <td>${data.dia}</td>
                         <td>${data.numeroLoja}</td>
                         <td>${data.nomeOperador}</td>
                         <td>${data.easyOpenBagG}</td>
                         <td>${data.planetaAgradeceP}</td>
+                        <td>${data.totalSacolinhasUN}</td>
+                        <td>${data.valorTotalSacolinhaG.toFixed(2)}</td>
+                        <td>${data.valorTotalSacolinhaP.toFixed(2)}</td>
+                        <td>${data.valorTotalSacolinhaTOTAL.toFixed(2)}</td>
                         <td>${data.vendaMensal}</td>
-                      <td>${data.observacao}</td>
+                        <td>${data.percentualFaturamento.toFixed(2)}</td>
+                        <td>${data.observacao}</td>
                     `;
                     tbody.appendChild(row);
                 });
