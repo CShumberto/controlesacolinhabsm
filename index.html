@@ -116,7 +116,35 @@
     // Obtenha uma referência para a coleção onde deseja armazenar os dados
     const db = firebase.firestore();
     const dadosCollection = db.collection('controlemensal-sacolinhas');
+ // Função para buscar e exibir os dados na tabela
+    function mostrarDados() {
+        // Limpar os dados da tabela
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = '';
 
+        // Buscar os dados do Firestore
+        dadosCollection.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${data.numeroLoja}</td>
+                    <td>${data.nomeOperador}</td>
+                    <td>${data.easyOpenBagG}</td>
+                    <td>${data.planetaAgradeceP}</td>
+                    <td>${data.vendaMensal}</td>
+                    <td>${data.observacao}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }).catch((error) => {
+            console.error("Erro ao buscar dados: ", error);
+        });
+    }
+
+    // Chame a função para mostrar dados quando a página for carregada
+    window.addEventListener('load', mostrarDados);
+       
     // Função para inserir dados do modal
     function inserirDados() {
         // Obtenha os valores dos campos do modal
@@ -155,34 +183,6 @@
                 console.error("Erro ao adicionar documento: ", error);
             });
     }
-
-       // Função para buscar e exibir os dados na tabela
-function buscarDados() {
-    dadosCollection.get().then((querySnapshot) => {
-        const tabela = document.getElementById('tabela-dados');
-
-        // Limpe a tabela antes de adicionar os novos dados
-        tabela.innerHTML = '';
-
-        querySnapshot.forEach((doc) => {
-            const dados = doc.data();
-
-            // Crie uma nova linha na tabela para cada conjunto de dados
-            const row = tabela.insertRow();
-
-            // Preencha as células da linha com os dados
-            const diaCell = row.insertCell(0);
-            diaCell.innerHTML = dados.numeroLoja; // Altere isso para o campo apropriado
-            // Adicione outras células conforme necessário para os outros campos
-
-            // Repita este processo para preencher todas as células da linha
-        });
-    });
-}
-
-// Chame a função buscarDados() para exibir os dados quando a página carregar
-window.onload = buscarDados;
-
 </script>
 </body>
 </html>
