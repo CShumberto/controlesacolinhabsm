@@ -11,7 +11,7 @@
 
     <!-- Inclua os links para as bibliotecas do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"></script>
-     <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"></script>
 </head>
 <body>
@@ -43,30 +43,24 @@
             <button type="button" onclick="inserirDados()">Inserir Dados</button>
         </form>
 
-        <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+        <script>
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+               apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
     storageBucket: "controlemensal-sacolinhas.appspot.com",
     messagingSenderId: "925424065013",
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
-  };
+            };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
 
             // Obtenha uma referência para a coleção onde deseja armazenar os dados
             const db = firebase.firestore();
-            const dadosCollection = db.collection('controlesacola);
+            const dadosCollection = db.collection('controlemensal-sacolinhas');
 
             // Função para inserir dados do modal
             function inserirDados() {
