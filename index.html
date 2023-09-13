@@ -38,7 +38,7 @@
             </div>
         </div>
         
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="dadosTable">
             <thead>
                 <tr>
                     <th>Número da Loja</th>
@@ -181,15 +181,15 @@
         }
 
         // Chame a função para mostrar dados quando a página for carregada
-       document.addEventListener('DOMContentLoaded', function () {
-    mostrarDados();
+        $(document).ready(function() {
+            mostrarDados();
+        });
 
-    // Inicialize o Datepicker
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy',
-        autoclose: true
-    });
-});
+        // Inicialize o Datepicker
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true
+        });
 
         // Função para inserir dados do modal
         function inserirDados() {
