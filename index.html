@@ -18,6 +18,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <!-- Inclua o JavaScript do Datepicker -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Inclua a biblioteca Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="container mt-5">
@@ -63,7 +66,7 @@
         </table>
     </div>
 
-    <!-- Modal para adicionar/editar dados -->
+    <!-- Modal para adicionar dados -->
     <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -73,22 +76,71 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <input type="hidden" id="documentoEditando">
-                        <!-- Campos de entrada de dados como antes -->
+                        <div class="mb-3">
+                            <label for="dia"> Dia:</label>
+                            <input type="date" class="form-control" id="dia">
+                        </div>
+                        <div class="mb-3">
+                            <label for="numeroLoja">Número da Loja:</label>
+                            <input type="text" class="form-control" id="numeroLoja">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomeOperador">Nome do Operador:</label>
+                            <input type="text" class="form-control" id="nomeOperador">
+                        </div>
+                        <div class="mb-3">
+                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
+                            <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
+                        </div>
+                        <div class="mb-3">
+                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
+                            <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
+                        </div>
+                        <div class="mb-3">
+                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
+                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
+                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
+                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
+                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
+                            <input type="number" class="form-control" id="vendaMensal">
+                            <div id="vendaMensalError" class="text-danger" style="display: none;">Este campo é obrigatório.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="percentualFaturamento">% Faturamento:</label>
+                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observacao">OBSERVAÇÃO:</label>
+                            <textarea class="form-control" id="observacao"></textarea>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Salvar Dados</button>
+                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ... (seu código JavaScript existente) -->
+
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -164,8 +216,8 @@
                         <td>${data.vendaMensal}</td>
                         <td>${data.percentualFaturamento.toFixed(2)}</td>
                         <td>${data.observacao}</td>
-                        <td><button class="btn btn-primary" onclick="editarDados('${doc.id}')">Editar</button></td>
-                        <td><button class="btn btn-danger" onclick="deletarDados('${doc.id}')">Deletar</button></td>
+                        <td>${criarIconeEdicao(doc.id).outerHTML}</td>
+                        <td>${criarIconeExclusao(doc.id).outerHTML}</td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -211,102 +263,124 @@
                 const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
                 const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
 
-                // Preencha os campos calculados
-                document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
-                document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
-                document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
-                document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
-                document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
-
-                // Crie um objeto com os dados a serem inseridos ou atualizados
-                const dados = {
-                    dia: dia,
-                    numeroLoja: numeroLoja,
-                    nomeOperador: nomeOperador,
-                    easyOpenBagG: easyOpenBagG,
-                    planetaAgradeceP: planetaAgradeceP,
-                    totalSacolinhasUN: totalSacolinhasUN,
-                    valorTotalSacolinhaG: valorTotalSacolinhaG,
-                    valorTotalSacolinhaP: valorTotalSacolinhaP,
-                    valorTotalSacolinhaTOTAL: valorTotalSacolinhaTOTAL,
-                    vendaMensal: vendaMensal,
-                    percentualFaturamento: percentualFaturamento,
-                    observacao: observacao
-                };
-
-                if (documentoEditando) {
-                    // Atualize os dados existentes
-                    dadosCollection.doc(documentoEditando).update(dados)
-                        .then(function () {
-                            console.log("Documento atualizado com sucesso!");
-                            // Limpe os campos do modal após a atualização
-                            limparCamposModal();
-                            // Atualize a tabela
-                            mostrarDados();
-                            // Limpe a variável de edição
-                            documentoEditando = null;
-                        })
-                        .catch(function (error) {
-                            console.error("Erro ao atualizar documento: ", error);
-                        });
+                // Verifique se estamos inserindo um novo documento ou atualizando um existente
+                if (documentoEditando === null) {
+                    // Inserir um novo documento no Firestore
+                    dadosCollection.add({
+                        dia,
+                        numeroLoja,
+                        nomeOperador,
+                        easyOpenBagG,
+                        planetaAgradeceP,
+                        totalSacolinhasUN,
+                        valorTotalSacolinhaG,
+                        valorTotalSacolinhaP,
+                        valorTotalSacolinhaTOTAL,
+                        vendaMensal,
+                        percentualFaturamento,
+                        observacao
+                    }).then(() => {
+                        // Limpar o formulário
+                        limparFormulario();
+                        // Atualizar a tabela
+                        mostrarDados();
+                        // Fechar o modal
+                        document.getElementById('adicionarDadosModal').classList.remove('show');
+                        document.body.classList.remove('modal-open');
+                        document.querySelector('.modal-backdrop').remove();
+                    }).catch((error) => {
+                        console.error("Erro ao inserir dados: ", error);
+                    });
                 } else {
-                    // Adicione os novos dados ao Firestore
-                    dadosCollection.add(dados)
-                        .then(function (docRef) {
-                            console.log("Documento adicionado com ID: ", docRef.id);
-                            // Limpe os campos do modal após a inserção
-                            limparCamposModal();
-                            // Feche o modal
-                            $('#adicionarDadosModal').modal('hide');
-                            // Atualize a tabela
-                            mostrarDados();
-                        })
-                        .catch(function (error) {
-                            console.error("Erro ao adicionar documento: ", error);
-                        });
+                    // Atualizar o documento existente no Firestore
+                    dadosCollection.doc(documentoEditando).update({
+                        dia,
+                        numeroLoja,
+                        nomeOperador,
+                        easyOpenBagG,
+                        planetaAgradeceP,
+                        totalSacolinhasUN,
+                        valorTotalSacolinhaG,
+                        valorTotalSacolinhaP,
+                        valorTotalSacolinhaTOTAL,
+                        vendaMensal,
+                        percentualFaturamento,
+                        observacao
+                    }).then(() => {
+                        // Limpar o formulário
+                        limparFormulario();
+                        // Atualizar a tabela
+                        mostrarDados();
+                        // Fechar o modal
+                        document.getElementById('adicionarDadosModal').classList.remove('show');
+                        document.body.classList.remove('modal-open');
+                        document.querySelector('.modal-backdrop').remove();
+                        // Redefinir a variável de edição
+                        documentoEditando = null;
+                    }).catch((error) => {
+                        console.error("Erro ao atualizar dados: ", error);
+                    });
                 }
             }
         }
 
-        // Função para editar dados
-        function editarDados(documentId) {
-            // Recupere os dados do Firestore com base no ID do documento
-            dadosCollection.doc(documentId).get()
-                .then(function (doc) {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        preencherModalEdicao(data);
-                        // Defina o ID do documento a ser editado
-                        documentoEditando = documentId;
-                        // Abra o modal de edição
-                        $('#adicionarDadosModal').modal('show');
-                    } else {
-                        console.error("Nenhum documento encontrado!");
-                    }
-                })
-                .catch(function (error) {
-                    console.error("Erro ao buscar documento: ", error);
-                });
+        // Função para criar um ícone de edição
+        function criarIconeEdicao(id) {
+            const icone = document.createElement('i');
+            icone.classList.add('fas', 'fa-edit', 'text-primary', 'cursor-pointer');
+            icone.addEventListener('click', () => editarDados(id));
+            return icone;
         }
 
-        // Função para deletar dados
-        function deletarDados(documentId) {
+        // Função para criar um ícone de exclusão
+        function criarIconeExclusao(id) {
+            const icone = document.createElement('i');
+            icone.classList.add('fas', 'fa-trash-alt', 'text-danger', 'cursor-pointer');
+            icone.addEventListener('click', () => excluirDados(id));
+            return icone;
+        }
+
+        // Função para editar dados
+        function editarDados(id) {
+            // Atualize a variável global com o ID do documento que está sendo editado
+            documentoEditando = id;
+
+            // Obtenha o documento do Firestore
+            dadosCollection.doc(id).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    // Preencha o modal de edição com os dados atuais
+                    preencherModalEdicao(data);
+                    // Abra o modal de edição
+                    document.getElementById('adicionarDadosModal').classList.add('show');
+                    document.body.classList.add('modal-open');
+                    const backdrop = document.createElement('div');
+                    backdrop.classList.add('modal-backdrop', 'fade', 'show');
+                    document.body.appendChild(backdrop);
+                } else {
+                    console.error("Documento não encontrado!");
+                }
+            }).catch((error) => {
+                console.error("Erro ao obter documento: ", error);
+            });
+        }
+
+        // Função para excluir dados
+        function excluirDados(id) {
+            // Solicitar confirmação antes de excluir
             if (confirm("Tem certeza de que deseja excluir este registro?")) {
-                // Exclua o documento com base no ID
-                dadosCollection.doc(documentId).delete()
-                    .then(function () {
-                        console.log("Documento excluído com sucesso!");
-                        // Atualize a tabela após a exclusão
-                        mostrarDados();
-                    })
-                    .catch(function (error) {
-                        console.error("Erro ao excluir documento: ", error);
-                    });
+                // Excluir o documento do Firestore
+                dadosCollection.doc(id).delete().then(() => {
+                    // Atualizar a tabela após a exclusão
+                    mostrarDados();
+                }).catch((error) => {
+                    console.error("Erro ao excluir documento: ", error);
+                });
             }
         }
 
-        // Função para limpar os campos do modal
-        function limparCamposModal() {
+        // Função para limpar o formulário
+        function limparFormulario() {
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -319,6 +393,8 @@
             document.getElementById('vendaMensal').value = '';
             document.getElementById('percentualFaturamento').value = '';
             document.getElementById('observacao').value = '';
+            // Redefinir a variável de edição
+            documentoEditando = null;
         }
     </script>
 </body>
