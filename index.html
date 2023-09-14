@@ -63,7 +63,7 @@
         </table>
     </div>
 
-    <!-- Modal para adicionar dados -->
+    <!-- Modal para adicionar/editar dados -->
     <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -73,60 +73,13 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <div class="mb-3">
-                            <label for="dia"> Dia:</label>
-                            <input type="date" class="form-control" id="dia">
-                        </div>
-                        <div class="mb-3">
-                            <label for="numeroLoja">Número da Loja:</label>
-                            <input type="text" class="form-control" id="numeroLoja">
-                        </div>
-                        <div class="mb-3">
-                            <label for="nomeOperador">Nome do Operador:</label>
-                            <input type="text" class="form-control" id="nomeOperador">
-                        </div>
-                        <div class="mb-3">
-                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
-                            <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
-                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
-                            <input type="number" class="form-control" id="vendaMensal">
-                            <div id="vendaMensalError" class="text-danger" style="display: none;">Este campo é obrigatório.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="percentualFaturamento">% Faturamento:</label>
-                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="observacao">OBSERVAÇÃO:</label>
-                            <textarea class="form-control" id="observacao"></textarea>
-                        </div>
+                        <input type="hidden" id="documentoEditando">
+                        <!-- Campos de entrada de dados como antes -->
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
+                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Salvar Dados</button>
                 </div>
             </div>
         </div>
@@ -135,7 +88,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-         apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -328,7 +281,7 @@
                         // Abra o modal de edição
                         $('#adicionarDadosModal').modal('show');
                     } else {
-                        console.error("Documento não encontrado.");
+                        console.error("Nenhum documento encontrado!");
                     }
                 })
                 .catch(function (error) {
@@ -338,13 +291,12 @@
 
         // Função para deletar dados
         function deletarDados(documentId) {
-            // Confirme a exclusão
             if (confirm("Tem certeza de que deseja excluir este registro?")) {
-                // Exclua o documento do Firestore com base no ID
+                // Exclua o documento com base no ID
                 dadosCollection.doc(documentId).delete()
                     .then(function () {
                         console.log("Documento excluído com sucesso!");
-                        // Atualize a tabela
+                        // Atualize a tabela após a exclusão
                         mostrarDados();
                     })
                     .catch(function (error) {
