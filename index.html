@@ -71,10 +71,10 @@
                 </div>
                 <div class="modal-body">
                     <form>
-        <div class="mb-3">
-            <label for="dia"> Dia:</label>
-            <input type="date" class="form-control" id="dia">
-        </div>
+                        <div class="mb-3">
+                            <label for="dia"> Dia:</label>
+                            <input type="date" class="form-control datepicker" id="dia">
+                        </div>
                         <div class="mb-3">
                             <label for="numeroLoja">Número da Loja:</label>
                             <input type="text" class="form-control" id="numeroLoja">
@@ -134,6 +134,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
+           const firebaseConfig = {
              apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
@@ -264,6 +265,9 @@
                     observacao: observacao
                 };
 
+                // Feche o modal
+                $('#adicionarDadosModal').modal('hide');
+                
                 // Adicione os dados ao Firestore
                 dadosCollection.add(dados)
                     .then(function (docRef) {
