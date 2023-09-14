@@ -263,32 +263,35 @@
                     percentualFaturamento: percentualFaturamento,
                     observacao: observacao
                 };
+// Feche o modal
+$('#adicionarDadosModal').modal('hide');
+                
+               // Adicione os dados ao Firestore
+dadosCollection.add(dados)
+    .then(function (docRef) {
+        console.log("Documento adicionado com ID: ", docRef.id);
+        // Limpe os campos do modal após a inserção
+        document.getElementById('dia').value = '';
+        document.getElementById('numeroLoja').value = '';
+        document.getElementById('nomeOperador').value = '';
+        document.getElementById('easyOpenBagG').value = '';
+        document.getElementById('planetaAgradeceP').value = '';
+        document.getElementById('totalSacolinhasUN').value = '';
+        document.getElementById('valorTotalSacolinhaG').value = '';
+        document.getElementById('valorTotalSacolinhaP').value = '';
+        document.getElementById('valorTotalSacolinhaTOTAL').value = '';
+        document.getElementById('vendaMensal').value = '';
+        document.getElementById('percentualFaturamento').value = '';
+        document.getElementById('observacao').value = '';
+        // Feche o modal
+        $('#adicionarDadosModal').modal('hide');
+        // Atualize a tabela
+        mostrarDados();
+    })
+    .catch(function (error) {
+        console.error("Erro ao adicionar documento: ", error);
+    });
 
-                // Adicione os dados ao Firestore
-                dadosCollection.add(dados)
-                    .then(function (docRef) {
-                        console.log("Documento adicionado com ID: ", docRef.id);
-                        // Limpe os campos do modal após a inserção
-                        document.getElementById('dia').value = '';
-                        document.getElementById('numeroLoja').value = '';
-                        document.getElementById('nomeOperador').value = '';
-                        document.getElementById('easyOpenBagG').value = '';
-                        document.getElementById('planetaAgradeceP').value = '';
-                        document.getElementById('totalSacolinhasUN').value = '';
-                        document.getElementById('valorTotalSacolinhaG').value = '';
-                        document.getElementById('valorTotalSacolinhaP').value = '';
-                        document.getElementById('valorTotalSacolinhaTOTAL').value = '';
-                        document.getElementById('vendaMensal').value = '';
-                        document.getElementById('percentualFaturamento').value = '';
-                        document.getElementById('observacao').value = '';
-                        // Feche o modal
-                        $('#adicionarDadosModal').modal('hide');
-                        // Atualize a tabela
-                        mostrarDados();
-                    })
-                    .catch(function (error) {
-                        console.error("Erro ao adicionar documento: ", error);
-                    });
             }
         }
     </script>
