@@ -135,7 +135,6 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
- const firebaseConfig = {
          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
@@ -259,63 +258,103 @@
                 const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
                 const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
 
-                // Verifique se estamos editando ou adicionando um novo documento
+                // Preencha os campos calculados
+                document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
+                document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
+                document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
+                document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
+                document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
+
+                // Crie um objeto com os dados a serem inseridos ou atualizados
+                const dados = {
+                    dia: dia,
+                    numeroLoja: numeroLoja,
+                    nomeOperador: nomeOperador,
+                    easyOpenBagG: easyOpenBagG,
+                    planetaAgradeceP: planetaAgradeceP,
+                    totalSacolinhasUN: totalSacolinhasUN,
+                    valorTotalSacolinhaG: valorTotalSacolinhaG,
+                    valorTotalSacolinhaP: valorTotalSacolinhaP,
+                    valorTotalSacolinhaTOTAL: valorTotalSacolinhaTOTAL,
+                    vendaMensal: vendaMensal,
+                    percentualFaturamento: percentualFaturamento,
+                    observacao: observacao
+                };
+
                 if (documentoEditando) {
-                    // Atualizar o documento existente
-                    dadosCollection.doc(documentoEditando).update({
-                        dia,
-                        numeroLoja,
-                        nomeOperador,
-                        easyOpenBagG,
-                        planetaAgradeceP,
-                        totalSacolinhasUN,
-                        valorTotalSacolinhaG,
-                        valorTotalSacolinhaP,
-                        valorTotalSacolinhaTOTAL,
-                        vendaMensal,
-                        percentualFaturamento,
-                        observacao
-                    }).then(() => {
-                        // Limpar o formulário
-                        limparFormulario();
-                        // Atualizar a tabela
-                        mostrarDados();
-                        // Fechar o modal
-                        $('#adicionarDadosModal').modal('hide');
-                    }).catch((error) => {
-                        console.error("Erro ao atualizar dados: ", error);
-                    });
+                    // Atualize os dados existentes
+                    dadosCollection.doc(documentoEditando).update(dados)
+                        .then(function () {
+                            console.log("Documento atualizado com sucesso!");
+                            // Limpe os campos do modal após a atualização
+                            limparCamposModal();
+                            // Atualize a tabela
+                            mostrarDados();
+                            // Limpe a variável de edição
+                            documentoEditando = null;
+                        })
+                        .catch(function (error) {
+                            console.error("Erro ao atualizar documento: ", error);
+                        });
                 } else {
-                    // Adicionar um novo documento
-                    dadosCollection.add({
-                        dia,
-                        numeroLoja,
-                        nomeOperador,
-                        easyOpenBagG,
-                        planetaAgradeceP,
-                        totalSacolinhasUN,
-                        valorTotalSacolinhaG,
-                        valorTotalSacolinhaP,
-                        valorTotalSacolinhaTOTAL,
-                        vendaMensal,
-                        percentualFaturamento,
-                        observacao
-                    }).then(() => {
-                        // Limpar o formulário
-                        limparFormulario();
-                        // Atualizar a tabela
-                        mostrarDados();
-                        // Fechar o modal
-                        $('#adicionarDadosModal').modal('hide');
-                    }).catch((error) => {
-                        console.error("Erro ao adicionar dados: ", error);
-                    });
+                    // Adicione os novos dados ao Firestore
+                    dadosCollection.add(dados)
+                        .then(function (docRef) {
+                            console.log("Documento adicionado com ID: ", docRef.id);
+                            // Limpe os campos do modal após a inserção
+                            limparCamposModal();
+                            // Feche o modal
+                            $('#adicionarDadosModal').modal('hide');
+                            // Atualize a tabela
+                            mostrarDados();
+                        })
+                        .catch(function (error) {
+                            console.error("Erro ao adicionar documento: ", error);
+                        });
                 }
             }
         }
 
-        // Função para limpar o formulário
-        function limparFormulario() {
+        // Função para editar dados
+        function editarDados(documentId) {
+            // Recupere os dados do Firestore com base no ID do documento
+            dadosCollection.doc(documentId).get()
+                .then(function (doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        preencherModalEdicao(data);
+                        // Defina o ID do documento a ser editado
+                        documentoEditando = documentId;
+                        // Abra o modal de edição
+                        $('#adicionarDadosModal').modal('show');
+                    } else {
+                        console.error("Documento não encontrado.");
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Erro ao buscar documento: ", error);
+                });
+        }
+
+        // Função para deletar dados
+        function deletarDados(documentId) {
+            // Confirme a exclusão
+            if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                // Exclua o documento do Firestore com base no ID
+                dadosCollection.doc(documentId).delete()
+                    .then(function () {
+                        console.log("Documento excluído com sucesso!");
+                        // Atualize a tabela
+                        mostrarDados();
+                    })
+                    .catch(function (error) {
+                        console.error("Erro ao excluir documento: ", error);
+                    });
+            }
+        }
+
+        // Função para limpar os campos do modal
+        function limparCamposModal() {
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -328,42 +367,6 @@
             document.getElementById('vendaMensal').value = '';
             document.getElementById('percentualFaturamento').value = '';
             document.getElementById('observacao').value = '';
-            // Limpar a variável global de edição
-            documentoEditando = null;
-        }
-
-        // Função para editar dados
-        function editarDados(id) {
-            // Obter os dados do Firestore
-            dadosCollection.doc(id).get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    // Preencher o modal de edição com os dados atuais
-                    preencherModalEdicao(data);
-                    // Definir a variável global de edição
-                    documentoEditando = id;
-                    // Exibir o modal de edição
-                    $('#adicionarDadosModal').modal('show');
-                } else {
-                    console.error("Documento não encontrado.");
-                }
-            }).catch((error) => {
-                console.error("Erro ao buscar dados para edição: ", error);
-            });
-        }
-
-        // Função para deletar dados
-        function deletarDados(id) {
-            // Confirmar a exclusão
-            if (confirm("Tem certeza de que deseja deletar este registro?")) {
-                // Deletar o documento do Firestore
-                dadosCollection.doc(id).delete().then(() => {
-                    // Atualizar a tabela
-                    mostrarDados();
-                }).catch((error) => {
-                    console.error("Erro ao deletar dados: ", error);
-                });
-            }
         }
     </script>
 </body>
