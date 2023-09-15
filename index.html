@@ -137,9 +137,11 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 <!-- Botão "Salvar Alterações" para editar dados -->
-                <button type="button" class="btn btn-primary" onclick="editarDados()">Salvar Alterações</button>
+                <button type="button" class="btn btn-primary" id="salvarAlteracoesBtn" style="display: none;"
+                        onclick="editarDados()">Salvar Alterações
+                </button>
                 <!-- Botão "Adicionar" para inserir novos dados -->
-                <button type="button" class="btn btn-primary" onclick="inserirDados()">Adicionar</button>
+                <button type="button" class="btn btn-primary" id="adicionarBtn" onclick="inserirDados()">Adicionar</button>
             </div>
         </div>
     </div>
@@ -272,9 +274,9 @@
             valorTotalSacolinhaTOTAL,
             vendaMensal,
             percentualFaturamento,
-            observacao
+            observacao,
         }).then(() => {
-            // Limpar o formulário
+            // Limpar o formulário após adicionar os dados
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -288,7 +290,7 @@
             document.getElementById('percentualFaturamento').value = '';
             document.getElementById('observacao').value = '';
 
-            // Fechar o modal
+            // Fechar o modal de adição
             const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
             modal.hide();
 
@@ -297,26 +299,37 @@
         });
     }
 
-    // Função para abrir o modal de edição
-    function abrirModalEdicao(documentId) {
-        // Preencher o modal com os dados atuais
-        dadosCollection.doc(documentId).get().then((doc) => {
+    // Função para abrir o modal de edição com os dados preenchidos
+    function abrirModalEdicao(id) {
+        documentoEditando = id;
+
+        // Buscar os dados do documento que está sendo editado
+        dadosCollection.doc(id).get().then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
                 preencherModalEdicao(data);
-                documentoEditando = documentId;
 
-                // Abrir o modal
+                // Exibir o botão "Salvar Alterações" e ocultar o botão "Adicionar"
+                document.getElementById('salvarAlteracoesBtn').style.display = 'block';
+                document.getElementById('adicionarBtn').style.display = 'none';
+
+                // Abrir o modal de edição
                 const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
                 modal.show();
             } else {
-                console.log('Documento não encontrado!');
+                console.log('Documento não encontrado');
             }
+        }).catch((error) => {
+            console.error('Erro ao buscar documento:', error);
         });
     }
 
-    // Função para editar dados
+    // Função para salvar as alterações nos dados
     function editarDados() {
+        if (!documentoEditando) {
+            return;
+        }
+
         // Obtenha os valores dos campos do formulário
         const dia = document.getElementById('dia').value;
         const numeroLoja = document.getElementById('numeroLoja').value;
@@ -352,9 +365,9 @@
             valorTotalSacolinhaTOTAL,
             vendaMensal,
             percentualFaturamento,
-            observacao
+            observacao,
         }).then(() => {
-            // Limpar o formulário
+            // Limpar o formulário após salvar as alterações
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -368,7 +381,11 @@
             document.getElementById('percentualFaturamento').value = '';
             document.getElementById('observacao').value = '';
 
-            // Fechar o modal
+            // Exibir o botão "Adicionar" e ocultar o botão "Salvar Alterações"
+            document.getElementById('salvarAlteracoesBtn').style.display = 'none';
+            document.getElementById('adicionarBtn').style.display = 'block';
+
+            // Fechar o modal de edição
             const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
             modal.hide();
 
@@ -377,22 +394,23 @@
 
             // Atualizar a tabela
             mostrarDados();
+        }).catch((error) => {
+            console.error('Erro ao atualizar documento:', error);
         });
     }
 
     // Função para deletar dados
-    function deletarDados(documentId) {
-        // Confirmar a exclusão
-        if (confirm('Tem certeza de que deseja excluir este registro?')) {
-            // Deletar o documento no Firestore
-            dadosCollection.doc(documentId).delete().then(() => {
-                // Atualizar a tabela
+    function deletarDados(id) {
+        if (confirm('Tem certeza de que deseja deletar este registro?')) {
+            dadosCollection.doc(id).delete().then(() => {
                 mostrarDados();
+            }).catch((error) => {
+                console.error('Erro ao deletar documento:', error);
             });
         }
     }
 
-    // Inicializar a tabela
+    // Mostrar dados na tabela ao carregar a página
     mostrarDados();
 </script>
 </body>
