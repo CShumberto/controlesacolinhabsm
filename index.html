@@ -14,10 +14,12 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
 
-    <!-- Inclua o CSS do Datepicker -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
-    <!-- Inclua o JavaScript do Datepicker -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+    <!-- Inclua o CSS do DataTables -->
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <!-- Inclua o JavaScript do DataTables -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.4/js/dataTables.colReorder.min.js"></script>
 
     <!-- Inclua a biblioteca Font Awesome para ícones -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
@@ -41,106 +43,44 @@
             </div>
         </div>
         
-        <table class="table table-bordered" id="dadosTable">
-            <thead>
-                <tr>
-                    <th>Dia</th>
-                    <th>Número da Loja</th>
-                    <th>Nome do Operador</th>
-                    <th>TOTAL Easy Open Bag G</th>
-                    <th>TOTAL Planeta Agradece P</th>
-                    <th>Total de Sacolinhas (UN)</th>
-                    <th>Valor total sacolinha G</th>
-                    <th>Valor total sacolinha P</th>
-                    <th>Valor Total sacolinha</th>
-                    <th>Venda total mensal (R$)</th>
-                    <th>% Faturamento</th>
-                    <th>Observação</th>
-                    <th>Editar</th>
-                    <th>Deletar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados da tabela serão preenchidos aqui -->
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dadosTable">
+                <thead>
+                    <tr>
+                        <th>Dia</th>
+                        <th>Número da Loja</th>
+                        <th>Nome do Operador</th>
+                        <th>TOTAL Easy Open Bag G</th>
+                        <th>TOTAL Planeta Agradece P</th>
+                        <th>Total de Sacolinhas (UN)</th>
+                        <th>Valor total sacolinha G</th>
+                        <th>Valor total sacolinha P</th>
+                        <th>Valor Total sacolinha</th>
+                        <th>Venda total mensal (R$)</th>
+                        <th>% Faturamento</th>
+                        <th>Observação</th>
+                        <th>Editar</th>
+                        <th>Deletar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados da tabela serão preenchidos aqui -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal para adicionar dados -->
     <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adicionarDadosModalLabel">Adicionar Dados</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="dia"> Dia:</label>
-                            <input type="date" class="form-control" id="dia">
-                        </div>
-                        <div class="mb-3">
-                            <label for="numeroLoja">Número da Loja:</label>
-                            <input type="text" class="form-control" id="numeroLoja">
-                        </div>
-                        <div class="mb-3">
-                            <label for="nomeOperador">Nome do Operador:</label>
-                            <input type="text" class="form-control" id="nomeOperador">
-                        </div>
-                        <div class="mb-3">
-                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
-                            <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
-                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
-                            <input type="number" class="form-control" id="vendaMensal">
-                            <div id="vendaMensalError" class="text-danger" style="display: none;">Este campo é obrigatório.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="percentualFaturamento">% Faturamento:</label>
-                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="observacao">OBSERVAÇÃO:</label>
-                            <textarea class="form-control" id="observacao"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
-                </div>
-            </div>
+            <!-- ... Código do modal existente ... -->
         </div>
     </div>
-
-    <!-- ... (seu código JavaScript existente) -->
 
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -161,69 +101,17 @@
 
         // Função para preencher o modal de edição com os dados atuais
         function preencherModalEdicao(data) {
-            document.getElementById('dia').value = data.dia;
-            document.getElementById('numeroLoja').value = data.numeroLoja;
-            document.getElementById('nomeOperador').value = data.nomeOperador;
-            document.getElementById('easyOpenBagG').value = data.easyOpenBagG;
-            document.getElementById('planetaAgradeceP').value = data.planetaAgradeceP;
-            document.getElementById('vendaMensal').value = data.vendaMensal;
-            document.getElementById('observacao').value = data.observacao;
+            // ... Código para preencher o modal existente ...
         }
 
         // Função para calcular valores automaticamente
         function calcularValores() {
-            // Obtenha os valores dos campos "easyOpenBagG" e "planetaAgradeceP"
-            const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
-            const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
-
-            // Realize os cálculos
-            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-            const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-            const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-            const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
-            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
-            const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
-
-            // Preencha os campos calculados
-            document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
-            document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
-            document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
-            document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
-            document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
+            // ... Código para calcular valores ...
         }
 
         // Função para buscar e exibir os dados na tabela
         function mostrarDados() {
-            // Limpar os dados da tabela
-            const tbody = document.querySelector('tbody');
-            tbody.innerHTML = '';
-
-            // Buscar os dados do Firestore
-            dadosCollection.get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${data.dia}</td>
-                        <td>${data.numeroLoja}</td>
-                        <td>${data.nomeOperador}</td>
-                        <td>${data.easyOpenBagG}</td>
-                        <td>${data.planetaAgradeceP}</td>
-                        <td>${data.totalSacolinhasUN}</td>
-                        <td>${data.valorTotalSacolinhaG.toFixed(2)}</td>
-                        <td>${data.valorTotalSacolinhaP.toFixed(2)}</td>
-                        <td>${data.valorTotalSacolinhaTOTAL.toFixed(2)}</td>
-                        <td>${data.vendaMensal}</td>
-                        <td>${data.percentualFaturamento.toFixed(2)}</td>
-                        <td>${data.observacao}</td>
-                        <td>${criarIconeEdicao(doc.id).outerHTML}</td>
-                        <td>${criarIconeExclusao(doc.id).outerHTML}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            }).catch((error) => {
-                console.error("Erro ao buscar dados: ", error);
-            });
+            // ... Código para buscar e exibir dados ...
         }
 
         // Chame a função para mostrar dados quando a página for carregada
@@ -237,165 +125,49 @@
 
         // Função para inserir ou atualizar dados
         function inserirDados() {
-            // Obtenha o valor do campo "vendaMensal"
-            const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
-
-            // Verifique se o campo "vendaMensal" está vazio
-            if (vendaMensal === 0) {
-                // Exiba o alerta de erro
-                document.getElementById('vendaMensalError').style.display = 'block';
-            } else {
-                // Caso contrário, oculte o alerta de erro (caso esteja visível)
-                document.getElementById('vendaMensalError').style.display = 'none';
-
-                // Continue com a inserção ou atualização de dados
-                const dia = document.getElementById('dia').value;
-                const numeroLoja = document.getElementById('numeroLoja').value;
-                const nomeOperador = document.getElementById('nomeOperador').value;
-                const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
-                const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
-                const observacao = document.getElementById('observacao').value;
-
-                // Realize os cálculos
-                const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-                const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-                const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-                const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
-                const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
-
-                // Verifique se estamos inserindo um novo documento ou atualizando um existente
-                if (documentoEditando === null) {
-                    // Inserir um novo documento no Firestore
-                    dadosCollection.add({
-                        dia,
-                        numeroLoja,
-                        nomeOperador,
-                        easyOpenBagG,
-                        planetaAgradeceP,
-                        totalSacolinhasUN,
-                        valorTotalSacolinhaG,
-                        valorTotalSacolinhaP,
-                        valorTotalSacolinhaTOTAL,
-                        vendaMensal,
-                        percentualFaturamento,
-                        observacao
-                    }).then(() => {
-                        // Limpar o formulário
-                        limparFormulario();
-                        // Atualizar a tabela
-                        mostrarDados();
-                        // Fechar o modal
-                        document.getElementById('adicionarDadosModal').classList.remove('show');
-                        document.body.classList.remove('modal-open');
-                        document.querySelector('.modal-backdrop').remove();
-                    }).catch((error) => {
-                        console.error("Erro ao inserir dados: ", error);
-                    });
-                } else {
-                    // Atualizar o documento existente no Firestore
-                    dadosCollection.doc(documentoEditando).update({
-                        dia,
-                        numeroLoja,
-                        nomeOperador,
-                        easyOpenBagG,
-                        planetaAgradeceP,
-                        totalSacolinhasUN,
-                        valorTotalSacolinhaG,
-                        valorTotalSacolinhaP,
-                        valorTotalSacolinhaTOTAL,
-                        vendaMensal,
-                        percentualFaturamento,
-                        observacao
-                    }).then(() => {
-                        // Limpar o formulário
-                        limparFormulario();
-                        // Atualizar a tabela
-                        mostrarDados();
-                        // Fechar o modal
-                        document.getElementById('adicionarDadosModal').classList.remove('show');
-                        document.body.classList.remove('modal-open');
-                        document.querySelector('.modal-backdrop').remove();
-                        // Redefinir a variável de edição
-                        documentoEditando = null;
-                    }).catch((error) => {
-                        console.error("Erro ao atualizar dados: ", error);
-                    });
-                }
-            }
+            // ... Código para inserir ou atualizar dados ...
         }
 
         // Função para criar um ícone de edição
         function criarIconeEdicao(id) {
-            const icone = document.createElement('i');
-            icone.classList.add('fas', 'fa-edit', 'text-primary', 'cursor-pointer');
-            icone.addEventListener('click', () => editarDados(id));
-            return icone;
+            // ... Código para criar ícone de edição ...
         }
 
         // Função para criar um ícone de exclusão
         function criarIconeExclusao(id) {
-            const icone = document.createElement('i');
-            icone.classList.add('fas', 'fa-trash-alt', 'text-danger', 'cursor-pointer');
-            icone.addEventListener('click', () => excluirDados(id));
-            return icone;
+            // ... Código para criar ícone de exclusão ...
         }
 
         // Função para editar dados
         function editarDados(id) {
-            // Atualize a variável global com o ID do documento que está sendo editado
-            documentoEditando = id;
-
-            // Obtenha o documento do Firestore
-            dadosCollection.doc(id).get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    // Preencha o modal de edição com os dados atuais
-                    preencherModalEdicao(data);
-                    // Abra o modal de edição
-                    document.getElementById('adicionarDadosModal').classList.add('show');
-                    document.body.classList.add('modal-open');
-                    const backdrop = document.createElement('div');
-                    backdrop.classList.add('modal-backdrop', 'fade', 'show');
-                    document.body.appendChild(backdrop);
-                } else {
-                    console.error("Documento não encontrado!");
-                }
-            }).catch((error) => {
-                console.error("Erro ao obter documento: ", error);
-            });
+            // ... Código para editar dados ...
         }
 
         // Função para excluir dados
         function excluirDados(id) {
-            // Solicitar confirmação antes de excluir
-            if (confirm("Tem certeza de que deseja excluir este registro?")) {
-                // Excluir o documento do Firestore
-                dadosCollection.doc(id).delete().then(() => {
-                    // Atualizar a tabela após a exclusão
-                    mostrarDados();
-                }).catch((error) => {
-                    console.error("Erro ao excluir documento: ", error);
-                });
-            }
+            // ... Código para excluir dados ...
         }
 
         // Função para limpar o formulário
         function limparFormulario() {
-            document.getElementById('dia').value = '';
-            document.getElementById('numeroLoja').value = '';
-            document.getElementById('nomeOperador').value = '';
-            document.getElementById('easyOpenBagG').value = '';
-            document.getElementById('planetaAgradeceP').value = '';
-            document.getElementById('totalSacolinhasUN').value = '';
-            document.getElementById('valorTotalSacolinhaG').value = '';
-            document.getElementById('valorTotalSacolinhaP').value = '';
-            document.getElementById('valorTotalSacolinhaTOTAL').value = '';
-            document.getElementById('vendaMensal').value = '';
-            document.getElementById('percentualFaturamento').value = '';
-            document.getElementById('observacao').value = '';
-            // Redefinir a variável de edição
-            documentoEditando = null;
+            // ... Código para limpar o formulário ...
         }
+
+        // Inicialize o DataTables com recursos adicionais
+        $(document).ready(function() {
+            $('#dadosTable').DataTable({
+                colReorder: true, // Habilita colunas ajustáveis
+                paging: true, // Habilita paginação
+                searching: true, // Habilita a funcionalidade de pesquisa
+                language: {
+                    search: "Filtrar: ",
+                    paginate: {
+                        next: '<i class="fas fa-chevron-right"></i>',
+                        previous: '<i class="fas fa-chevron-left"></i>'
+                    }
+                }
+            });
+        });
     </script>
 </body>
 </html>
