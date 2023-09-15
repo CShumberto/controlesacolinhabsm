@@ -1,143 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Dados</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Dados</title><!-- Inclua os links para o CSS e JavaScript do Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><!-- Inclua o SDK do Firebase -->
 
-    <!-- Inclua os links para o CSS e JavaScript do Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script><!-- Inclua o CSS do Datepicker -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet"><!-- Inclua o JavaScript do Datepicker -->
 
-    <!-- Inclua o SDK do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
-
-    <!-- Inclua o CSS do Datepicker -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
-    <!-- Inclua o JavaScript do Datepicker -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
-
-    <!-- Inclua a biblioteca Font Awesome para ícones -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script><!-- Inclua a biblioteca Font Awesome para ícones -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Gerenciamento de Dados</h1>
-        
-        <div class="row mb-3">
-            <!-- Adicionar botão para abrir o modal -->
-            <div class="col-md-4">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adicionarDadosModal">Adicionar Dados</button>
-            </div>
-            <div class="col-md-4">
-                <label for="operador">Operador:</label>
-                <input type="text" class="form-control" id="operador">
-            </div>
-            <div class="col-md-4">
-                <label for="loja">Loja:</label>
-                <input type="text" class="form-control" id="loja">
-            </div>
-        </div>
-        
-        <table class="table table-bordered" id="dadosTable">
-            <thead>
-                <tr>
-                    <th>Dia</th>
-                    <th>Número da Loja</th>
-                    <th>Nome do Operador</th>
-                    <th>TOTAL Easy Open Bag G</th>
-                    <th>TOTAL Planeta Agradece P</th>
-                    <th>Total de Sacolinhas (UN)</th>
-                    <th>Valor total sacolinha G</th>
-                    <th>Valor total sacolinha P</th>
-                    <th>Valor Total sacolinha</th>
-                    <th>Venda total mensal (R$)</th>
-                    <th>% Faturamento</th>
-                    <th>Observação</th>
-                    <th>Editar</th>
-                    <th>Deletar</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dados da tabela serão preenchidos aqui -->
-            </tbody>
-        </table>
+  <div class="container mt-5">
+    <h1>Gerenciamento de Dados</h1>
+    <div class="row mb-3">
+      <!-- Adicionar botão para abrir o modal -->
+      <div class="col-md-4">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adicionarDadosModal">Adicionar Dados</button>
+      </div>
+      <div class="col-md-4">
+        <label for="operador">Operador:</label> <input type="text" class="form-control" id="operador">
+      </div>
+      <div class="col-md-4">
+        <label for="loja">Loja:</label> <input type="text" class="form-control" id="loja">
+      </div>
     </div>
-
-    <!-- Modal para adicionar dados -->
-    <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adicionarDadosModalLabel">Adicionar Dados</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="dia"> Dia:</label>
-                            <input type="date" class="form-control" id="dia">
-                        </div>
-                        <div class="mb-3">
-                            <label for="numeroLoja">Número da Loja:</label>
-                            <input type="text" class="form-control" id="numeroLoja">
-                        </div>
-                        <div class="mb-3">
-                            <label for="nomeOperador">Nome do Operador:</label>
-                            <input type="text" class="form-control" id="nomeOperador">
-                        </div>
-                        <div class="mb-3">
-                            <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label>
-                            <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
-                        </div>
-                        <div class="mb-3">
-                            <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label>
-                            <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label>
-                            <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label>
-                            <input type="number" class="form-control" id="vendaMensal">
-                            <div id="vendaMensalError" class="text-danger" style="display: none;">Este campo é obrigatório.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="percentualFaturamento">% Faturamento:</label>
-                            <input type="text" class="form-control" id="percentualFaturamento" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="observacao">OBSERVAÇÃO:</label>
-                            <textarea class="form-control" id="observacao"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
-                </div>
-            </div>
+    <table class="table table-bordered" id="dadosTable">
+      <thead>
+        <tr>
+          <th>Dia</th>
+          <th>Número da Loja</th>
+          <th>Nome do Operador</th>
+          <th>TOTAL Easy Open Bag G</th>
+          <th>TOTAL Planeta Agradece P</th>
+          <th>Total de Sacolinhas (UN)</th>
+          <th>Valor total sacolinha G</th>
+          <th>Valor total sacolinha P</th>
+          <th>Valor Total sacolinha</th>
+          <th>Venda total mensal (R$)</th>
+          <th>% Faturamento</th>
+          <th>Observação</th>
+          <th>Editar</th>
+          <th>Deletar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dados da tabela serão preenchidos aqui -->
+      </tbody>
+    </table>
+  </div><!-- Modal para adicionar dados -->
+  <div class="modal fade" id="adicionarDadosModal" tabindex="-1" aria-labelledby="adicionarDadosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="adicionarDadosModalLabel">Adicionar Dados</h5>
         </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="dia">Dia:</label> <input type="date" class="form-control" id="dia">
+            </div>
+            <div class="mb-3">
+              <label for="numeroLoja">Número da Loja:</label> <input type="text" class="form-control" id="numeroLoja">
+            </div>
+            <div class="mb-3">
+              <label for="nomeOperador">Nome do Operador:</label> <input type="text" class="form-control" id="nomeOperador">
+            </div>
+            <div class="mb-3">
+              <label for="easyOpenBagG">TOTAL Easy Open Bag G:</label> <input type="number" class="form-control" id="easyOpenBagG" oninput="calcularValores()">
+            </div>
+            <div class="mb-3">
+              <label for="planetaAgradeceP">TOTAL Planeta Agradece P:</label> <input type="number" class="form-control" id="planetaAgradeceP" oninput="calcularValores()">
+            </div>
+            <div class="mb-3">
+              <label for="totalSacolinhasUN">Total de Sacolinhas (UN):</label> <input type="text" class="form-control" id="totalSacolinhasUN" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="valorTotalSacolinhaG">Valor total sacolinha G:</label> <input type="text" class="form-control" id="valorTotalSacolinhaG" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="valorTotalSacolinhaP">Valor total sacolinha P:</label> <input type="text" class="form-control" id="valorTotalSacolinhaP" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="valorTotalSacolinhaTOTAL">Valor Total sacolinha:</label> <input type="text" class="form-control" id="valorTotalSacolinhaTOTAL" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="vendaMensal">VENDA TOTAL MENSAL (R$):</label> <input type="number" class="form-control" id="vendaMensal">
+              <div id="vendaMensalError" class="text-danger" style="display: none;">
+                Este campo é obrigatório.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="percentualFaturamento">% Faturamento:</label> <input type="text" class="form-control" id="percentualFaturamento" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="observacao">OBSERVAÇÃO:</label> 
+              <textarea class="form-control" id="observacao"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button> <button type="button" class="btn btn-primary" onclick="inserirDados()">Inserir Dados</button>
+        </div>
+      </div>
     </div>
-
-    <!-- ... (seu código JavaScript existente) -->
-
-    <script>
+  </div><!-- ... (seu código JavaScript existente) -->
+  <script>
         // Configuração do Firebase
         const firebaseConfig = {
            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
@@ -204,20 +177,22 @@
                     const data = doc.data();
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${data.dia}</td>
-                        <td>${data.numeroLoja}</td>
-                        <td>${data.nomeOperador}</td>
-                        <td>${data.easyOpenBagG}</td>
-                        <td>${data.planetaAgradeceP}</td>
-                        <td>${data.totalSacolinhasUN}</td>
-                        <td>${data.valorTotalSacolinhaG.toFixed(2)}</td>
-                        <td>${data.valorTotalSacolinhaP.toFixed(2)}</td>
-                        <td>${data.valorTotalSacolinhaTOTAL.toFixed(2)}</td>
-                        <td>${data.vendaMensal}</td>
-                        <td>${data.percentualFaturamento.toFixed(2)}</td>
-                        <td>${data.observacao}</td>
-                       <td id="editar_${doc.id}">${criarIconeEdicao(doc.id).outerHTML}</td>
-                        <td>${criarIconeExclusao(doc.id).outerHTML}</td>
+                        <td>${data.dia}<\/td>
+                        <td>${data.numeroLoja}<\/td>
+                        <td>${data.nomeOperador}<\/td>
+                        <td>${data.easyOpenBagG}<\/td>
+                        <td>${data.planetaAgradeceP}<\/td>
+                        <td>${data.totalSacolinhasUN}<\/td>
+                        <td>${data.valorTotalSacolinhaG.toFixed(2)}<\/td>
+                        <td>${data.valorTotalSacolinhaP.toFixed(2)}<\/td>
+                        <td>${data.valorTotalSacolinhaTOTAL.toFixed(2)}<\/td>
+                        <td>${data.vendaMensal}<\/td>
+                        <td>${data.percentualFaturamento.toFixed(2)}<\/td>
+                        <td>${data.observacao}<\/td>
+                     <!-- No loop onde você cria os ícones de edição e exclusão na tabela -->
+                    <td id="editar_${doc.id}">${criarIconeEdicao(doc.id).outerHTML}<\/td>
+                    <td id="excluir_${doc.id}">${criarIconeExclusao(doc.id).outerHTML}<\/td>
+                     <td>${criarIconeExclusao(doc.id).outerHTML}<\/td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -234,6 +209,25 @@
             format: 'dd/mm/yyyy',
             autoclose: true
         });
+  // Dentro da função mostrarDados()
+  querySnapshot.forEach((doc) => {
+    const data = doc.data();
+    const row = document.createElement('tr');
+    row.innerHTML = `
+        <!-- ... (outros campos) -->
+        <td>${criarIconeEdicao(doc.id).outerHTML}<\/td>
+        <td>${criarIconeExclusao(doc.id).outerHTML}<\/td>
+    `;
+
+    // Adicione os eventos de clique aos ícones de edição e exclusão
+    const editarIcone = row.querySelector(`#editar_${doc.id}`);
+    const excluirIcone = row.querySelector(`#excluir_${doc.id}`);
+    
+    editarIcone.addEventListener('click', () => abrirModalEdicao(doc.id));
+    excluirIcone.addEventListener('click', () => excluirDados(doc.id));
+    
+    tbody.appendChild(row);
+  });
 
         // Função para inserir ou atualizar dados
         function inserirDados() {
@@ -330,7 +324,7 @@
     icone.classList.add('fas', 'fa-edit', 'text-primary', 'cursor-pointer');
     icone.addEventListener('click', () => abrirModalEdicao(id));
     return icone;
-}
+  }
 
 
         // Função para criar um ícone de exclusão
@@ -365,7 +359,7 @@
                 console.error("Erro ao obter documento: ", error);
             });
         }
-function abrirModalEdicao(id) {
+  function abrirModalEdicao(id) {
     // Atualize a variável global com o ID do documento que está sendo editido
     documentoEditando = id;
 
@@ -387,7 +381,7 @@ function abrirModalEdicao(id) {
     }).catch((error) => {
         console.error("Erro ao obter documento: ", error);
     });
-}
+  }
 
         // Função para excluir dados
         function excluirDados(id) {
@@ -420,6 +414,6 @@ function abrirModalEdicao(id) {
             // Redefinir a variável de edição
             documentoEditando = null;
         }
-    </script>
+  </script>
 </body>
 </html>
