@@ -150,7 +150,7 @@
 <script>
     // Configuração do Firebase
     const firebaseConfig = {
-        apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+       apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -188,18 +188,18 @@
 
         // Realize os cálculos
         const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-        const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-        const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-        const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
+        const valorTotalSacolinhaG = "R$" + (easyOpenBagG * 0.07).toFixed(2);
+        const valorTotalSacolinhaP = "R$" + (planetaAgradeceP * 0.09).toFixed(2);
+        const valorTotalSacolinhaTOTAL = "R$" + (parseFloat(valorTotalSacolinhaG.replace("R$", "")) + parseFloat(valorTotalSacolinhaP.replace("R$", ""))).toFixed(2);
         const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
-        const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
+        const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL.replace("R$", "")) / vendaMensal) * 100).toFixed(2) + "%";
 
         // Preencha os campos calculados
         document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
-        document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG.toFixed(2);
-        document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP.toFixed(2);
-        document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL.toFixed(2);
-        document.getElementById('percentualFaturamento').value = percentualFaturamento.toFixed(2);
+        document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG;
+        document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP;
+        document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL;
+        document.getElementById('percentualFaturamento').value = percentualFaturamento;
     }
 
     // Função para buscar e exibir os dados na tabela
@@ -214,24 +214,24 @@
                 const data = doc.data();
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${data.dia}<\/td>
-                    <td>${data.numeroLoja}<\/td>
-                    <td>${data.nomeOperador}<\/td>
-                    <td>${data.easyOpenBagG}<\/td>
-                    <td>${data.planetaAgradeceP}<\/td>
-                    <td>${data.totalSacolinhasUN}<\/td>
-                    <td>${data.valorTotalSacolinhaG}<\/td>
-                    <td>${data.valorTotalSacolinhaP}<\/td>
-                    <td>${data.valorTotalSacolinhaTOTAL}<\/td>
-                    <td>${data.vendaMensal}<\/td>
-                    <td>${data.percentualFaturamento}<\/td>
-                    <td>${data.observacao}<\/td>
+                    <td>${data.dia}</td>
+                    <td>${data.numeroLoja}</td>
+                    <td>${data.nomeOperador}</td>
+                    <td>${data.easyOpenBagG}</td>
+                    <td>${data.planetaAgradeceP}</td>
+                    <td>${data.totalSacolinhasUN}</td>
+                    <td>${data.valorTotalSacolinhaG}</td>
+                    <td>${data.valorTotalSacolinhaP}</td>
+                    <td>${data.valorTotalSacolinhaTOTAL}</td>
+                    <td>${data.vendaMensal}</td>
+                    <td>${data.percentualFaturamento}</td>
+                    <td>${data.observacao}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm" onclick="abrirModalEdicao('${doc.id}')">Editar<\/button>
-                    <\/td>
+                        <button class="btn btn-warning btn-sm" onclick="abrirModalEdicao('${doc.id}')">Editar</button>
+                    </td>
                     <td>
-                        <button class="btn btn-danger btn-sm" onclick="deletarDados('${doc.id}')">Deletar<\/button>
-                    <\/td>
+                        <button class="btn btn-danger btn-sm" onclick="deletarDados('${doc.id}')">Deletar</button>
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
@@ -247,22 +247,22 @@
         const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
         const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
         const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-        const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-        const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-        const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
+        const valorTotalSacolinhaG = "R$" + (easyOpenBagG * 0.07).toFixed(2);
+        const valorTotalSacolinhaP = "R$" + (planetaAgradeceP * 0.09).toFixed(2);
+        const valorTotalSacolinhaTOTAL = "R$" + (parseFloat(valorTotalSacolinhaG.replace("R$", "")) + parseFloat(valorTotalSacolinhaP.replace("R$", ""))).toFixed(2);
         const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
-        const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
+        const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL.replace("R$", "")) / vendaMensal) * 100).toFixed(2) + "%";
         const observacao = document.getElementById('observacao').value;
 
-        // Validar campos obrigatórios
-        if (!dia || !numeroLoja || !nomeOperador || !vendaMensal) {
+        // Verifique se o campo "Venda Mensal" foi preenchido
+        if (vendaMensal <= 0) {
             document.getElementById('vendaMensalError').style.display = 'block';
             return;
         } else {
             document.getElementById('vendaMensalError').style.display = 'none';
         }
 
-        // Adicionar os dados ao Firestore
+        // Adicione os dados ao Firestore
         dadosCollection.add({
             dia,
             numeroLoja,
@@ -277,7 +277,7 @@
             percentualFaturamento,
             observacao
         }).then(() => {
-            // Limpar o formulário após adicionar
+            // Limpar os campos do formulário
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -293,38 +293,35 @@
 
             // Atualizar a tabela
             mostrarDados();
-        }).catch((error) => {
-            console.error("Erro ao adicionar dados: ", error);
         });
     }
 
     // Função para abrir o modal de edição com os dados atuais
-    function abrirModalEdicao(docId) {
-        // Obter os dados do documento a ser editado
-        dadosCollection.doc(docId).get().then((doc) => {
+    function abrirModalEdicao(documentId) {
+        documentoEditando = documentId;
+
+        // Preencher o modal com os dados atuais
+        dadosCollection.doc(documentId).get().then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
-                documentoEditando = docId;
-
-                // Preencher o modal com os dados atuais
                 preencherModalEdicao(data);
 
                 // Exibir o botão "Salvar Alterações" e ocultar o botão "Adicionar"
                 document.getElementById('salvarAlteracoesBtn').style.display = 'block';
                 document.getElementById('adicionarBtn').style.display = 'none';
 
-                // Abrir o modal
+                // Abrir o modal de edição
                 const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
                 modal.show();
             } else {
-                console.error("Documento não encontrado");
+                console.error("Documento não encontrado.");
             }
         }).catch((error) => {
-            console.error("Erro ao buscar dados para edição: ", error);
+            console.error("Erro ao obter o documento:", error);
         });
     }
 
-    // Função para editar dados no Firestore
+    // Função para editar os dados
     function editarDados() {
         // Obter os valores dos campos do formulário
         const dia = document.getElementById('dia').value;
@@ -333,15 +330,15 @@
         const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
         const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
         const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-        const valorTotalSacolinhaG = easyOpenBagG * 0.07;
-        const valorTotalSacolinhaP = planetaAgradeceP * 0.09;
-        const valorTotalSacolinhaTOTAL = valorTotalSacolinhaG + valorTotalSacolinhaP;
+        const valorTotalSacolinhaG = "R$" + (easyOpenBagG * 0.07).toFixed(2);
+        const valorTotalSacolinhaP = "R$" + (planetaAgradeceP * 0.09).toFixed(2);
+        const valorTotalSacolinhaTOTAL = "R$" + (parseFloat(valorTotalSacolinhaG.replace("R$", "")) + parseFloat(valorTotalSacolinhaP.replace("R$", ""))).toFixed(2);
         const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
-        const percentualFaturamento = (valorTotalSacolinhaTOTAL / vendaMensal) * 100;
+        const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL.replace("R$", "")) / vendaMensal) * 100).toFixed(2) + "%";
         const observacao = document.getElementById('observacao').value;
 
-        // Validar campos obrigatórios
-        if (!dia || !numeroLoja || !nomeOperador || !vendaMensal) {
+        // Verifique se o campo "Venda Mensal" foi preenchido
+        if (vendaMensal <= 0) {
             document.getElementById('vendaMensalError').style.display = 'block';
             return;
         } else {
@@ -363,7 +360,7 @@
             percentualFaturamento,
             observacao
         }).then(() => {
-            // Limpar o formulário após editar
+            // Limpar os campos do formulário
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -381,29 +378,35 @@
             document.getElementById('salvarAlteracoesBtn').style.display = 'none';
             document.getElementById('adicionarBtn').style.display = 'block';
 
-            // Limpar a variável global de documento editando
+            // Limpar o documentoEditando
             documentoEditando = null;
 
             // Atualizar a tabela
             mostrarDados();
         }).catch((error) => {
-            console.error("Erro ao editar dados: ", error);
+            console.error("Erro ao editar o documento:", error);
         });
     }
 
-    // Função para deletar dados no Firestore
-    function deletarDados(docId) {
+    // Função para deletar os dados
+    function deletarDados(documentId) {
+        // Confirmar a exclusão
         if (confirm("Tem certeza de que deseja deletar este registro?")) {
-            dadosCollection.doc(docId).delete().then(() => {
+            // Deletar o documento no Firestore
+            dadosCollection.doc(documentId).delete().then(() => {
+                // Atualizar a tabela
                 mostrarDados();
             }).catch((error) => {
-                console.error("Erro ao deletar dados: ", error);
+                console.error("Erro ao deletar o documento:", error);
             });
         }
     }
 
-    // Chame a função mostrarDados para exibir os dados iniciais na tabela
+    // Chame a função para mostrar os dados ao carregar a página
     mostrarDados();
 </script>
 </body>
 </html>
+
+
+		
