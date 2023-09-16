@@ -135,13 +135,14 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+
                 <!-- Botão "Salvar Alterações" para editar dados -->
                 <button type="button" class="btn btn-primary" id="salvarAlteracoesBtn" style="display: none;"
-                        onclick="editarDados()">Salvar Alterações
+                        onclick="editarDados()" data-bs-dismiss="modal">Salvar Alterações
                 </button>
                 <!-- Botão "Adicionar" para inserir novos dados -->
-                <button type="button" class="btn btn-primary" id="adicionarBtn" onclick="inserirDados()">Adicionar</button>
+                <button type="button" class="btn btn-primary" id="adicionarBtn" onclick="inserirDados()" data-bs-dismiss="modal">Adicionar</button>
             </div>
         </div>
     </div>
@@ -149,7 +150,7 @@
 <script>
     // Configuração do Firebase
     const firebaseConfig = {
-       apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+        apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -274,9 +275,9 @@
             valorTotalSacolinhaTOTAL,
             vendaMensal,
             percentualFaturamento,
-            observacao,
+            observacao
         }).then(() => {
-            // Limpar o formulário após adicionar os dados
+            // Limpar o formulário após adicionar
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -290,47 +291,42 @@
             document.getElementById('percentualFaturamento').value = '';
             document.getElementById('observacao').value = '';
 
-            // Fechar o modal de adição
-            const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
-            modal.hide();
-
             // Atualizar a tabela
             mostrarDados();
+        }).catch((error) => {
+            console.error("Erro ao adicionar dados: ", error);
         });
     }
 
-    // Função para abrir o modal de edição com os dados preenchidos
-    function abrirModalEdicao(id) {
-        documentoEditando = id;
-
-        // Buscar os dados do documento que está sendo editado
-        dadosCollection.doc(id).get().then((doc) => {
+    // Função para abrir o modal de edição com os dados atuais
+    function abrirModalEdicao(docId) {
+        // Obter os dados do documento a ser editado
+        dadosCollection.doc(docId).get().then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
+                documentoEditando = docId;
+
+                // Preencher o modal com os dados atuais
                 preencherModalEdicao(data);
 
                 // Exibir o botão "Salvar Alterações" e ocultar o botão "Adicionar"
                 document.getElementById('salvarAlteracoesBtn').style.display = 'block';
                 document.getElementById('adicionarBtn').style.display = 'none';
 
-                // Abrir o modal de edição
+                // Abrir o modal
                 const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
                 modal.show();
             } else {
-                console.log('Documento não encontrado');
+                console.error("Documento não encontrado");
             }
         }).catch((error) => {
-            console.error('Erro ao buscar documento:', error);
+            console.error("Erro ao buscar dados para edição: ", error);
         });
     }
 
-    // Função para salvar as alterações nos dados
+    // Função para editar dados no Firestore
     function editarDados() {
-        if (!documentoEditando) {
-            return;
-        }
-
-        // Obtenha os valores dos campos do formulário
+        // Obter os valores dos campos do formulário
         const dia = document.getElementById('dia').value;
         const numeroLoja = document.getElementById('numeroLoja').value;
         const nomeOperador = document.getElementById('nomeOperador').value;
@@ -365,9 +361,9 @@
             valorTotalSacolinhaTOTAL,
             vendaMensal,
             percentualFaturamento,
-            observacao,
+            observacao
         }).then(() => {
-            // Limpar o formulário após salvar as alterações
+            // Limpar o formulário após editar
             document.getElementById('dia').value = '';
             document.getElementById('numeroLoja').value = '';
             document.getElementById('nomeOperador').value = '';
@@ -381,36 +377,32 @@
             document.getElementById('percentualFaturamento').value = '';
             document.getElementById('observacao').value = '';
 
-            // Exibir o botão "Adicionar" e ocultar o botão "Salvar Alterações"
+            // Ocultar o botão "Salvar Alterações" e exibir o botão "Adicionar"
             document.getElementById('salvarAlteracoesBtn').style.display = 'none';
             document.getElementById('adicionarBtn').style.display = 'block';
 
-            // Fechar o modal de edição
-            const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
-            modal.hide();
-
-            // Limpar o ID do documento em edição
+            // Limpar a variável global de documento editando
             documentoEditando = null;
 
             // Atualizar a tabela
             mostrarDados();
         }).catch((error) => {
-            console.error('Erro ao atualizar documento:', error);
+            console.error("Erro ao editar dados: ", error);
         });
     }
 
-    // Função para deletar dados
-    function deletarDados(id) {
-        if (confirm('Tem certeza de que deseja deletar este registro?')) {
-            dadosCollection.doc(id).delete().then(() => {
+    // Função para deletar dados no Firestore
+    function deletarDados(docId) {
+        if (confirm("Tem certeza de que deseja deletar este registro?")) {
+            dadosCollection.doc(docId).delete().then(() => {
                 mostrarDados();
             }).catch((error) => {
-                console.error('Erro ao deletar documento:', error);
+                console.error("Erro ao deletar dados: ", error);
             });
         }
     }
 
-    // Mostrar dados na tabela ao carregar a página
+    // Chame a função mostrarDados para exibir os dados iniciais na tabela
     mostrarDados();
 </script>
 </body>
