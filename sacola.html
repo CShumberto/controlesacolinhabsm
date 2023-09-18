@@ -34,19 +34,8 @@
         .dataTables_wrapper {
             padding: 20px;
         }
-        
-        /* Estilize o ícone de edição */
-        .editar-icon {
-            color: blue;
-            cursor: pointer;
-        }
-
-        /* Estilize o ícone de exclusão */
-        .excluir-icon {
-            color: red;
-            cursor: pointer;
-        }
     </style>
+
 </head>
 <body>
     <div class="container">
@@ -71,7 +60,8 @@
                     <th>Valor Total sacolinha (R$)</th>
                     <th>% Faturamento</th>
                     <th>Observação</th>
-                    <th>Ações</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -143,7 +133,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" id="salvarRegistro"><i class="fas fa-save"></i> Salvar</button>
+                        <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
                     </div>
                 </div>
             </div>
@@ -153,7 +143,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -324,8 +314,8 @@
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
                         data['Observação'] || '',
-                        `<i class="fas fa-edit editar-icon" onclick="preencherFormularioEditar('${doc.id}')"></i>`,
-                        `<i class="fas fa-trash-alt excluir-icon" onclick="excluirRegistro('${doc.id}')"></i>`,
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
                     ];
                     tabela.row.add(rowData).draw();
                 });
