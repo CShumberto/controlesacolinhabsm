@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD com DataTables, Paginação e Filtro de Pesquisa</title>
+    <title>CRUD Firebase Firestore com DataTables</title>
 
-    <!-- Inclua o jQuery -->
+    <!-- CSS do DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Inclua o DataTables -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <!-- JavaScript do DataTables -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 
-    <!-- Configuração do Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-firestore.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
 
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-         apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -34,20 +35,47 @@
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
         const dadosCollection = db.collection('controlemensal-sacolinhas');
-    </script>
 
-    <!-- Estilos CSS para a tabela -->
-    <style>
-        #pesquisa {
-            margin-bottom: 10px;
+        // Função para carregar dados do Firebase e preencher a tabela
+        function carregarDados() {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    tabela.row.add([
+                        data.Dia,
+                        data['Número da Loja'],
+                        data['Nome do Operador'],
+                        data['TOTAL Easy Open Bag G'],
+                        data['TOTAL Planeta Agradece P'],
+                        data['Total de Sacolinhas (UN)'],
+                        data['Valor total sacolinha G (R$)'],
+                        data['Valor total sacolinha P (R$)'],
+                        data['Valor Total sacolinha (R$)'],
+                        data['Venda total mensal (R$)'],
+                        data['% Faturamento'],
+                        data['Observação'],
+                        `<button onclick="editarRegistro('${doc.id}')">Editar</button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')">Excluir</button>`
+                    ]).draw();
+                });
+            }).catch((error) => {
+                console.error('Erro ao carregar dados:', error);
+            });
         }
-    </style>
+
+        // Chame a função para carregar dados quando a página carregar
+        $(document).ready(function () {
+            carregarDados();
+        });
+    </script>
 </head>
 <body>
-    <label for="pesquisa">Pesquisar:</label>
-    <input type="search" id="pesquisa" class="form-control" placeholder="Digite uma palavra-chave">
+    <h1>CRUD Firebase Firestore com DataTables</h1>
 
-    <table id="tabela-dados" class="display" style="width:100%">
+    <!-- Tabela de dados -->
+    <table id="tabela-dados" class="display">
         <thead>
             <tr>
                 <th>Dia</th>
@@ -63,74 +91,13 @@
                 <th>% Faturamento</th>
                 <th>Observação</th>
                 <th>Editar</th>
-                <th>Deletar</th>
+                <th>Excluir</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Os dados serão preenchidos aqui dinamicamente -->
-        </tbody>
+        <tbody></tbody>
     </table>
-
-    <script>
-        $(document).ready(function () {
-            const tabela = $('#tabela-dados').DataTable({
-                paging: true,
-                pageLength: 10,
-                searching: true,
-                // Outras configurações personalizadas aqui
-            });
-
-            // Configurar o evento de pesquisa
-            $('#pesquisa').on('keyup', function () {
-                tabela.search($(this).val()).draw();
-            });
-
-            // Função para adicionar botões de edição e exclusão aos dados da tabela
-            function adicionarBotoesEditarDeletar() {
-                return `
-                    <button class="editar">Editar</button>
-                    <button class="deletar">Deletar</button>
-                `;
-            }
-
-            // Buscar os dados do Firestore e preencher a tabela
-            dadosCollection.get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    // Certifique-se de que os nomes das colunas correspondam aos dados
-                    tabela.row.add([
-                        data.dia,
-                        data.numerodaloja,
-                        data.nomedooperador,
-                        data.totaleasyopenbagg,
-                        data.totalplanetaagradecesp,
-                        data.totaldesacolinhasun,
-                        data.valortotalsacolinhasr,
-                        data.valortotalsacolinhapr,
-                        data.valortotalsacolinhart,
-                        data.vendatotalmensalr,
-                        data.percentualfaturamento,
-                        data.observacao,
-                        adicionarBotoesEditarDeletar() // Adicione os botões de edição e exclusão
-                    ]).draw();
-                });
-
-                // Configurar eventos de clique para os botões de edição e exclusão
-                $('#tabela-dados tbody').on('click', 'button.editar', function () {
-                    const data = tabela.row($(this).parents('tr')).data();
-                    // Implemente sua lógica de edição aqui com os dados da linha
-                    console.log('Editar:', data);
-                });
-
-                $('#tabela-dados tbody').on('click', 'button.deletar', function () {
-                    const data = tabela.row($(this).parents('tr')).data();
-                    // Implemente sua lógica de exclusão aqui com os dados da linha
-                    console.log('Deletar:', data);
-                });
-            }).catch((error) => {
-                console.error('Erro ao obter documentos:', error);
-            });
-        });
-    </script>
 </body>
 </html>
+
+
+		
