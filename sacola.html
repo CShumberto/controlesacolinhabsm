@@ -42,7 +42,7 @@
         <h1 class="mt-4">CRUD Firebase Firestore com DataTables</h1>
 
         <!-- Botão para adicionar um novo registro -->
-        <button id="adicionarRegistro" class="btn btn-primary mt-3">Adicionar Registro</button>
+        <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
 
         <!-- Tabela de dados -->
         <table id="tabela-dados" class="display mt-3">
@@ -132,7 +132,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
+                        <button type="button" class="btn btn-primary" id="salvarRegistro"><i class="fas fa-save"></i> Salvar</button>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -344,12 +344,6 @@
         // Calcular campos dependentes ao alterar os valores
         $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
             calcularCamposDependentes();
-        });
-
-        // Configurar o datepicker para o campo "Dia"
-        $('#dia').datepicker({
-            format: "dd/mm/yyyy",
-            language: "pt-BR"
         });
     </script>
 </body>
