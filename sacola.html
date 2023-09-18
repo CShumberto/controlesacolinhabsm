@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD com DataTables e Firebase</title>
+    <title>CRUD com DataTables, Paginação e Filtro de Pesquisa</title>
 
     <!-- Inclua o jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -19,7 +20,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-              apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -35,8 +36,18 @@
         const db = firebase.firestore();
         const dadosCollection = db.collection('controlemensal-sacolinhas');
     </script>
+
+    <!-- Estilos CSS para a tabela -->
+    <style>
+        #pesquisa {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
+    <label for="pesquisa">Pesquisar:</label>
+    <input type="search" id="pesquisa" class="form-control" placeholder="Digite uma palavra-chave">
+
     <table id="tabela-dados" class="display" style="width:100%">
         <thead>
             <tr>
@@ -62,7 +73,15 @@
     <script>
         $(document).ready(function () {
             const tabela = $('#tabela-dados').DataTable({
-                // Configurações personalizadas do DataTables aqui
+                paging: true, // Habilita a paginação
+                pageLength: 10, // Define o número de itens por página
+                searching: true, // Habilita a funcionalidade de pesquisa
+                // Outras configurações personalizadas aqui
+            });
+
+            // Configurar o evento de pesquisa
+            $('#pesquisa').on('keyup', function () {
+                tabela.search($(this).val()).draw();
             });
 
             // Buscar os dados do Firestore e preencher a tabela
@@ -91,3 +110,6 @@
     </script>
 </body>
 </html>
+
+
+		
