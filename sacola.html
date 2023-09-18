@@ -62,7 +62,7 @@
             <tbody></tbody>
         </table>
 
-        <!-- Modal para adicionar/editar registro -->
+        <!-- Modal para adicionar/editar/excluir registro -->
         <div class="modal" id="modalRegistro">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -123,6 +123,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
+                        <button type="button" class="btn btn-danger" id="excluirRegistro">Excluir</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
@@ -133,7 +134,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-          apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -203,12 +204,12 @@
             $("#modalRegistro").modal("show");
         });
 
-        // Botão "Cancelar" no modal - Fecha o modal
+        // Botão "Cancelar" no modal - Fecha o modal e limpa os campos
         $("#modalRegistro").on("hidden.bs.modal", function () {
             fecharFormulario();
         });
 
-        // Botão "Salvar" no modal - Adiciona ou edita um registro
+        // Botão "Salvar" no modal - Adiciona ou edita um registro e fecha o modal
         $("#salvarRegistro").click(function () {
             const registroId = $("#registroId").val();
             const dia = $("#dia").val();
@@ -266,6 +267,22 @@
             }
         });
 
+        // Botão "Excluir" no modal - Exclui um registro e fecha o modal
+        $("#excluirRegistro").click(function () {
+            const registroId = $("#registroId").val();
+            if (registroId) {
+                if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                    dadosCollection.doc(registroId).delete().then(() => {
+                        alert("Registro excluído com sucesso.");
+                        fecharFormulario();
+                        carregarDados();
+                    }).catch((error) => {
+                        console.error("Erro ao excluir registro:", error);
+                    });
+                }
+            }
+        });
+
         // Função para editar um registro
         function editarRegistro(docId) {
             fecharFormulario();
@@ -293,18 +310,6 @@
             }).catch((error) => {
                 console.error("Erro ao obter documento:", error);
             });
-        }
-
-        // Função para excluir um registro
-        function excluirRegistro(docId) {
-            if (confirm("Tem certeza de que deseja excluir este registro?")) {
-                dadosCollection.doc(docId).delete().then(() => {
-                    alert("Registro excluído com sucesso.");
-                    carregarDados();
-                }).catch((error) => {
-                    console.error("Erro ao excluir registro:", error);
-                });
-            }
         }
 
         // Chame a função para calcular campos quando os campos relevantes mudarem
