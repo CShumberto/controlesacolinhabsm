@@ -19,7 +19,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -89,19 +89,20 @@
             dadosCollection.get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
+                    // Certifique-se de que os dados correspondam corretamente às colunas
                     tabela.row.add([
-                        data.dia,
-                        data.numeroDaLoja,
-                        data.nomeDoOperador,
-                        data.totalEasyOpenBagG,
-                        data.totalPlanetaAgradeceP,
-                        data.totalDeSacolinhas,
-                        data.valorTotalSacolinhaG,
-                        data.valorTotalSacolinhaP,
-                        data.valorTotalSacolinha,
-                        data.vendaTotalMensal,
-                        data.percentualFaturamento,
-                        data.observacao,
+                        data.Dia,
+                        data["Número da Loja"],
+                        data["Nome do Operador"],
+                        data["TOTAL Easy Open Bag G"],
+                        data["TOTAL Planeta Agradece P"],
+                        data["Total de Sacolinhas (UN)"],
+                        data["Valor total sacolinha G (R$)"],
+                        data["Valor total sacolinha P (R$)"],
+                        data["Valor Total sacolinha (R$)"],
+                        data["Venda total mensal (R$)"],
+                        data["% Faturamento"],
+                        data.Observação,
                         'Botão de Edição',
                         'Botão de Deleção'
                     ]).draw();
