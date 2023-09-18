@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Firebase Firestore com DataTables</title>
+
+    <!-- CSS do DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JavaScript do DataTables -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Bootstrap JS e Popper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Estilo opcional para a tabela */
+        #tabela-dados {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <h1>CRUD Firebase Firestore com DataTables</h1>
+
+        <!-- Botão para adicionar um novo registro -->
+        <button id="adicionarRegistro" class="btn btn-primary">Adicionar Registro</button>
+
+        <!-- Tabela de dados -->
+        <table id="tabela-dados" class="display">
+            <thead>
+                <tr>
+                    <th>Dia</th>
+                    <th>Número da Loja</th>
+                    <th>Nome do Operador</th>
+                    <th>TOTAL Easy Open Bag G</th>
+                    <th>TOTAL Planeta Agradece P</th>
+                    <th>Venda total mensal (R$)</th>
+                    <th>Total de Sacolinhas (UN)</th>
+                    <th>Valor total sacolinha G (R$)</th>
+                    <th>Valor total sacolinha P (R$)</th>
+                    <th>Valor Total sacolinha (R$)</th>
+                    <th>% Faturamento</th>
+                    <th>Observação</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Modal para adicionar/editar registro -->
+        <div class="modal" id="modalRegistro">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Adicionar/Editar Registro</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="registroId">
+                        <div class="form-group">
+                            <label for="dia">Dia:</label>
+                            <input type="text" id="dia" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroLoja">Número da Loja:</label>
+                            <input type="text" id="numeroLoja" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="nomeOperador">Nome do Operador:</label>
+                            <input type="text" id="nomeOperador" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalEasyOpenBagG">TOTAL Easy Open Bag G:</label>
+                            <input type="text" id="totalEasyOpenBagG" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalPlanetaAgradeceP">TOTAL Planeta Agradece P:</label>
+                            <input type="text" id="totalPlanetaAgradeceP" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendaTotalMensal">Venda total mensal (R$):</label>
+                            <input type="text" id="vendaTotalMensal" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalSacolinhas">Total de Sacolinhas (UN):</label>
+                            <input type="text" id="totalSacolinhas" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="valorSacolinhaG">Valor total sacolinha G (R$):</label>
+                            <input type="text" id="valorSacolinhaG" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="valorSacolinhaP">Valor total sacolinha P (R$):</label>
+                            <input type="text" id="valorSacolinhaP" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="valorTotalSacolinha">Valor Total sacolinha (R$):</label>
+                            <input type="text" id="valorTotalSacolinha" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="percentualFaturamento">% Faturamento:</label>
+                            <input type="text" id="percentualFaturamento" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="observacao">Observação:</label>
+                            <input type="text" id="observacao" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
+        const db = firebase.firestore();
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+        // Função para carregar dados do Firebase e preencher a tabela
+        function carregarDados() {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const rowData = [
+                        data.Dia || '',
+                        data['Número da Loja'] || '',
+                        data['Nome do Operador'] || '',
+                        data['TOTAL Easy Open Bag G'] || '',
+                        data['TOTAL Planeta Agradece P'] || '',
+                        data['Venda total mensal (R$)'] || '',
+                        data['Total de Sacolinhas (UN)'] || '',
+                        data['Valor total sacolinha G (R$)'] || '',
+                        data['Valor total sacolinha P (R$)'] || '',
+                        data['Valor Total sacolinha (R$)'] || '',
+                        data['% Faturamento'] || '',
+                        data['Observação'] || '',
+                        `<button onclick="editarRegistro('${doc.id}')" class="btn btn-warning">Editar</button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger">Excluir</button>`
+                    ];
+                    tabela.row.add(rowData).draw();
+                });
+            }).catch((error) => {
+                console.error('Erro ao carregar dados:', error);
+            });
+        }
+
+        // Função para calcular os campos dependentes
+        function calcularCamposDependentes() {
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+
+            const totalSacolinhasUN = totalEasyOpenBagG + totalPlanetaAgradeceP;
+            const valorTotalSacolinhaG = (totalEasyOpenBagG * 0.07).toFixed(2);
+            const valorTotalSacolinhaP = (totalPlanetaAgradeceP * 0.09).toFixed(2);
+            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaTotalMensal) * 100).toFixed(2);
+
+            $("#totalSacolinhas").val(totalSacolinhasUN);
+            $("#valorSacolinhaG").val(valorTotalSacolinhaG);
+            $("#valorSacolinhaP").val(valorTotalSacolinhaP);
+            $("#valorTotalSacolinha").val(valorTotalSacolinhaTOTAL);
+            $("#percentualFaturamento").val(percentualFaturamento);
+        }
+
+        // Botão "Adicionar Registro" - Abre o modal de adição
+        $("#adicionarRegistro").click(function () {
+            fecharFormulario();
+            $("#modalRegistro").modal("show");
+        });
+
+        // Botão "Cancelar" no modal - Fecha o modal
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            fecharFormulario();
+        });
+
+        // Botão "Salvar" no modal - Adiciona ou edita um registro
+        $("#salvarRegistro").click(function () {
+            const registroId = $("#registroId").val();
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+
+            const totalSacolinhasUN = totalEasyOpenBagG + totalPlanetaAgradeceP;
+            const valorTotalSacolinhaG = (totalEasyOpenBagG * 0.07).toFixed(2);
+            const valorTotalSacolinhaP = (totalPlanetaAgradeceP * 0.09).toFixed(2);
+            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaTotalMensal) * 100).toFixed(2);
+
+            if (!dia) {
+                alert("Preencha o campo Dia.");
+                return;
+            }
+
+            // Objeto com os dados a serem salvos
+            const dados = {
+                Dia: dia,
+                'Número da Loja': numeroLoja,
+                'Nome do Operador': nomeOperador,
+                'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                'Venda total mensal (R$)': vendaTotalMensal,
+                'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                'Valor total sacolinha G (R$)': valorTotalSacolinhaG,
+                'Valor total sacolinha P (R$)': valorTotalSacolinhaP,
+                'Valor Total sacolinha (R$)': valorTotalSacolinhaTOTAL,
+                '% Faturamento': percentualFaturamento,
+                'Observação': $("#observacao").val(),
+            };
+
+            if (registroId) {
+                // Editar registro existente
+                dadosCollection.doc(registroId).update(dados).then(() => {
+                    alert("Registro editado com sucesso.");
+                    fecharFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao editar registro:", error);
+                });
+            } else {
+                // Adicionar novo registro
+                dadosCollection.add(dados).then(() => {
+                    alert("Registro adicionado com sucesso.");
+                    fecharFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao adicionar registro:", error);
+                });
+            }
+        });
+
+        // Função para editar um registro
+        function editarRegistro(docId) {
+            fecharFormulario();
+            $("#modalRegistro").modal("show");
+
+            dadosCollection.doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    $("#registroId").val(docId);
+                    $("#dia").val(data.Dia);
+                    $("#numeroLoja").val(data['Número da Loja']);
+                    $("#nomeOperador").val(data['Nome do Operador']);
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G']);
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P']);
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)']);
+                    $("#totalSacolinhas").val(data['Total de Sacolinhas (UN)']);
+                    $("#valorSacolinhaG").val(data['Valor total sacolinha G (R$)']);
+                    $("#valorSacolinhaP").val(data['Valor total sacolinha P (R$)']);
+                    $("#valorTotalSacolinha").val(data['Valor Total sacolinha (R$)']);
+                    $("#percentualFaturamento").val(data['% Faturamento']);
+                    $("#observacao").val(data['Observação']);
+                } else {
+                    console.error("Documento não encontrado.");
+                }
+            }).catch((error) => {
+                console.error("Erro ao obter documento:", error);
+            });
+        }
+
+        // Função para excluir um registro
+        function excluirRegistro(docId) {
+            if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                dadosCollection.doc(docId).delete().then(() => {
+                    alert("Registro excluído com sucesso.");
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao excluir registro:", error);
+                });
+            }
+        }
+
+        // Chame a função para calcular campos quando os campos relevantes mudarem
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
+            calcularCamposDependentes();
+        });
+
+        // Chame a função para carregar dados quando a página carregar
+        $(document).ready(function () {
+            carregarDados();
+        });
+    </script>
+</body>
+</html>
