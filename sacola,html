@@ -60,7 +60,8 @@
                     <th>Valor Total sacolinha (R$)</th>
                     <th>% Faturamento</th>
                     <th>Observação</th>
-                    <th>Ações</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -142,7 +143,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-       apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -313,8 +314,8 @@
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
                         data['Observação'] || '',
-                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i> Editar</button>
-                        <button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</button>`,
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i> Editar</button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</button>`,
                     ];
                     tabela.row.add(rowData).draw();
                 });
@@ -336,21 +337,21 @@
             $("#modalRegistro").modal("show");
         });
 
-        // Configurar o datepicker para o campo "Dia"
-        $("#dia").datepicker({
-            format: "dd/mm/yyyy",
-            language: "pt-BR",
-            autoclose: true,
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
         });
 
-        // Adicionar um ouvinte de eventos ao campo "TOTAL Easy Open Bag G" para calcular campos dependentes
-        $("#totalEasyOpenBagG").on("input", calcularCamposDependentes);
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
+            calcularCamposDependentes();
+        });
 
-        // Adicionar um ouvinte de eventos ao campo "TOTAL Planeta Agradece P" para calcular campos dependentes
-        $("#totalPlanetaAgradeceP").on("input", calcularCamposDependentes);
-
-        // Adicionar um ouvinte de eventos ao campo "Venda total mensal (R$)" para calcular campos dependentes
-        $("#vendaTotalMensal").on("input", calcularCamposDependentes);
+        // Configurar o datepicker para o campo "Dia"
+        $('#dia').datepicker({
+            format: "dd/mm/yyyy",
+            language: "pt-BR"
+        });
     </script>
 </body>
 </html>
