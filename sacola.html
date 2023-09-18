@@ -42,7 +42,7 @@
         <h1 class="mt-4">CRUD Firebase Firestore com DataTables</h1>
 
         <!-- Botão para adicionar um novo registro -->
-        <button id="adicionarRegistro" class="btn btn-primary mt-3">Adicionar Registro</button>
+        <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
 
         <!-- Tabela de dados -->
         <table id="tabela-dados" class="display mt-3">
@@ -59,8 +59,8 @@
                     <th>Valor total sacolinha P (R$)</th>
                     <th>Valor Total sacolinha (R$)</th>
                     <th>% Faturamento</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th>Observação</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -131,8 +131,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" id="salvarRegistro" class="btn btn-primary">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="salvarRegistro"><i class="fas fa-save"></i> Salvar</button>
                     </div>
                 </div>
             </div>
@@ -142,7 +142,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-              apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -312,49 +312,37 @@
                         data['Valor total sacolinha P (R$)'] || '',
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
-                        '<button class="btn btn-warning editar" data-doc-id="' + doc.id + '">Editar</button>',
-                        '<button class="btn btn-danger excluir" data-doc-id="' + doc.id + '">Excluir</button>'
+                        data['Observação'] || '',
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
                     ];
                     tabela.row.add(rowData).draw();
                 });
-
-                // Adicionar listeners para os botões Editar e Excluir
-                $(".editar").click(function () {
-                    const docId = $(this).data("doc-id");
-                    preencherFormularioEditar(docId);
-                });
-
-                $(".excluir").click(function () {
-                    const docId = $(this).data("doc-id");
-                    excluirRegistro(docId);
-                });
             }).catch((error) => {
-                console.error("Erro ao carregar dados:", error);
+                console.error('Erro ao carregar dados:', error);
             });
         }
 
+        // Chame a função para carregar dados quando a página carregar
         $(document).ready(function () {
-            // Inicializar o DataTable
-            $('#tabela-dados').DataTable();
-
-            // Inicializar o Datepicker
-            $('#dia').datepicker({
-                format: "dd/mm/yyyy",
-                language: "pt-BR",
-                autoclose: true,
-            });
-
-            // Configurar ação para o botão "Adicionar Registro"
-            $("#adicionarRegistro").click(function () {
-                limparFormulario();
-                $("#modalRegistroLabel").text("Adicionar Registro");
-                $("#salvarRegistro").off("click").click(adicionarRegistro);
-                $("#modalRegistro").modal("show");
-            });
-
-            // Carregar dados iniciais
             carregarDados();
         });
+
+        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
+        $("#adicionarRegistro").click(function () {
+            limparFormulario();
+            $("#modalRegistroLabel").text("Adicionar Registro");
+            $("#salvarRegistro").off("click").click(adicionarRegistro);
+            $("#modalRegistro").modal("show");
+        });
+
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
+        });
+
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").on("input", calcularCamposDependentes);
     </script>
 </body>
 </html>
