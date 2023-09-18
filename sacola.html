@@ -1,3 +1,6 @@
+
+<html>
+<body>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,7 +22,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+              apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -89,20 +92,20 @@
             dadosCollection.get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    // Certifique-se de que os dados correspondam corretamente às colunas
+                    // Certifique-se de que os nomes das colunas correspondam aos dados
                     tabela.row.add([
-                        data.Dia,
-                        data["Número da Loja"],
-                        data["Nome do Operador"],
-                        data["TOTAL Easy Open Bag G"],
-                        data["TOTAL Planeta Agradece P"],
-                        data["Total de Sacolinhas (UN)"],
-                        data["Valor total sacolinha G (R$)"],
-                        data["Valor total sacolinha P (R$)"],
-                        data["Valor Total sacolinha (R$)"],
-                        data["Venda total mensal (R$)"],
-                        data["% Faturamento"],
-                        data.Observação,
+                        data.dia,
+                        data.numerodaloja,
+                        data.nomedooperador,
+                        data.totaleasyopenbagg,
+                        data.totalplanetaagradecesp,
+                        data.totaldesacolinhasun,
+                        data.valortotalsacolinhasr,
+                        data.valortotalsacolinhapr,
+                        data.valortotalsacolinhart,
+                        data.vendatotalmensalr,
+                        data.percentualfaturamento,
+                        data.observacao,
                         'Botão de Edição',
                         'Botão de Deleção'
                     ]).draw();
@@ -114,3 +117,5 @@
     </script>
 </body>
 </html>
+
+		
