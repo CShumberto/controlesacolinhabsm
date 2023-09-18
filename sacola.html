@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Firebase Firestore com DataTables</title>
+
+    <!-- CSS do DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JavaScript do DataTables -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
+
+    <!-- Bootstrap CSS e JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Ícones FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
+
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+
+    <style>
+        /* Estilos personalizados para a tabela */
+        .dataTables_wrapper {
+            padding: 20px;
+        }
+        
+        /* Estilize o ícone de edição */
+        .editar-icon {
+            color: blue;
+            cursor: pointer;
+        }
+
+        /* Estilize o ícone de exclusão */
+        .excluir-icon {
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-4">CRUD Firebase Firestore com DataTables</h1>
+
+        <!-- Botão para adicionar um novo registro -->
+        <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
+
+        <!-- Tabela de dados -->
+        <table id="tabela-dados" class="display mt-3">
+            <thead>
+                <tr>
+                    <th>Dia</th>
+                    <th>Número da Loja</th>
+                    <th>Nome do Operador</th>
+                    <th>TOTAL Easy Open Bag G</th>
+                    <th>TOTAL Planeta Agradece P</th>
+                    <th>Venda total mensal (R$)</th>
+                    <th>Total de Sacolinhas (UN)</th>
+                    <th>Valor total sacolinha G (R$)</th>
+                    <th>Valor total sacolinha P (R$)</th>
+                    <th>Valor Total sacolinha (R$)</th>
+                    <th>% Faturamento</th>
+                    <th>Observação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Modal para adicionar/editar registro -->
+        <div class="modal fade" id="modalRegistro" tabindex="-1" role="dialog" aria-labelledby="modalRegistroLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalRegistroLabel">Adicionar Registro</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulário de adição/editação de registro -->
+                        <form id="formularioRegistro">
+                            <input type="hidden" id="registroId">
+                            <div class="form-group">
+                                <label for="dia">Dia:</label>
+                                <input type="date" class="form-control" id="dia" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroLoja">Número da Loja:</label>
+                                <input type="text" class="form-control" id="numeroLoja">
+                            </div>
+                            <div class="form-group">
+                                <label for="nomeOperador">Nome do Operador:</label>
+                                <input type="text" class="form-control" id="nomeOperador">
+                            </div>
+                            <div class="form-group">
+                                <label for="totalEasyOpenBagG">TOTAL Easy Open Bag G:</label>
+                                <input type="number" step="any" class="form-control" id="totalEasyOpenBagG">
+                            </div>
+                            <div class="form-group">
+                                <label for="totalPlanetaAgradeceP">TOTAL Planeta Agradece P:</label>
+                                <input type="number" step="any" class="form-control" id="totalPlanetaAgradeceP">
+                            </div>
+                            <div class="form-group">
+                                <label for="vendaTotalMensal">Venda total mensal (R$):</label>
+                                <input type="number" step="any" class="form-control" id="vendaTotalMensal">
+                            </div>
+                            <div class="form-group">
+                                <label for="totalSacolinhas">Total de Sacolinhas (UN):</label>
+                                <input type="number" step="any" class="form-control" id="totalSacolinhas" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="valorSacolinhaG">Valor total sacolinha G (R$):</label>
+                                <input type="number" step="any" class="form-control" id="valorSacolinhaG" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="valorSacolinhaP">Valor total sacolinha P (R$):</label>
+                                <input type="number" step="any" class="form-control" id="valorSacolinhaP" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="valorTotalSacolinha">Valor Total sacolinha (R$):</label>
+                                <input type="number" step="any" class="form-control" id="valorTotalSacolinha" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="percentualFaturamento">% Faturamento:</label>
+                                <input type="number" step="any" class="form-control" id="percentualFaturamento" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="observacao">Observação:</label>
+                                <textarea class="form-control" id="observacao" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" class="btn btn-primary" id="salvarRegistro"><i class="fas fa-save"></i> Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
+        const db = firebase.firestore();
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+        // Função para calcular campos dependentes
+        function calcularCamposDependentes() {
+            const easyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const planetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+
+            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+            const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+            const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
+
+            $("#totalSacolinhas").val(totalSacolinhasUN);
+            $("#valorSacolinhaG").val(valorTotalSacolinhaG);
+            $("#valorSacolinhaP").val(valorTotalSacolinhaP);
+            $("#valorTotalSacolinha").val(valorTotalSacolinhaTOTAL);
+            $("#percentualFaturamento").val(percentualFaturamento);
+        }
+
+        // Função para limpar o formulário no modal
+        function limparFormulario() {
+            $("#registroId").val("");
+            $("#dia").val("");
+            $("#numeroLoja").val("");
+            $("#nomeOperador").val("");
+            $("#totalEasyOpenBagG").val("");
+            $("#totalPlanetaAgradeceP").val("");
+            $("#vendaTotalMensal").val("");
+            $("#observacao").val("");
+            calcularCamposDependentes();
+        }
+
+        // Função para adicionar um novo registro
+        function adicionarRegistro() {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const observacao = $("#observacao").val();
+
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.add({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro adicionado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao adicionar registro:", error);
+                });
+            } else {
+                alert("Preencha todos os campos obrigatórios.");
+            }
+        }
+
+        // Função para editar um registro existente
+        function editarRegistro(docId) {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const observacao = $("#observacao").val();
+
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.doc(docId).update({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro atualizado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao atualizar registro:", error);
+                });
+            } else {
+                alert("Preencha todos os campos obrigatórios.");
+            }
+        }
+
+        // Função para excluir um registro
+        function excluirRegistro(docId) {
+            if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                dadosCollection.doc(docId).delete().then(() => {
+                    alert("Registro excluído com sucesso!");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao excluir registro:", error);
+                });
+            }
+        }
+
+        // Função para preencher o formulário no modal com os dados do registro a ser editado
+        function preencherFormularioEditar(docId) {
+            // Buscar os dados do Firestore com base no ID do documento
+            dadosCollection.doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    $("#registroId").val(docId);
+                    $("#dia").val(data.Dia || '');
+                    $("#numeroLoja").val(data['Número da Loja'] || '');
+                    $("#nomeOperador").val(data['Nome do Operador'] || '');
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
+                    $("#observacao").val(data['Observação'] || '');
+                    calcularCamposDependentes();
+                    $("#modalRegistroLabel").text("Editar Registro");
+                    $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
+                    $("#modalRegistro").modal("show");
+                } else {
+                    console.error('Documento não encontrado.');
+                }
+            }).catch((error) => {
+                console.error('Erro ao obter documento:', error);
+            });
+        }
+
+        // Função para carregar dados do Firebase e preencher a tabela
+        function carregarDados() {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const rowData = [
+                        data.Dia || '',
+                        data['Número da Loja'] || '',
+                        data['Nome do Operador'] || '',
+                        data['TOTAL Easy Open Bag G'] || '',
+                        data['TOTAL Planeta Agradece P'] || '',
+                        data['Venda total mensal (R$)'] || '',
+                        data['Total de Sacolinhas (UN)'] || '',
+                        data['Valor total sacolinha G (R$)'] || '',
+                        data['Valor total sacolinha P (R$)'] || '',
+                        data['Valor Total sacolinha (R$)'] || '',
+                        data['% Faturamento'] || '',
+                        data['Observação'] || '',
+                        `<i class="fas fa-edit editar-icon" onclick="preencherFormularioEditar('${doc.id}')"></i>`,
+                        `<i class="fas fa-trash-alt excluir-icon" onclick="excluirRegistro('${doc.id}')"></i>`,
+                    ];
+                    tabela.row.add(rowData).draw();
+                });
+            }).catch((error) => {
+                console.error('Erro ao carregar dados:', error);
+            });
+        }
+
+        // Chame a função para carregar dados quando a página carregar
+        $(document).ready(function () {
+            carregarDados();
+        });
+
+        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
+        $("#adicionarRegistro").click(function () {
+            limparFormulario();
+            $("#modalRegistroLabel").text("Adicionar Registro");
+            $("#salvarRegistro").off("click").click(adicionarRegistro);
+            $("#modalRegistro").modal("show");
+        });
+
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
+        });
+
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").on("input", calcularCamposDependentes);
+    </script>
+</body>
+</html>
