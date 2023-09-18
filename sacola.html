@@ -24,6 +24,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- Font Awesome (ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         /* Estilo opcional para a tabela */
         #tabela-dados {
@@ -62,7 +65,7 @@
             <tbody></tbody>
         </table>
 
-        <!-- Modal para adicionar/editar/excluir registro -->
+        <!-- Modal para adicionar/editar registro -->
         <div class="modal" id="modalRegistro">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -71,10 +74,9 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" id="registroId">
                         <div class="form-group">
                             <label for="dia">Dia:</label>
-                            <input type="text" id="dia" class="form-control" required>
+                            <input type="text" id="dia" class="form-control">
                         </div>
                         <div class="form-group">
                             <label for="numeroLoja">Número da Loja:</label>
@@ -123,7 +125,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
-                        <button type="button" class="btn btn-danger" id="excluirRegistro">Excluir</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
@@ -134,7 +135,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -170,7 +171,7 @@
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
                         data['Observação'] || '',
-                        `<button onclick="editarRegistro('${doc.id}')" class="btn btn-warning">Editar</button>`,
+                        `<button onclick="editarRegistro('${doc.id}')" class="btn btn-warning"><i class="fas fa-edit"></i> Editar</button> <button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Excluir</button>`,
                     ];
                     tabela.row.add(rowData).draw();
                 });
@@ -179,7 +180,7 @@
             });
         }
 
-        // Função para calcular os campos dependentes
+        // Função para calcular campos dependentes
         function calcularCamposDependentes() {
             const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
             const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
@@ -204,12 +205,7 @@
             $("#modalRegistro").modal("show");
         });
 
-        // Botão "Cancelar" no modal - Fecha o modal e limpa os campos
-        $("#modalRegistro").on("hidden.bs.modal", function () {
-            fecharFormulario();
-        });
-
-        // Botão "Salvar" no modal - Adiciona ou edita um registro e fecha o modal
+        // Botão "Salvar" no modal - Adiciona ou edita um registro
         $("#salvarRegistro").click(function () {
             const registroId = $("#registroId").val();
             const dia = $("#dia").val();
@@ -305,39 +301,49 @@
                     $("#percentualFaturamento").val(data['% Faturamento']);
                     $("#observacao").val(data['Observação']);
                 } else {
-                    console.error("Documento não encontrado.");
+                    console.error('Documento não encontrado.');
                 }
             }).catch((error) => {
-                console.error("Erro ao obter documento:", error);
+                console.error('Erro ao obter documento:', error);
             });
         }
 
-        // Chame a função para calcular campos quando os campos relevantes mudarem
-        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
-            calcularCamposDependentes();
-        });
+        // Função para excluir um registro
+        function excluirRegistro(docId) {
+            if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                dadosCollection.doc(docId).delete().then(() => {
+                    alert("Registro excluído com sucesso.");
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao excluir registro:", error);
+                });
+            }
+        }
+
+        // Fechar o formulário no modal
+        function fecharFormulario() {
+            $("#registroId").val('');
+            $("#dia").val('');
+            $("#numeroLoja").val('');
+            $("#nomeOperador").val('');
+            $("#totalEasyOpenBagG").val('');
+            $("#totalPlanetaAgradeceP").val('');
+            $("#vendaTotalMensal").val('');
+            $("#totalSacolinhas").val('');
+            $("#valorSacolinhaG").val('');
+            $("#valorSacolinhaP").val('');
+            $("#valorTotalSacolinha").val('');
+            $("#percentualFaturamento").val('');
+            $("#observacao").val('');
+        }
 
         // Chame a função para carregar dados quando a página carregar
         $(document).ready(function () {
             carregarDados();
         });
 
-        // Função para fechar o formulário e limpar os campos
-        function fecharFormulario() {
-            $("#registroId").val("");
-            $("#dia").val("");
-            $("#numeroLoja").val("");
-            $("#nomeOperador").val("");
-            $("#totalEasyOpenBagG").val("");
-            $("#totalPlanetaAgradeceP").val("");
-            $("#vendaTotalMensal").val("");
-            $("#totalSacolinhas").val("");
-            $("#valorSacolinhaG").val("");
-            $("#valorSacolinhaP").val("");
-            $("#valorTotalSacolinha").val("");
-            $("#percentualFaturamento").val("");
-            $("#observacao").val("");
-        }
+        // Atualizar campos dependentes quando os campos relevantes são alterados
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").on("input", calcularCamposDependentes);
     </script>
 </body>
 </html>
