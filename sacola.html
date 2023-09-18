@@ -19,7 +19,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+         apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -85,6 +85,14 @@
                 tabela.search($(this).val()).draw();
             });
 
+            // Função para adicionar botões de edição e exclusão aos dados da tabela
+            function adicionarBotoesEditarDeletar() {
+                return `
+                    <button class="editar">Editar</button>
+                    <button class="deletar">Deletar</button>
+                `;
+            }
+
             // Buscar os dados do Firestore e preencher a tabela
             dadosCollection.get().then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -103,9 +111,21 @@
                         data.vendatotalmensalr,
                         data.percentualfaturamento,
                         data.observacao,
-                        'Botão de Edição',
-                        'Botão de Deleção'
+                        adicionarBotoesEditarDeletar() // Adicione os botões de edição e exclusão
                     ]).draw();
+                });
+
+                // Configurar eventos de clique para os botões de edição e exclusão
+                $('#tabela-dados tbody').on('click', 'button.editar', function () {
+                    const data = tabela.row($(this).parents('tr')).data();
+                    // Implemente sua lógica de edição aqui com os dados da linha
+                    console.log('Editar:', data);
+                });
+
+                $('#tabela-dados tbody').on('click', 'button.deletar', function () {
+                    const data = tabela.row($(this).parents('tr')).data();
+                    // Implemente sua lógica de exclusão aqui com os dados da linha
+                    console.log('Deletar:', data);
                 });
             }).catch((error) => {
                 console.error('Erro ao obter documentos:', error);
@@ -114,4 +134,3 @@
     </script>
 </body>
 </html>
-	
