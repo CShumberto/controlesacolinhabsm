@@ -51,15 +51,14 @@
                     <th>Dia</th>
                     <th>Número da Loja</th>
                     <th>Nome do Operador</th>
-                    <th>Easy Open Bag G (UN)</th>
-                    <th>Planeta Agradece P(UN)</th>
-                    <th>Total De Sacolinhas (UN)</th>
-                    <th>Total Sacolinha G (R$)</th>
-                    <th>Total Sacolinha P (R$)</th>
+                    <th>TOTAL Easy Open Bag G</th>
+                    <th>TOTAL Planeta Agradece P</th>
+                    <th>Venda total mensal (R$)</th>
+                    <th>Total de Sacolinhas (UN)</th>
+                    <th>Valor total sacolinha G (R$)</th>
+                    <th>Valor total sacolinha P (R$)</th>
                     <th>Valor Total sacolinha (R$)</th>
-                    <th>Venda Total Mensal (R$)</th>
                     <th>% Faturamento</th>
-                    <th>Observação</th>
                     <th>Editar</th>
                     <th>Excluir</th>
                 </tr>
@@ -132,8 +131,8 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" id="salvarRegistro" class="btn btn-primary">Salvar</button>
                     </div>
                 </div>
             </div>
@@ -143,7 +142,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+              apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -313,55 +312,48 @@
                         data['Valor total sacolinha P (R$)'] || '',
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
-                        data['Observação'] || '',
-                        '<button class="btn btn-primary btn-editar" data-doc-id="' + doc.id + '"><i class="fas fa-edit"></i></button>',
-                        '<button class="btn btn-danger btn-excluir" data-doc-id="' + doc.id + '"><i class="fas fa-trash-alt"></i></button>'
+                        '<button class="btn btn-warning editar" data-doc-id="' + doc.id + '">Editar</button>',
+                        '<button class="btn btn-danger excluir" data-doc-id="' + doc.id + '">Excluir</button>'
                     ];
                     tabela.row.add(rowData).draw();
                 });
 
-                // Adicionar listeners para os botões de editar e excluir
-                $('.btn-editar').click(function () {
-                    const docId = $(this).data('doc-id');
+                // Adicionar listeners para os botões Editar e Excluir
+                $(".editar").click(function () {
+                    const docId = $(this).data("doc-id");
                     preencherFormularioEditar(docId);
                 });
 
-                $('.btn-excluir').click(function () {
-                    const docId = $(this).data('doc-id');
+                $(".excluir").click(function () {
+                    const docId = $(this).data("doc-id");
                     excluirRegistro(docId);
                 });
             }).catch((error) => {
-                console.error('Erro ao carregar dados:', error);
+                console.error("Erro ao carregar dados:", error);
             });
         }
 
         $(document).ready(function () {
-            // Inicializar DataTable
-            $('#tabela-dados').DataTable({
-                language: {
-                    url: 'https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json'
-                }
-            });
+            // Inicializar o DataTable
+            $('#tabela-dados').DataTable();
 
-            // Carregar dados iniciais
-            carregarDados();
-
-            // Configurar datepicker
+            // Inicializar o Datepicker
             $('#dia').datepicker({
-                format: 'dd/mm/yyyy',
-                language: 'pt-BR'
+                format: "dd/mm/yyyy",
+                language: "pt-BR",
+                autoclose: true,
             });
 
-            // Configurar evento de cálculo ao alterar os campos relacionados
-            $('#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal').on('input', calcularCamposDependentes);
-
-            // Limpar o formulário e configurar para adicionar novo registro
-            $('#adicionarRegistro').click(function () {
+            // Configurar ação para o botão "Adicionar Registro"
+            $("#adicionarRegistro").click(function () {
                 limparFormulario();
                 $("#modalRegistroLabel").text("Adicionar Registro");
                 $("#salvarRegistro").off("click").click(adicionarRegistro);
                 $("#modalRegistro").modal("show");
             });
+
+            // Carregar dados iniciais
+            carregarDados();
         });
     </script>
 </body>
