@@ -56,8 +56,7 @@
                     <th>Valor Total sacolinha (R$)</th>
                     <th>% Faturamento</th>
                     <th>Observação</th>
-                    <th>Editar</th>
-                    <th>Excluir</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -134,13 +133,9 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
-    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
-    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
-    projectId: "controlemensal-sacolinhas",
-    storageBucket: "controlemensal-sacolinhas.appspot.com",
-    messagingSenderId: "925424065013",
-    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+            apiKey: "SUA_API_KEY",
+            authDomain: "SEU_AUTH_DOMAIN",
+            projectId: "SEU_PROJECT_ID",
         };
 
         // Inicialize o Firebase
@@ -171,7 +166,6 @@
                         data['% Faturamento'] || '',
                         data['Observação'] || '',
                         `<button onclick="editarRegistro('${doc.id}')" class="btn btn-warning">Editar</button>`,
-                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger">Excluir</button>`
                     ];
                     tabela.row.add(rowData).draw();
                 });
@@ -318,6 +312,23 @@
         $(document).ready(function () {
             carregarDados();
         });
+
+        // Função para fechar o formulário e limpar os campos
+        function fecharFormulario() {
+            $("#registroId").val("");
+            $("#dia").val("");
+            $("#numeroLoja").val("");
+            $("#nomeOperador").val("");
+            $("#totalEasyOpenBagG").val("");
+            $("#totalPlanetaAgradeceP").val("");
+            $("#vendaTotalMensal").val("");
+            $("#totalSacolinhas").val("");
+            $("#valorSacolinhaG").val("");
+            $("#valorSacolinhaP").val("");
+            $("#valorTotalSacolinha").val("");
+            $("#percentualFaturamento").val("");
+            $("#observacao").val("");
+        }
     </script>
 </body>
 </html>
