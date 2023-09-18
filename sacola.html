@@ -42,7 +42,7 @@
         <h1 class="mt-4">CRUD Firebase Firestore com DataTables</h1>
 
         <!-- Botão para adicionar um novo registro -->
-        <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
+        <button id="adicionarRegistro" class="btn btn-primary mt-3">Adicionar Registro</button>
 
         <!-- Tabela de dados -->
         <table id="tabela-dados" class="display mt-3">
@@ -60,7 +60,8 @@
                     <th>Valor Total sacolinha (R$)</th>
                     <th>% Faturamento</th>
                     <th>Observação</th>
-                    <th>Ações</th>
+                    <th>Editar</th>
+                    <th>Excluir</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -82,11 +83,11 @@
                             <input type="hidden" id="registroId">
                             <div class="form-group">
                                 <label for="dia">Dia:</label>
-                                <input type="date" class="form-control" id="dia" required>
+                                <input type="text" class="form-control" id="dia" required>
                             </div>
                             <div class="form-group">
                                 <label for="numeroLoja">Número da Loja:</label>
-                                <input type="text" class="form-control" id="numeroLoja">
+                                <input type="date" class="form-control" id="numeroLoja">
                             </div>
                             <div class="form-group">
                                 <label for="nomeOperador">Nome do Operador:</label>
@@ -132,7 +133,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <button type="button" class="btn btn-primary" id="salvarRegistro"><i class="fas fa-save"></i> Salvar</button>
+                        <button type="button" class="btn btn-primary" id="salvarRegistro">Salvar</button>
                     </div>
                 </div>
             </div>
@@ -142,7 +143,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -313,37 +314,48 @@
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
                         data['Observação'] || '',
-                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
-                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
+                        `<button type="button" class="btn btn-primary btn-sm editar" data-doc-id="${doc.id}"><i class="fas fa-edit"></i></button>`,
+                        `<button type="button" class="btn btn-danger btn-sm excluir" data-doc-id="${doc.id}"><i class="fas fa-trash"></i></button>`
                     ];
                     tabela.row.add(rowData).draw();
                 });
+
+                // Adicionar ações para os botões de editar e excluir
+                $(".editar").click(function() {
+                    const docId = $(this).data("doc-id");
+                    preencherFormularioEditar(docId);
+                });
+
+                $(".excluir").click(function() {
+                    const docId = $(this).data("doc-id");
+                    excluirRegistro(docId);
+                });
             }).catch((error) => {
-                console.error('Erro ao carregar dados:', error);
+                console.error("Erro ao carregar dados:", error);
             });
         }
 
-        // Chame a função para carregar dados quando a página carregar
-        $(document).ready(function () {
+        // Inicialização do DataTable
+        $(document).ready(function() {
+            $('#tabela-dados').DataTable();
+
+            // Configurar o datepicker
+            $('#dia').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                language: 'pt-BR'
+            });
+
+            // Carregar dados iniciais
             carregarDados();
-        });
 
-        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
-        $("#adicionarRegistro").click(function () {
-            limparFormulario();
-            $("#modalRegistroLabel").text("Adicionar Registro");
-            $("#salvarRegistro").off("click").click(adicionarRegistro);
-            $("#modalRegistro").modal("show");
-        });
-
-        // Ao fechar o modal, limpar o formulário
-        $("#modalRegistro").on("hidden.bs.modal", function () {
-            limparFormulario();
-        });
-
-        // Calcular campos dependentes ao alterar os valores
-        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
-            calcularCamposDependentes();
+            // Configurar ação para o botão "Adicionar Registro"
+            $("#adicionarRegistro").click(() => {
+                limparFormulario();
+                $("#modalRegistroLabel").text("Adicionar Registro");
+                $("#salvarRegistro").off("click").click(adicionarRegistro);
+                $("#modalRegistro").modal("show");
+            });
         });
     </script>
 </body>
