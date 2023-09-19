@@ -34,6 +34,7 @@
         .dataTables_wrapper {
             padding: 0; /* Remova o preenchimento */
             margin: 0; /* Remova as margens */
+          
         }   
     </style>
 </head>
@@ -43,50 +44,81 @@
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
     <!-- Campos de filtro -->
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label for="filtroLoja">Filtrar por Loja:</label>
-            <select class="form-select" id="filtroLoja" onchange="filtrarTabela()">
-                <option value="">Todas as Lojas</option>
-                <option value="1001">1001</option>
-                <!-- Adicione aqui todas as opções de loja -->
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label for="filtroOperador">Filtrar por Operador:</label>
-            <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
-        </div>
+  <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="filtroLoja">Filtrar por Loja:</label>
+                <select class="form-select" id="filtroLoja" onchange="filtrarTabela()">
+                    <option value="">Todas as Lojas</option>
+                    <option value="1001">1001</option>
+                    <option value="1002">1002</option>
+                    <option value="1003">1003</option>
+                    <option value="1004">1004</option>
+                    <option value="1005">1005</option>
+                    <option value="1006">1006</option>
+                    <option value="1008">1008</option>
+		    <option value="1009">1009</option>
+                    <option value="1010">1010</option>
+                    <option value="1011">1011</option>
+                    <option value="1012">1012</option>
+                    <option value="1014">1014</option>
+                    <option value="1015">1015</option>
+                    <option value="1018">1018</option>
+                    <option value="1019">1019</option>
+                    <option value="1020">1020</option>
+                    <option value="1021">1021</option>
+                    <option value="1023">1023</option>
+                    <option value="1024">1024</option>
+                    <option value="1026">1026</option>
+                    <option value="1028">1028</option>
+                    <option value="1029">1029</option>
+                    <option value="1031">1031</option>
+                    <option value="1033">1033</option>
+                    <option value="1035">1035</option>
+                    <option value="1036">1036</option>
+                    <option value="1037">1037</option>
+                    <option value="1038">1038</option>
+                    <option value="1039">1039</option>
+                    <option value="1040">1040</option>
+                    <option value="1041">1041</option>
+                    <option value="1042">1042</option>
+                </select>
+            </div>
+<div class="col-md-4">
+        <label for="filtroOperador">Filtrar por Operador:</label>
+        <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
+   
+</div>
+<script>
+// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
+function filtrarTabela() {
+    const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
+    const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
 
-    <script>
-        // Função para filtrar a tabela com base nos campos "Operador" e "Loja"
-        function filtrarTabela() {
-            const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
-            const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
+    const tbody = document.querySelector('tbody');
+    const linhas = tbody.getElementsByTagName('tr');
 
-            const tbody = document.querySelector('tbody');
-            const linhas = tbody.getElementsByTagName('tr');
+    // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
+    for (let i = 0; i < linhas.length; i++) {
+        const linha = linhas[i];
+        const colunaOperador = linha.getElementsByTagName('td')[2];
+        const colunaLoja = linha.getElementsByTagName('td')[1];
 
-            // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
-            for (let i = 0; i < linhas.length; i++) {
-                const linha = linhas[i];
-                const colunaOperador = linha.getElementsByTagName('td')[2];
-                const colunaLoja = linha.getElementsByTagName('td')[1];
+        if (colunaOperador && colunaLoja) {
+            const operador = colunaOperador.textContent.toLowerCase();
+            const loja = colunaLoja.textContent.toLowerCase();
 
-                if (colunaOperador && colunaLoja) {
-                    const operador = colunaOperador.textContent.toLowerCase();
-                    const loja = colunaLoja.textContent.toLowerCase();
-
-                    // Verificar se a linha atende aos critérios de filtro
-                    if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
-                        linha.style.display = '';
-                    } else {
-                        linha.style.display = 'none';
-                    }
-                }
+            // Verificar se a linha atende aos critérios de filtro
+            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
             }
         }
-    </script>
+    }
+}
+
+</script>
     <!-- Tabela de dados -->
     <table id="tabela-dados" class="display mt-3">
         <thead>
@@ -138,35 +170,35 @@
                         </div>
                         <div class="form-group">
                             <label for="totalEasyOpenBagG">TOTAL Easy Open Bag G:</label>
-                            <input type="number" class="form-control" id="totalEasyOpenBagG" step="0.01">
+                            <input type="number" step="any" class="form-control" id="totalEasyOpenBagG">
                         </div>
                         <div class="form-group">
                             <label for="totalPlanetaAgradeceP">TOTAL Planeta Agradece P:</label>
-                            <input type="number" class="form-control" id="totalPlanetaAgradeceP" step="0.01">
+                            <input type="number" step="any" class="form-control" id="totalPlanetaAgradeceP">
                         </div>
                         <div class="form-group">
                             <label for="vendaTotalMensal">Venda total mensal (R$):</label>
-                            <input type="number" class="form-control" id="vendaTotalMensal" step="0.01">
+                            <input type="number" step="any" class="form-control" id="vendaTotalMensal">
                         </div>
                         <div class="form-group">
                             <label for="totalSacolinhas">Total de Sacolinhas (UN):</label>
-                            <input type="number" class="form-control" id="totalSacolinhas" step="1">
+                            <input type="number" step="any" class="form-control" id="totalSacolinhas" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="valorTotalSacolinhaG">Valor total sacolinha G (R$):</label>
-                            <input type="number" class="form-control" id="valorTotalSacolinhaG" step="0.01">
+                            <label for="valorSacolinhaG">Valor total sacolinha G (R$):</label>
+                            <input type="number" step="any" class="form-control" id="valorSacolinhaG" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="valorTotalSacolinhaP">Valor total sacolinha P (R$):</label>
-                            <input type="number" class="form-control" id="valorTotalSacolinhaP" step="0.01">
+                            <label for="valorSacolinhaP">Valor total sacolinha P (R$):</label>
+                            <input type="number" step="any" class="form-control" id="valorSacolinhaP" readonly>
                         </div>
                         <div class="form-group">
                             <label for="valorTotalSacolinha">Valor Total sacolinha (R$):</label>
-                            <input type="number" class="form-control" id="valorTotalSacolinha" step="0.01">
+                            <input type="number" step="any" class="form-control" id="valorTotalSacolinha" readonly>
                         </div>
                         <div class="form-group">
                             <label for="percentualFaturamento">% Faturamento:</label>
-                            <input type="number" class="form-control" id="percentualFaturamento" step="0.01">
+                            <input type="number" step="any" class="form-control" id="percentualFaturamento" readonly>
                         </div>
                         <div class="form-group">
                             <label for="observacao">Observação:</label>
@@ -185,7 +217,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -194,53 +226,74 @@
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-        // Inicializar o Firebase
+        // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Referência à coleção no Firestore
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
-        const dadosCollection = db.collection("dados");
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
 
-        // Variáveis globais
-        let tabela;
+        // Função para calcular campos dependentes
+        function calcularCamposDependentes() {
+            const easyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const planetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
 
-        // Função para limpar o formulário
+            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+            const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+            const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
+
+            $("#totalSacolinhas").val(totalSacolinhasUN);
+            $("#valorSacolinhaG").val(valorTotalSacolinhaG);
+            $("#valorSacolinhaP").val(valorTotalSacolinhaP);
+            $("#valorTotalSacolinha").val(valorTotalSacolinhaTOTAL);
+            $("#percentualFaturamento").val(percentualFaturamento);
+        }
+
+        // Função para limpar o formulário no modal
         function limparFormulario() {
-            document.getElementById('registroId').value = '';
-            document.getElementById('dia').value = '';
-            document.getElementById('numeroLoja').value = '';
-            document.getElementById('nomeOperador').value = '';
-            document.getElementById('totalEasyOpenBagG').value = '';
-            document.getElementById('totalPlanetaAgradeceP').value = '';
-            document.getElementById('vendaTotalMensal').value = '';
-            document.getElementById('totalSacolinhas').value = '';
-            document.getElementById('valorTotalSacolinhaG').value = '';
-            document.getElementById('valorTotalSacolinhaP').value = '';
-            document.getElementById('valorTotalSacolinha').value = '';
-            document.getElementById('percentualFaturamento').value = '';
-            document.getElementById('observacao').value = '';
+            $("#registroId").val("");
+            $("#dia").val("");
+            $("#numeroLoja").val("");
+            $("#nomeOperador").val("");
+            $("#totalEasyOpenBagG").val("");
+            $("#totalPlanetaAgradeceP").val("");
+            $("#vendaTotalMensal").val("");
+            $("#observacao").val("");
+            calcularCamposDependentes();
         }
 
         // Função para adicionar um novo registro
         function adicionarRegistro() {
-            const dia = document.getElementById('dia').value;
-            const numeroLoja = document.getElementById('numeroLoja').value;
-            const nomeOperador = document.getElementById('nomeOperador').value;
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const totalSacolinhasUN = parseFloat($("#totalSacolinhas").val()) || 0;
+            const valorSacolinhaG = parseFloat($("#valorSacolinhaG").val()) || 0;
+            const valorSacolinhaP = parseFloat($("#valorSacolinhaP").val()) || 0;
+            const valorTotalSacolinha = parseFloat($("#valorTotalSacolinha").val()) || 0;
+            const percentualFaturamento = parseFloat($("#percentualFaturamento").val()) || 0;
+            const observacao = $("#observacao").val();
 
             if (dia && numeroLoja && nomeOperador) {
                 dadosCollection.add({
-                    dia: dia,
-                    numeroLoja: numeroLoja,
-                    nomeOperador: nomeOperador,
-                    totalEasyOpenBagG: parseFloat(document.getElementById('totalEasyOpenBagG').value) || 0,
-                    totalPlanetaAgradeceP: parseFloat(document.getElementById('totalPlanetaAgradeceP').value) || 0,
-                    vendaTotalMensal: parseFloat(document.getElementById('vendaTotalMensal').value) || 0,
-                    totalSacolinhas: parseInt(document.getElementById('totalSacolinhas').value) || 0,
-                    valorTotalSacolinhaG: parseFloat(document.getElementById('valorTotalSacolinhaG').value) || 0,
-                    valorTotalSacolinhaP: parseFloat(document.getElementById('valorTotalSacolinhaP').value) || 0,
-                    valorTotalSacolinha: parseFloat(document.getElementById('valorTotalSacolinha').value) || 0,
-                    percentualFaturamento: parseFloat(document.getElementById('percentualFaturamento').value) || 0,
-                    observacao: document.getElementById('observacao').value
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                    'Valor total sacolinha G (R$)': valorSacolinhaG,
+                    'Valor total sacolinha P (R$)': valorSacolinhaP,
+                    'Valor Total sacolinha (R$)': valorTotalSacolinha,
+                    '% Faturamento': percentualFaturamento,
+                    'Observação': observacao,
                 }).then(() => {
                     alert("Registro adicionado com sucesso!");
                     $("#modalRegistro").modal("hide");
@@ -248,6 +301,48 @@
                     carregarDados();
                 }).catch((error) => {
                     console.error("Erro ao adicionar registro:", error);
+                });
+            } else {
+                alert("Preencha todos os campos obrigatórios.");
+            }
+        }
+
+        // Função para editar um registro existente
+        function editarRegistro(docId) {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const totalSacolinhasUN = parseFloat($("#totalSacolinhas").val()) || 0;
+            const valorSacolinhaG = parseFloat($("#valorSacolinhaG").val()) || 0;
+            const valorSacolinhaP = parseFloat($("#valorSacolinhaP").val()) || 0;
+            const valorTotalSacolinha = parseFloat($("#valorTotalSacolinha").val()) || 0;
+            const percentualFaturamento = parseFloat($("#percentualFaturamento").val()) || 0;
+            const observacao = $("#observacao").val();
+
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.doc(docId).update({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                    'Valor total sacolinha G (R$)': valorSacolinhaG,
+                    'Valor total sacolinha P (R$)': valorSacolinhaP,
+                    'Valor Total sacolinha (R$)': valorTotalSacolinha,
+                    '% Faturamento': percentualFaturamento,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro atualizado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao atualizar registro:", error);
                 });
             } else {
                 alert("Preencha todos os campos obrigatórios.");
@@ -267,140 +362,89 @@
             }
         }
 
-        // Função para carregar os dados na tabela
-        function carregarDados() {
-            dadosCollection.get().then((querySnapshot) => {
-                const data = [];
-
-                querySnapshot.forEach((doc) => {
-                    const dados = doc.data();
-                    data.push([
-                        dados.dia,
-                        dados.numeroLoja,
-                        dados.nomeOperador,
-                        dados.totalEasyOpenBagG,
-                        dados.totalPlanetaAgradeceP,
-                        dados.vendaTotalMensal,
-                        dados.totalSacolinhas,
-                        dados.valorTotalSacolinhaG,
-                        dados.valorTotalSacolinhaP,
-                        dados.valorTotalSacolinha,
-                        dados.percentualFaturamento,
-                        dados.observacao,
-                        `<button class="btn btn-sm btn-warning" onclick="editarRegistro('${doc.id}')"><i class="fas fa-edit"></i> Editar</button>`,
-                        `<button class="btn btn-sm btn-danger" onclick="excluirRegistro('${doc.id}')"><i class="fas fa-trash"></i> Excluir</button>`
-                    ]);
-                });
-
-                if (tabela) {
-                    tabela.destroy();
-                }
-
-                tabela = $('#tabela-dados').DataTable({
-                    data: data,
-                    columns: [
-                        { title: "Dia" },
-                        { title: "Número da Loja" },
-                        { title: "Nome do Operador" },
-                        { title: "TOTAL Easy Open Bag G" },
-                        { title: "TOTAL Planeta Agradece P" },
-                        { title: "Venda total mensal (R$)" },
-                        { title: "Total de Sacolinhas (UN)" },
-                        { title: "Valor total sacolinha G (R$)" },
-                        { title: "Valor total sacolinha P (R$)" },
-                        { title: "Valor Total sacolinha (R$)" },
-                        { title: "% Faturamento" },
-                        { title: "Observação" },
-                        { title: "Editar", orderable: false },
-                        { title: "Excluir", orderable: false }
-                    ],
-                    language: {
-                        url: "//cdn.datatables.net/plug-ins/1.10.22/i18n/Portuguese-Brasil.json"
-                    }
-                });
-            }).catch((error) => {
-                console.error("Erro ao carregar dados:", error);
-            });
-        }
-
-        // Função para editar um registro
-        function editarRegistro(docId) {
+        // Função para preencher o formulário no modal com os dados do registro a ser editado
+        function preencherFormularioEditar(docId) {
+            // Buscar os dados do Firestore com base no ID do documento
             dadosCollection.doc(docId).get().then((doc) => {
                 if (doc.exists) {
-                    const dados = doc.data();
-
-                    document.getElementById('registroId').value = doc.id;
-                    document.getElementById('dia').value = dados.dia;
-                    document.getElementById('numeroLoja').value = dados.numeroLoja;
-                    document.getElementById('nomeOperador').value = dados.nomeOperador;
-                    document.getElementById('totalEasyOpenBagG').value = dados.totalEasyOpenBagG;
-                    document.getElementById('totalPlanetaAgradeceP').value = dados.totalPlanetaAgradeceP;
-                    document.getElementById('vendaTotalMensal').value = dados.vendaTotalMensal;
-                    document.getElementById('totalSacolinhas').value = dados.totalSacolinhas;
-                    document.getElementById('valorTotalSacolinhaG').value = dados.valorTotalSacolinhaG;
-                    document.getElementById('valorTotalSacolinhaP').value = dados.valorTotalSacolinhaP;
-                    document.getElementById('valorTotalSacolinha').value = dados.valorTotalSacolinha;
-                    document.getElementById('percentualFaturamento').value = dados.percentualFaturamento;
-                    document.getElementById('observacao').value = dados.observacao;
-
+                    const data = doc.data();
+                    $("#registroId").val(docId);
+                    $("#dia").val(data.Dia || '');
+                    $("#numeroLoja").val(data['Número da Loja'] || '');
+                    $("#nomeOperador").val(data['Nome do Operador'] || '');
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
+                    $("#totalSacolinhas").val(data['Total de Sacolinhas (UN)'] || '');
+                    $("#valorSacolinhaG").val(data['Valor total sacolinha G (R$)'] || '');
+                    $("#valorSacolinhaP").val(data['Valor total sacolinha P (R$)'] || '');
+                    $("#valorTotalSacolinha").val(data['Valor Total sacolinha (R$)'] || '');
+                    $("#percentualFaturamento").val(data['% Faturamento'] || '');
+                    $("#observacao").val(data['Observação'] || '');
+                    calcularCamposDependentes();
+                    $("#modalRegistroLabel").text("Editar Registro");
+                    $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
                     $("#modalRegistro").modal("show");
                 } else {
-                    console.error("Registro não encontrado.");
+                    console.error('Documento não encontrado.');
                 }
             }).catch((error) => {
-                console.error("Erro ao buscar registro:", error);
+                console.error('Erro ao obter documento:', error);
             });
         }
 
-        // Event listener para o botão "Salvar"
-        document.getElementById('salvarRegistro').addEventListener('click', () => {
-            const registroId = document.getElementById('registroId').value;
+        // Função para carregar dados do Firebase e preencher a tabela
+        function carregarDados() {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const rowData = [
+                        data.Dia || '',
+                        data['Número da Loja'] || '',
+                        data['Nome do Operador'] || '',
+                        data['TOTAL Easy Open Bag G'] || '',
+                        data['TOTAL Planeta Agradece P'] || '',
+                        data['Venda total mensal (R$)'] || '',
+                        data['Total de Sacolinhas (UN)'] || '',
+                        data['Valor total sacolinha G (R$)'] || '',
+                        data['Valor total sacolinha P (R$)'] || '',
+                        data['Valor Total sacolinha (R$)'] || '',
+                        data['% Faturamento'] || '',
+                        data['Observação'] || '',
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
+                    ];
+                    tabela.row.add(rowData).draw();
+                });
+            }).catch((error) => {
+                console.error('Erro ao carregar dados:', error);
+            });
+        }
 
-            if (registroId) {
-                // Editar registro existente
-                const dia = document.getElementById('dia').value;
-                const numeroLoja = document.getElementById('numeroLoja').value;
-                const nomeOperador = document.getElementById('nomeOperador').value;
-
-                if (dia && numeroLoja && nomeOperador) {
-                    dadosCollection.doc(registroId).update({
-                        dia: dia,
-                        numeroLoja: numeroLoja,
-                        nomeOperador: nomeOperador,
-                        totalEasyOpenBagG: parseFloat(document.getElementById('totalEasyOpenBagG').value) || 0,
-                        totalPlanetaAgradeceP: parseFloat(document.getElementById('totalPlanetaAgradeceP').value) || 0,
-                        vendaTotalMensal: parseFloat(document.getElementById('vendaTotalMensal').value) || 0,
-                        totalSacolinhas: parseInt(document.getElementById('totalSacolinhas').value) || 0,
-                        valorTotalSacolinhaG: parseFloat(document.getElementById('valorTotalSacolinhaG').value) || 0,
-                        valorTotalSacolinhaP: parseFloat(document.getElementById('valorTotalSacolinhaP').value) || 0,
-                        valorTotalSacolinha: parseFloat(document.getElementById('valorTotalSacolinha').value) || 0,
-                        percentualFaturamento: parseFloat(document.getElementById('percentualFaturamento').value) || 0,
-                        observacao: document.getElementById('observacao').value
-                    }).then(() => {
-                        alert("Registro atualizado com sucesso!");
-                        $("#modalRegistro").modal("hide");
-                        limparFormulario();
-                        carregarDados();
-                    }).catch((error) => {
-                        console.error("Erro ao atualizar registro:", error);
-                    });
-                } else {
-                    alert("Preencha todos os campos obrigatórios.");
-                }
-            } else {
-                // Adicionar novo registro
-                adicionarRegistro();
-            }
+        // Chame a função para carregar dados quando a página carregar
+        $(document).ready(function () {
+            carregarDados();
         });
 
-        // Event listener para o botão "Adicionar Registro"
-        document.getElementById('adicionarRegistro').addEventListener('click', () => {
+        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
+        $("#adicionarRegistro").click(function () {
             limparFormulario();
+            $("#modalRegistroLabel").text("Adicionar Registro");
+            $("#salvarRegistro").off("click").click(adicionarRegistro);
             $("#modalRegistro").modal("show");
         });
 
-        // Carregar os dados iniciais na tabela
-        carregarDados();
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
+        });
+
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
+            calcularCamposDependentes();
+        });
     </script>
 </body>
 </html>
