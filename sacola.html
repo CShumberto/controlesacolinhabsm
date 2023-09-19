@@ -41,7 +41,100 @@
     </style>
 </head>
 <body>
-    <h1 class="mt-4">CRUD Firebase Firestore com DataTables</h1>
+    <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Adicione as importações do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- ... (seu código existente) ... -->
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <!-- Título do Navbar -->
+            <a class="navbar-brand" href="#">CRUD Firebase Firestore</a>
+
+            <!-- Botão de alternância para dispositivos móveis -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Itens do Navbar -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- Item "Requisição Sacola" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Requisição Sacola</a>
+                    </li>
+
+                    <!-- Item "Lançar Sacola" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Lançar Sacola</a>
+                    </li>
+
+                    <!-- Item "Cadastrar Operador" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Cadastrar Operador</a>
+                    </li>
+
+                    <!-- Item "Dashboard" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+
+                    <!-- Item "Sobre" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sobre</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Exibir email do usuário logado -->
+            <span class="navbar-text">
+                Usuário: <span id="userEmail">carregando...</span>
+            </span>
+            
+            <!-- Botão "Sair" com estilo Bootstrap -->
+            <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
+        </div>
+    </nav>
+
+    <!-- ... (seu código existente) ... -->
+
+    <script>
+        // Função para exibir o email do usuário logado
+        function exibirEmailUsuario() {
+            const user = firebase.auth().currentUser;
+            if (user) {
+                const userEmail = user.email;
+                document.getElementById("userEmail").textContent = userEmail;
+            } else {
+                document.getElementById("userEmail").textContent = "Nenhum usuário logado";
+            }
+        }
+
+        // Função para fazer logout do usuário
+        function fazerLogout() {
+            firebase.auth().signOut().then(() => {
+                // Redirecionar para a página de login ou onde desejar
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("Erro ao fazer logout:", error);
+            });
+        }
+
+        // Chame a função para exibir o email do usuário quando a página carregar
+        $(document).ready(function () {
+            exibirEmailUsuario();
+        });
+
+        // Adicione um ouvinte de evento ao botão "Sair"
+        document.getElementById("btnSair").addEventListener("click", fazerLogout);
+    </script>
+
 
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
