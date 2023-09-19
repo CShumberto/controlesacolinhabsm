@@ -143,207 +143,283 @@
         </div>
     </div>
 
-    <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+   <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
     storageBucket: "controlemensal-sacolinhas.appspot.com",
     messagingSenderId: "925424065013",
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
-        };
+    };
 
-        // Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
+    // Inicialize o Firebase
+    firebase.initializeApp(firebaseConfig);
 
-        // Obtenha uma referência para a coleção onde deseja armazenar os dados
-        const db = firebase.firestore();
-        const dadosCollection = db.collection('controlemensal-sacolinhas');
+    // Obtenha uma referência para a coleção onde deseja armazenar os dados
+    const db = firebase.firestore();
+    const dadosCollection = db.collection('controlemensal-sacolinhas');
 
-        // Função para calcular campos dependentes
-        function calcularCamposDependentes() {
-            const easyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
-            const planetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
-            const vendaMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+    // Variável global para armazenar o ID do documento que está sendo editado
+    let documentoEditando = null;
 
-            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
-            const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
-            const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
-            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
-            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
+    // Função para preencher o modal de edição com os dados atuais
+    function preencherModalEdicao(data) {
+        document.getElementById('dia').value = data.dia;
+        document.getElementById('numeroLoja').value = data.numeroLoja;
+        document.getElementById('nomeOperador').value = data.nomeOperador;
+        document.getElementById('easyOpenBagG').value = data.easyOpenBagG;
+        document.getElementById('planetaAgradeceP').value = data.planetaAgradeceP;
+        document.getElementById('vendaMensal').value = data.vendaMensal;
+        document.getElementById('observacao').value = data.observacao;
+    }
 
-            $("#totalSacolinhas").val(totalSacolinhasUN);
-            $("#valorSacolinhaG").val(valorTotalSacolinhaG);
-            $("#valorSacolinhaP").val(valorTotalSacolinhaP);
-            $("#valorTotalSacolinha").val(valorTotalSacolinhaTOTAL);
-            $("#percentualFaturamento").val(percentualFaturamento);
-        }
+    // Função para calcular valores automaticamente
+    function calcularValores() {
+        // Obtenha os valores dos campos "easyOpenBagG" e "planetaAgradeceP"
+        const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
+        const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
 
-        // Função para limpar o formulário no modal
-        function limparFormulario() {
-            $("#registroId").val("");
-            $("#dia").val("");
-            $("#numeroLoja").val("");
-            $("#nomeOperador").val("");
-            $("#totalEasyOpenBagG").val("");
-            $("#totalPlanetaAgradeceP").val("");
-            $("#vendaTotalMensal").val("");
-            $("#observacao").val("");
-            calcularCamposDependentes();
-        }
+        // Realize os cálculos
+        const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+        const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+        const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+        const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+        const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
+        const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
 
-        // Função para adicionar um novo registro
-        function adicionarRegistro() {
-            const dia = $("#dia").val();
-            const numeroLoja = $("#numeroLoja").val();
-            const nomeOperador = $("#nomeOperador").val();
-            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
-            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
-            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
-            const observacao = $("#observacao").val();
+        // Preencha os campos calculados
+        document.getElementById('totalSacolinhasUN').value = totalSacolinhasUN;
+        document.getElementById('valorTotalSacolinhaG').value = valorTotalSacolinhaG;
+        document.getElementById('valorTotalSacolinhaP').value = valorTotalSacolinhaP;
+        document.getElementById('valorTotalSacolinhaTOTAL').value = valorTotalSacolinhaTOTAL;
+        document.getElementById('percentualFaturamento').value = percentualFaturamento;
+    }
 
-            if (dia && numeroLoja && nomeOperador) {
-                dadosCollection.add({
-                    Dia: dia,
-                    'Número da Loja': numeroLoja,
-                    'Nome do Operador': nomeOperador,
-                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
-                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
-                    'Venda total mensal (R$)': vendaTotalMensal,
-                    'Observação': observacao,
-                }).then(() => {
-                    alert("Registro adicionado com sucesso!");
-                    $("#modalRegistro").modal("hide");
-                    limparFormulario();
-                    carregarDados();
-                }).catch((error) => {
-                    console.error("Erro ao adicionar registro:", error);
-                });
+    // Função para buscar e exibir os dados na tabela
+    function mostrarDados() {
+        // Limpar os dados da tabela
+        const tbody = document.querySelector('tbody');
+        tbody.innerHTML = '';
+
+        // Buscar os dados do Firestore
+        dadosCollection.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${data.dia}</td>
+                    <td>${data.numeroLoja}</td>
+                    <td>${data.nomeOperador}</td>
+                    <td>${parseInt(data.easyOpenBagG)} UN</td>
+                    <td>${parseInt(data.planetaAgradeceP)} UN</td>
+                    <td>${parseInt(data.totalSacolinhasUN)} UN</td>
+                    <td>R$ ${parseFloat(data.valorTotalSacolinhaG).toFixed(2)}</td>
+                    <td>R$ ${parseFloat(data.valorTotalSacolinhaP).toFixed(2)}</td>
+                    <td>R$ ${parseFloat(data.valorTotalSacolinhaTOTAL).toFixed(2)}</td>
+                    <td>R$ ${parseFloat(data.vendaMensal).toFixed(2)}</td>
+                    <td>${parseFloat(data.percentualFaturamento).toFixed(2)}%</td>
+                    <td>${data.observacao}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" onclick="abrirModalEdicao('${doc.id}')">Editar</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deletarDados('${doc.id}')">Deletar</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        });
+    }
+
+    // Função para adicionar novos dados
+    function inserirDados() {
+        // Obtenha os valores dos campos do formulário
+        const dia = document.getElementById('dia').value;
+        const numeroLoja = document.getElementById('numeroLoja').value;
+        const nomeOperador = document.getElementById('nomeOperador').value;
+        const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
+        const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
+        const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
+        const observacao = document.getElementById('observacao').value;
+
+        // Realize os cálculos dos campos dependentes
+        const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+        const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+        const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+        const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+        const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
+
+        // Adicione os dados ao Firestore
+        dadosCollection.add({
+            dia,
+            numeroLoja,
+            nomeOperador,
+            easyOpenBagG,
+            planetaAgradeceP,
+            totalSacolinhasUN,
+            valorTotalSacolinhaG,
+            valorTotalSacolinhaP,
+            valorTotalSacolinhaTOTAL,
+            vendaMensal,
+            percentualFaturamento,
+            observacao,
+        }).then(() => {
+            // Limpe os campos do formulário após a adição
+            document.getElementById('dia').value = '';
+            document.getElementById('numeroLoja').value = '';
+            document.getElementById('nomeOperador').value = '';
+            document.getElementById('easyOpenBagG').value = '';
+            document.getElementById('planetaAgradeceP').value = '';
+            document.getElementById('totalSacolinhasUN').value = '';
+            document.getElementById('valorTotalSacolinhaG').value = '';
+            document.getElementById('valorTotalSacolinhaP').value = '';
+            document.getElementById('valorTotalSacolinhaTOTAL').value = '';
+            document.getElementById('vendaMensal').value = '';
+            document.getElementById('percentualFaturamento').value = '';
+            document.getElementById('observacao').value = '';
+
+            // Atualize a tabela com os novos dados
+            mostrarDados();
+        }).catch((error) => {
+            console.error('Erro ao adicionar documento: ', error);
+        });
+    }
+
+    // Função para abrir o modal de edição
+    function abrirModalEdicao(docId) {
+        documentoEditando = docId;
+        // Alterar o título do modal para "Editar Dados"
+        document.getElementById('adicionarDadosModalLabel').textContent = 'Editar Dados';
+
+        // Esconder o botão "Adicionar" e mostrar o botão "Salvar Alterações"
+        document.getElementById('adicionarBtn').style.display = 'none';
+        document.getElementById('salvarAlteracoesBtn').style.display = 'block';
+
+        // Buscar os dados do Firestore com base no ID do documento
+        dadosCollection.doc(docId).get().then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                preencherModalEdicao(data);
             } else {
-                alert("Preencha todos os campos obrigatórios.");
+                console.error('Documento não encontrado.');
             }
-        }
+        }).catch((error) => {
+            console.error('Erro ao obter documento:', error);
+        });
 
-        // Função para editar um registro existente
-        function editarRegistro(docId) {
-            const dia = $("#dia").val();
-            const numeroLoja = $("#numeroLoja").val();
-            const nomeOperador = $("#nomeOperador").val();
-            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
-            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
-            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
-            const observacao = $("#observacao").val();
+        // Abrir o modal
+        const modal = new bootstrap.Modal(document.getElementById('adicionarDadosModal'));
+        modal.show();
+    }
 
-            if (dia && numeroLoja && nomeOperador) {
-                dadosCollection.doc(docId).update({
-                    Dia: dia,
-                    'Número da Loja': numeroLoja,
-                    'Nome do Operador': nomeOperador,
-                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
-                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
-                    'Venda total mensal (R$)': vendaTotalMensal,
-                    'Observação': observacao,
-                }).then(() => {
-                    alert("Registro atualizado com sucesso!");
-                    $("#modalRegistro").modal("hide");
-                    limparFormulario();
-                    carregarDados();
-                }).catch((error) => {
-                    console.error("Erro ao atualizar registro:", error);
-                });
-            } else {
-                alert("Preencha todos os campos obrigatórios.");
-            }
-        }
+    // Função para editar dados
+    function editarDados() {
+        // Obtenha os valores dos campos do formulário
+        const dia = document.getElementById('dia').value;
+        const numeroLoja = document.getElementById('numeroLoja').value;
+        const nomeOperador = document.getElementById('nomeOperador').value;
+        const easyOpenBagG = parseInt(document.getElementById('easyOpenBagG').value) || 0;
+        const planetaAgradeceP = parseInt(document.getElementById('planetaAgradeceP').value) || 0;
+        const vendaMensal = parseFloat(document.getElementById('vendaMensal').value) || 0;
+        const observacao = document.getElementById('observacao').value;
 
-        // Função para excluir um registro
-        function excluirRegistro(docId) {
-            if (confirm("Tem certeza de que deseja excluir este registro?")) {
-                dadosCollection.doc(docId).delete().then(() => {
-                    alert("Registro excluído com sucesso!");
-                    limparFormulario();
-                    carregarDados();
-                }).catch((error) => {
-                    console.error("Erro ao excluir registro:", error);
-                });
-            }
-        }
+        // Realize os cálculos dos campos dependentes
+        const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+        const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+        const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+        const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+        const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
 
-        // Função para preencher o formulário no modal com os dados do registro a ser editado
-        function preencherFormularioEditar(docId) {
-            // Buscar os dados do Firestore com base no ID do documento
-            dadosCollection.doc(docId).get().then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data();
-                    $("#registroId").val(docId);
-                    $("#dia").val(data.Dia || '');
-                    $("#numeroLoja").val(data['Número da Loja'] || '');
-                    $("#nomeOperador").val(data['Nome do Operador'] || '');
-                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
-                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
-                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
-                    $("#observacao").val(data['Observação'] || '');
-                    calcularCamposDependentes();
-                    $("#modalRegistroLabel").text("Editar Registro");
-                    $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
-                    $("#modalRegistro").modal("show");
-                } else {
-                    console.error('Documento não encontrado.');
-                }
+        // Atualize os dados no Firestore
+        dadosCollection.doc(documentoEditando).update({
+            dia,
+            numeroLoja,
+            nomeOperador,
+            easyOpenBagG,
+            planetaAgradeceP,
+            totalSacolinhasUN,
+            valorTotalSacolinhaG,
+            valorTotalSacolinhaP,
+            valorTotalSacolinhaTOTAL,
+            vendaMensal,
+            percentualFaturamento,
+            observacao,
+        }).then(() => {
+            // Limpe os campos do formulário após a edição
+            document.getElementById('dia').value = '';
+            document.getElementById('numeroLoja').value = '';
+            document.getElementById('nomeOperador').value = '';
+            document.getElementById('easyOpenBagG').value = '';
+            document.getElementById('planetaAgradeceP').value = '';
+            document.getElementById('totalSacolinhasUN').value = '';
+            document.getElementById('valorTotalSacolinhaG').value = '';
+            document.getElementById('valorTotalSacolinhaP').value = '';
+            document.getElementById('valorTotalSacolinhaTOTAL').value = '';
+            document.getElementById('vendaMensal').value = '';
+            document.getElementById('percentualFaturamento').value = '';
+            document.getElementById('observacao').value = '';
+
+            // Exibir novamente o botão "Adicionar" e ocultar o botão "Salvar Alterações"
+            document.getElementById('adicionarBtn').style.display = 'block';
+            document.getElementById('salvarAlteracoesBtn').style.display = 'none';
+
+            // Limpar a variável de documento em edição
+            documentoEditando = null;
+
+            // Atualize a tabela com os dados editados
+            mostrarDados();
+        }).catch((error) => {
+            console.error('Erro ao editar documento: ', error);
+        });
+    }
+
+    // Função para deletar dados
+    function deletarDados(docId) {
+        // Confirmação de exclusão
+        if (confirm('Tem certeza de que deseja excluir este registro?')) {
+            // Excluir documento do Firestore com base no ID
+            dadosCollection.doc(docId).delete().then(() => {
+                // Atualize a tabela após a exclusão
+                mostrarDados();
             }).catch((error) => {
-                console.error('Erro ao obter documento:', error);
+                console.error('Erro ao excluir documento: ', error);
             });
         }
+    }
 
-        // Função para carregar dados do Firebase e preencher a tabela
-        function carregarDados() {
-            dadosCollection.get().then((querySnapshot) => {
-                const tabela = $('#tabela-dados').DataTable();
-                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const rowData = [
-                        data.Dia || '',
-                        data['Número da Loja'] || '',
-                        data['Nome do Operador'] || '',
-                        data['TOTAL Easy Open Bag G'] || '',
-                        data['TOTAL Planeta Agradece P'] || '',
-                        data['Venda total mensal (R$)'] || '',
-                        data['Total de Sacolinhas (UN)'] || '',
-                        data['Valor total sacolinha G (R$)'] || '',
-                        data['Valor total sacolinha P (R$)'] || '',
-                        data['Valor Total sacolinha (R$)'] || '',
-                        data['% Faturamento'] || '',
-                        data['Observação'] || '',
-                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
-                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
-                    ];
-                    tabela.row.add(rowData).draw();
-                });
-            }).catch((error) => {
-                console.error('Erro ao carregar dados:', error);
-            });
-        }
+    // Função para abrir o modal de adição
+    function abrirModalAdicao() {
+        // Alterar o título do modal para "Adicionar Dados"
+        document.getElementById('adicionarDadosModalLabel').textContent = 'Adicionar Dados';
 
-        // Chame a função para carregar dados quando a página carregar
-        $(document).ready(function () {
-            carregarDados();
-        });
+        // Exibir o botão "Adicionar" e ocultar o botão "Salvar Alterações"
+        document.getElementById('adicionarBtn').style.display = 'block';
+        document.getElementById('salvarAlteracoesBtn').style.display = 'none';
 
-        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
-        $("#adicionarRegistro").click(function () {
-            limparFormulario();
-            $("#modalRegistroLabel").text("Adicionar Registro");
-            $("#salvarRegistro").off("click").click(adicionarRegistro);
-            $("#modalRegistro").modal("show");
-        });
+        // Limpar os campos do formulário
+        document.getElementById('dia').value = '';
+        document.getElementById('numeroLoja').value = '';
+        document.getElementById('nomeOperador').value = '';
+        document.getElementById('easyOpenBagG').value = '';
+        document.getElementById('planetaAgradeceP').value = '';
+        document.getElementById('totalSacolinhasUN').value = '';
+        document.getElementById('valorTotalSacolinhaG').value = '';
+        document.getElementById('valorTotalSacolinhaP').value = '';
+        document.getElementById('valorTotalSacolinhaTOTAL').value = '';
+        document.getElementById('vendaMensal').value = '';
+        document.getElementById('percentualFaturamento').value = '';
+        document.getElementById('observacao').value = '';
 
-        // Ao fechar o modal, limpar o formulário
-        $("#modalRegistro").on("hidden.bs.modal", function () {
-            limparFormulario();
-        });
+        // Limpar a variável de documento em edição
+        documentoEditando = null;
+    }
+
+    // Chamar a função para mostrar os dados quando a página carregar
+    mostrarDados();
+
 
         // Calcular campos dependentes ao alterar os valores
         $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").on("input", calcularCamposDependentes);
