@@ -226,8 +226,24 @@ function filtrarTabela() {
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-        // Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
+       // Inicialize o Firebase
+const db = firebase.firestore();
+const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+// Inicialize o Firebase Authentication
+const auth = firebase.auth();
+
+// Adicione um observador para verificar se o usuário está logado
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        // O usuário está logado, exiba o campo "Filtrar por Loja"
+        document.getElementById('filtroLoja').style.display = 'block';
+    } else {
+        // O usuário não está logado, oculte o campo "Filtrar por Loja"
+        document.getElementById('filtroLoja').style.display = 'none';
+    }
+});
+
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
