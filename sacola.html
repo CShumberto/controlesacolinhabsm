@@ -34,12 +34,8 @@
         .dataTables_wrapper {
             padding: 0; /* Remova o preenchimento */
             margin: 0; /* Remova as margens */
-        }
-        
-        /* Estilos personalizados para a tabela */
-        .table {
-            font-size: 12px; /* Reduza o tamanho da fonte */
-        }
+          
+        }   
     </style>
 </head>
 <body>
@@ -146,7 +142,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-             apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -277,106 +273,76 @@
             dadosCollection.doc(docId).get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    $("#registroId").val(doc.id);
-                    $("#dia").val(data.Dia);
-                    $("#numeroLoja").val(data['Número da Loja']);
-                    $("#nomeOperador").val(data['Nome do Operador']);
-                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G']);
-                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P']);
-                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)']);
-                    $("#observacao").val(data.Observação);
+                    $("#registroId").val(docId);
+                    $("#dia").val(data.Dia || '');
+                    $("#numeroLoja").val(data['Número da Loja'] || '');
+                    $("#nomeOperador").val(data['Nome do Operador'] || '');
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
+                    $("#observacao").val(data['Observação'] || '');
                     calcularCamposDependentes();
+                    $("#modalRegistroLabel").text("Editar Registro");
+                    $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
+                    $("#modalRegistro").modal("show");
                 } else {
-                    console.error("Registro não encontrado.");
+                    console.error('Documento não encontrado.');
                 }
             }).catch((error) => {
-                console.error("Erro ao buscar registro:", error);
+                console.error('Erro ao obter documento:', error);
             });
         }
 
-        // Função para carregar os dados na tabela
+        // Função para carregar dados do Firebase e preencher a tabela
         function carregarDados() {
-            // Limpar a tabela antes de carregar novos dados
-            $('#tabela-dados').DataTable().clear().destroy();
-
-            // Obter os registros do Firestore
-            dadosCollection.orderBy("Dia", "asc").get().then((querySnapshot) => {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const docId = doc.id;
-
-                    // Adicionar uma linha à tabela para cada registro
-                    $('#tabela-dados tbody').append(
-                        `<tr>
-                            <td>${data.Dia}</td>
-                            <td>${data['Número da Loja']}</td>
-                            <td>${data['Nome do Operador']}</td>
-                            <td>${data['TOTAL Easy Open Bag G']}</td>
-                            <td>${data['TOTAL Planeta Agradece P']}</td>
-                            <td>${data['Venda total mensal (R$)']}</td>
-                            <td>${data['Total de Sacolinhas (UN)']}</td>
-                            <td>${data['Valor total sacolinha G (R$)']}</td>
-                            <td>${data['Valor total sacolinha P (R$)']}</td>
-                            <td>${data['Valor Total sacolinha (R$)']}</td>
-                            <td>${data['% Faturamento']}</td>
-                            <td>${data.Observação}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm editar" data-id="${docId}"><i class="fas fa-edit"></i> Editar</button>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger btn-sm excluir" data-id="${docId}"><i class="fas fa-trash"></i> Excluir</button>
-                            </td>
-                        </tr>`
-                    );
-                });
-
-                // Recriar a tabela com os novos dados
-                $('#tabela-dados').DataTable({
-                    "language": {
-                        "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json"
-                    }
-                });
-
-                // Lidar com o evento de clique no botão "Editar"
-                $('.editar').click(function () {
-                    const docId = $(this).data('id');
-                    preencherFormularioEditar(docId);
-                    $('#modalRegistro').modal('show');
-                });
-
-                // Lidar com o evento de clique no botão "Excluir"
-                $('.excluir').click(function () {
-                    const docId = $(this).data('id');
-                    excluirRegistro(docId);
+                    const rowData = [
+                        data.Dia || '',
+                        data['Número da Loja'] || '',
+                        data['Nome do Operador'] || '',
+                        data['TOTAL Easy Open Bag G'] || '',
+                        data['TOTAL Planeta Agradece P'] || '',
+                        data['Venda total mensal (R$)'] || '',
+                        data['Total de Sacolinhas (UN)'] || '',
+                        data['Valor total sacolinha G (R$)'] || '',
+                        data['Valor total sacolinha P (R$)'] || '',
+                        data['Valor Total sacolinha (R$)'] || '',
+                        data['% Faturamento'] || '',
+                        data['Observação'] || '',
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
+                    ];
+                    tabela.row.add(rowData).draw();
                 });
             }).catch((error) => {
-                console.error("Erro ao carregar dados:", error);
+                console.error('Erro ao carregar dados:', error);
             });
         }
 
-        // Quando o documento estiver pronto, carregue os dados e configure os manipuladores de eventos
+        // Chame a função para carregar dados quando a página carregar
         $(document).ready(function () {
             carregarDados();
-
-            // Lidar com o evento de clique no botão "Adicionar Registro"
-            $('#adicionarRegistro').click(function () {
-                limparFormulario();
-                $('#modalRegistro').modal('show');
-            });
-
-            // Lidar com o evento de clique no botão "Salvar"
-            $('#salvarRegistro').click(function () {
-                const registroId = $("#registroId").val();
-                if (registroId) {
-                    editarRegistro(registroId);
-                } else {
-                    adicionarRegistro();
-                }
-            });
-
-            // Calcular campos dependentes quando os campos relacionados forem alterados
-            $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(calcularCamposDependentes);
         });
+
+        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
+        $("#adicionarRegistro").click(function () {
+            limparFormulario();
+            $("#modalRegistroLabel").text("Adicionar Registro");
+            $("#salvarRegistro").off("click").click(adicionarRegistro);
+            $("#modalRegistro").modal("show");
+        });
+
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
+        });
+
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").on("input", calcularCamposDependentes);
     </script>
 </body>
 </html>
