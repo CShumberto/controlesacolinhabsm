@@ -34,8 +34,24 @@
         .dataTables_wrapper {
             padding: 0; /* Remova o preenchimento */
             margin: 0; /* Remova as margens */
-          
-        }   
+        }
+
+        /* Define a largura das colunas para ajustar automaticamente ao conteúdo */
+        #tabela-dados {
+            width: 100%;
+        }
+
+        /* Remove a borda da tabela e células */
+        #tabela-dados, #tabela-dados th, #tabela-dados td {
+            border: none;
+        }
+
+        /* Define a largura automática das colunas */
+        #tabela-dados th, #tabela-dados td {
+            white-space: nowrap; /* Evita a quebra de texto */
+            overflow: hidden; /* Oculta o overflow */
+            text-overflow: ellipsis; /* Adiciona reticências para texto longo */
+        }
     </style>
 </head>
 <body>
