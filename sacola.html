@@ -226,25 +226,43 @@ function filtrarTabela() {
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-         // Inicialize o Firebase
-    firebase.initializeApp(firebaseConfig);
+// Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
 
-    // Função para verificar o usuário atual
-    function verificarUsuario() {
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // O usuário está logado
-                if (user.email === "humberto@barbosasm.com.br") {
-                    // Se o usuário for humberto@barbosasm.com.br, defina o filtro para 1001
-                    document.getElementById("filtroLoja").value = "1001";
+        // Função para verificar o usuário atual
+        function verificarUsuario() {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    // O usuário está logado
+                    const emailUsuarioLogado = user.email;
+                    let filtroLoja = ""; // Inicialize o filtro da loja como vazio
+
+                    // Verifique o email do usuário e defina o filtro da loja correspondente
+                    switch (emailUsuarioLogado) {
+                        case "fcaixa02barbosasm.com.br":
+                            filtroLoja = "1002";
+                            break;
+                        case "fcaixa03barbosasm.com.br":
+                            filtroLoja = "1003";
+                            break;
+                        case "fcaixa04barbosasm.com.br":
+                            filtroLoja = "1004";
+                            break;
+                        default:
+                            // Ocultar o campo de filtro para outros usuários
+                            document.getElementById("filtroLoja").style.display = "none";
+                            break;
+                    }
+
+                    // Defina o valor do filtro da loja no campo de seleção
+                    document.getElementById("filtroLoja").value = filtroLoja;
                     filtrarTabela();
+                } else {
+                    // O usuário não está logado, redirecione-o para a página de login
+                    window.location.href = "pagina_de_login.html";
                 }
-            } else {
-                // O usuário não está logado, redirecione-o para a página de login
-                window.location.href = "pagina_de_login.html";
-            }
-        });
-    }
+            });
+        }
 
     // Chame a função para verificar o usuário quando a página carregar
     $(document).ready(function () {
@@ -467,6 +485,11 @@ function filtrarTabela() {
         // Calcular campos dependentes ao alterar os valores
         $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
             calcularCamposDependentes();
+        });
+	      // Chame a função para verificar o usuário quando a página carregar
+        $(document).ready(function () {
+            verificarUsuario();
+            carregarDados(); // Carregue os dados da tabela, se necessário
         });
     </script>
 </body>
