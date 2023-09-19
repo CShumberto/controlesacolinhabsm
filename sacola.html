@@ -226,24 +226,31 @@ function filtrarTabela() {
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-       // Inicialize o Firebase
-const db = firebase.firestore();
-const dadosCollection = db.collection('controlemensal-sacolinhas');
+         // Inicialize o Firebase
+    firebase.initializeApp(firebaseConfig);
 
-// Inicialize o Firebase Authentication
-const auth = firebase.auth();
-
-// Adicione um observador para verificar se o usuário está logado
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        // O usuário está logado, exiba o campo "Filtrar por Loja"
-        document.getElementById('filtroLoja').style.display = 'block';
-    } else {
-        // O usuário não está logado, oculte o campo "Filtrar por Loja"
-        document.getElementById('filtroLoja').style.display = 'none';
+    // Função para verificar o usuário atual
+    function verificarUsuario() {
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // O usuário está logado
+                if (user.email === "humberto@barbosasm.com.br") {
+                    // Se o usuário for humberto@barbosasm.com.br, defina o filtro para 1001
+                    document.getElementById("filtroLoja").value = "1001";
+                    filtrarTabela();
+                }
+            } else {
+                // O usuário não está logado, redirecione-o para a página de login
+                window.location.href = "pagina_de_login.html";
+            }
+        });
     }
-});
 
+    // Chame a função para verificar o usuário quando a página carregar
+    $(document).ready(function () {
+        verificarUsuario();
+        carregarDados(); // Carregue os dados da tabela, se necessário
+    });
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
