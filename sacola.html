@@ -229,7 +229,10 @@ function filtrarTabela() {
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Função para verificar o usuário atual
+        // Inicializar o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Função para verificar o usuário atual e definir a loja correspondente
         function verificarUsuario() {
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
@@ -255,11 +258,21 @@ function filtrarTabela() {
                     }
 
                     // Defina o valor do filtro da loja no campo de seleção
-                    document.getElementById("filtroLoja").value = filtroLoja;
+                    const selectFiltroLoja = document.getElementById("filtroLoja");
+                    selectFiltroLoja.value = filtroLoja;
+
+                    // Desabilite as outras opções no menu suspenso
+                    for (let i = 0; i < selectFiltroLoja.options.length; i++) {
+                        const option = selectFiltroLoja.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
+
                     filtrarTabela();
                 } else {
                     // O usuário não está logado, redirecione-o para a página de login
-                    window.location.href = "pagina_de_login.html";
+                    window.location.href = "index.html";
                 }
             });
         }
