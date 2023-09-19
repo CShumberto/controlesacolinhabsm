@@ -34,8 +34,7 @@
         .dataTables_wrapper {
             padding: 0; /* Remova o preenchimento */
             margin: 0; /* Remova as margens */
-          
-        }   
+        }
     </style>
 </head>
 <body>
@@ -62,6 +61,8 @@
                 <th>Observação</th>
                 <th>Editar</th>
                 <th>Excluir</th>
+                <!-- Adicione os novos campos aqui -->
+                <th>Campo Exemplo</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -129,6 +130,11 @@
                             <label for="observacao">Observação:</label>
                             <textarea class="form-control" id="observacao" rows="3"></textarea>
                         </div>
+                        <!-- Adicione os novos campos aqui -->
+                        <div class="form-group">
+                            <label for="campoExemplo">Campo Exemplo:</label>
+                            <input type="text" class="form-control" id="campoExemplo">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -142,7 +148,7 @@
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+               apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -187,6 +193,7 @@
             $("#totalPlanetaAgradeceP").val("");
             $("#vendaTotalMensal").val("");
             $("#observacao").val("");
+            $("#campoExemplo").val(""); // Limpa o campo exemplo
             calcularCamposDependentes();
         }
 
@@ -199,6 +206,7 @@
             const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
             const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
             const observacao = $("#observacao").val();
+            const campoExemplo = $("#campoExemplo").val(); // Obtém o valor do campo exemplo
 
             if (dia && numeroLoja && nomeOperador) {
                 dadosCollection.add({
@@ -209,16 +217,15 @@
                     'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
                     'Venda total mensal (R$)': vendaTotalMensal,
                     'Observação': observacao,
+                    'Campo Exemplo': campoExemplo // Salva o valor do campo exemplo no Firebase
                 }).then(() => {
-                    alert("Registro adicionado com sucesso!");
                     $("#modalRegistro").modal("hide");
-                    limparFormulario();
                     carregarDados();
                 }).catch((error) => {
-                    console.error("Erro ao adicionar registro:", error);
+                    console.error("Erro ao adicionar registro: ", error);
                 });
             } else {
-                alert("Preencha todos os campos obrigatórios.");
+                alert("Por favor, preencha os campos obrigatórios.");
             }
         }
 
@@ -231,6 +238,7 @@
             const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
             const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
             const observacao = $("#observacao").val();
+            const campoExemplo = $("#campoExemplo").val(); // Obtém o valor do campo exemplo
 
             if (dia && numeroLoja && nomeOperador) {
                 dadosCollection.doc(docId).update({
@@ -241,16 +249,15 @@
                     'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
                     'Venda total mensal (R$)': vendaTotalMensal,
                     'Observação': observacao,
+                    'Campo Exemplo': campoExemplo // Atualiza o valor do campo exemplo no Firebase
                 }).then(() => {
-                    alert("Registro atualizado com sucesso!");
                     $("#modalRegistro").modal("hide");
-                    limparFormulario();
                     carregarDados();
                 }).catch((error) => {
-                    console.error("Erro ao atualizar registro:", error);
+                    console.error("Erro ao editar registro: ", error);
                 });
             } else {
-                alert("Preencha todos os campos obrigatórios.");
+                alert("Por favor, preencha os campos obrigatórios.");
             }
         }
 
@@ -258,68 +265,67 @@
         function excluirRegistro(docId) {
             if (confirm("Tem certeza de que deseja excluir este registro?")) {
                 dadosCollection.doc(docId).delete().then(() => {
-                    alert("Registro excluído com sucesso!");
-                    limparFormulario();
                     carregarDados();
                 }).catch((error) => {
-                    console.error("Erro ao excluir registro:", error);
+                    console.error("Erro ao excluir registro: ", error);
                 });
             }
         }
 
         // Função para preencher o formulário no modal com os dados do registro a ser editado
         function preencherFormularioEditar(docId) {
-            // Buscar os dados do Firestore com base no ID do documento
             dadosCollection.doc(docId).get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
                     $("#registroId").val(docId);
-                    $("#dia").val(data.Dia || '');
-                    $("#numeroLoja").val(data['Número da Loja'] || '');
-                    $("#nomeOperador").val(data['Nome do Operador'] || '');
-                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
-                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
-                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
-                    $("#observacao").val(data['Observação'] || '');
+                    $("#dia").val(data.Dia);
+                    $("#numeroLoja").val(data['Número da Loja']);
+                    $("#nomeOperador").val(data['Nome do Operador']);
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G']);
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P']);
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)']);
+                    $("#observacao").val(data['Observação']);
+                    $("#campoExemplo").val(data['Campo Exemplo']); // Preenche o campo exemplo
                     calcularCamposDependentes();
                     $("#modalRegistroLabel").text("Editar Registro");
                     $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
                     $("#modalRegistro").modal("show");
                 } else {
-                    console.error('Documento não encontrado.');
+                    console.error("Registro não encontrado.");
                 }
             }).catch((error) => {
-                console.error('Erro ao obter documento:', error);
+                console.error("Erro ao obter registro: ", error);
             });
         }
 
         // Função para carregar dados do Firebase e preencher a tabela
         function carregarDados() {
             dadosCollection.get().then((querySnapshot) => {
-                const tabela = $('#tabela-dados').DataTable();
-                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                const tabela = $("#tabela-dados").DataTable();
+                tabela.clear().draw();
+
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const rowData = [
-                        data.Dia || '',
-                        data['Número da Loja'] || '',
-                        data['Nome do Operador'] || '',
-                        data['TOTAL Easy Open Bag G'] || '',
-                        data['TOTAL Planeta Agradece P'] || '',
-                        data['Venda total mensal (R$)'] || '',
-                        data['Total de Sacolinhas (UN)'] || '',
-                        data['Valor total sacolinha G (R$)'] || '',
-                        data['Valor total sacolinha P (R$)'] || '',
-                        data['Valor Total sacolinha (R$)'] || '',
-                        data['% Faturamento'] || '',
-                        data['Observação'] || '',
-                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
-                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
-                    ];
-                    tabela.row.add(rowData).draw();
+                    tabela.row.add([
+                        data.Dia,
+                        data['Número da Loja'],
+                        data['Nome do Operador'],
+                        data['TOTAL Easy Open Bag G'],
+                        data['TOTAL Planeta Agradece P'],
+                        data['Venda total mensal (R$)'],
+                        data['Total de Sacolinhas (UN)'],
+                        data['Valor total sacolinha G (R$)'],
+                        data['Valor total sacolinha P (R$)'],
+                        data['Valor Total sacolinha (R$)'],
+                        data['% Faturamento'],
+                        data['Observação'],
+                        `<button class="btn btn-sm btn-warning" onclick="preencherFormularioEditar('${doc.id}')"><i class="fas fa-edit"></i> Editar</button>`,
+                        `<button class="btn btn-sm btn-danger" onclick="excluirRegistro('${doc.id}')"><i class="fas fa-trash"></i> Excluir</button>`,
+                        data['Campo Exemplo'] // Exibe o campo exemplo
+                    ]).draw();
                 });
             }).catch((error) => {
-                console.error('Erro ao carregar dados:', error);
+                console.error("Erro ao carregar dados: ", error);
             });
         }
 
