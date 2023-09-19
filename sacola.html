@@ -34,11 +34,8 @@
         .dataTables_wrapper {
             padding: 0; /* Remova o preenchimento */
             margin: 0; /* Remova as margens */
-        }
-        /* Estilos personalizados para a tabela */
-        .table {
-            font-size: 10px; /* Reduza o tamanho da fonte */
-        }
+          
+        }   
     </style>
 </head>
 <body>
@@ -316,8 +313,8 @@
                         data['Valor Total sacolinha (R$)'] || '',
                         data['% Faturamento'] || '',
                         data['Observação'] || '',
-                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-link"><i class="fas fa-edit"></i></button>`,
-                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-link"><i class="fas fa-trash-alt"></i></button>`,
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
                     ];
                     tabela.row.add(rowData).draw();
                 });
