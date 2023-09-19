@@ -51,58 +51,64 @@
     <!-- ... (seu código existente) ... -->
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <!-- Título do Navbar -->
-            <a class="navbar-brand" href="#">CRUD Firebase Firestore</a>
+ <!-- Navbar com fundo azul (azul) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-info">
+    <div class="container">
+        <!-- Título do Navbar -->
+        <a class="navbar-brand" href="#">CRUD Firebase Firestore</a>
 
-            <!-- Botão de alternância para dispositivos móveis -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- Botão de alternância para dispositivos móveis -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <!-- Itens do Navbar -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <!-- Item "Requisição Sacola" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Requisição Sacola</a>
-                    </li>
+        <!-- Itens do Navbar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Item "Requisição Sacola" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Requisição Sacola</a>
+                </li>
 
-                    <!-- Item "Lançar Sacola" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Lançar Sacola</a>
-                    </li>
+                <!-- Item "Lançar Sacola" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lançar Sacola</a>
+                </li>
 
-                    <!-- Item "Cadastrar Operador" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastrar Operador</a>
-                    </li>
+                <!-- Item "Cadastrar Operador" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Cadastrar Operador</a>
+                </li>
 
-                    <!-- Item "Dashboard" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Dashboard</a>
-                    </li>
+                <!-- Item "Dashboard" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
 
-                    <!-- Item "Sobre" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sobre</a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Exibir email do usuário logado -->
-            <span class="navbar-text">
-                Usuário: <span id="userEmail">carregando...</span>
-            </span>
-            
-            <!-- Botão "Sair" com estilo Bootstrap -->
-            <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
+                <!-- Item "Sobre" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sobre</a>
+                </li>
+            </ul>
         </div>
-    </nav>
 
-    <!-- ... (seu código existente) ... -->
+        <!-- Exibir email do usuário logado -->
+        <span class="navbar-text">
+            Usuário: <span id="userEmail">carregando...</span>
+        </span>
+        
+        <!-- Botão "Sair" com estilo Bootstrap -->
+        <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
+    </div>
+</nav>
+
+<!-- JavaScript para redirecionar para index.html ao clicar em "Sair" -->
+<script>
+document.getElementById("btnSair").addEventListener("click", function() {
+    // Redirecionar para index.html
+    window.location.href = "index.html";
+});
+</script>
 
     <script>
         // Função para exibir o email do usuário logado
