@@ -112,24 +112,21 @@ document.getElementById("btnSair").addEventListener("click", function() {
 
    <!-- No seu arquivo sacola.html -->
 <script>
-  // Função para verificar o usuário atual e definir o email na navbar
-  function verificarUsuario() {
-    const emailUsuarioLogado = localStorage.getItem('userEmail');
-
-    if (emailUsuarioLogado) {
-      // O usuário está logado, exiba o email na navbar
-      document.getElementById('userEmail').textContent = emailUsuarioLogado;
-    } else {
-      // O usuário não está logado, redirecione-o para a página de login (index.html)
-      window.location.href = 'index.html';
+ // Função para exibir o email do usuário
+function exibirEmailUsuario() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+        const email = user.email;
+        document.getElementById('userEmail').textContent = email;
     }
-  }
+}
 
-  // Chame a função para verificar o usuário quando a página carregar
-  $(document).ready(function () {
-    verificarUsuario();
+// Chame a função para exibir o email do usuário quando a página carregar
+$(document).ready(function () {
+    exibirEmailUsuario();
     carregarDados(); // Carregue os dados da tabela, se necessário
-  });
+});
+
 
 
         // Função para fazer logout do usuário
