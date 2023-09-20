@@ -21,5 +21,34 @@
       </div>
     </div>
   </div>
+  <script>// Importar a biblioteca do Firebase
+const firebase = require("firebase/app");
+const auth = firebase.auth();
+
+// Criar uma instância do Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+});
+
+// Obter os dados do usuário do formulário
+const email = document.querySelector("input[name='email']").value;
+const senha = document.querySelector("input[name='senha']").value;
+
+// Fazer a autenticação do usuário
+auth.signInWithEmailAndPassword(email, senha).then(async (usuario) => {
+  // Se a autenticação for bem-sucedida, redirecionar para a página da sacola
+  if (usuario) {
+    window.location.href = "sacola.html";
+  } else {
+    // Se a autenticação não for bem-sucedida, exibir uma mensagem de erro
+    alert("Usuário ou senha inválidos");
+  }
+});</script>
 </body>
 </html>
