@@ -166,6 +166,7 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
    
 </div>
 <script>
+// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
 function filtrarTabela() {
     const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
     const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
@@ -184,7 +185,7 @@ function filtrarTabela() {
             const loja = colunaLoja.textContent.toLowerCase();
 
             // Verificar se a linha atende aos critérios de filtro
-            if (operador.includes(filtroOperador) && loja === filtroLoja) {
+            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
                 linha.style.display = '';
             } else {
                 linha.style.display = 'none';
@@ -308,7 +309,7 @@ function filtrarTabela() {
         firebase.initializeApp(firebaseConfig);
 
         // Função para verificar o usuário atual e definir a loja correspondente
-     function verificarUsuario() {
+      function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // O usuário está logado
@@ -326,9 +327,18 @@ function filtrarTabela() {
                 case "fcaixa04@barbosasm.com.br":
                     filtroLoja = "1004";
                     break;
-                // Adicione casos para outros usuários e lojas, se necessário
                 default:
-                    filtroLoja = "1002"; // Defina uma loja padrão para outros usuários
+                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
+                    const filtroLojaElement = document.getElementById("filtroLoja");
+                    filtroLojaElement.style.display = "block";
+
+                    // Ocultar as outras opções no menu suspenso
+                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
+                        const option = filtroLojaElement.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
                     break;
             }
 
@@ -343,7 +353,6 @@ function filtrarTabela() {
         }
     });
 }
-
 
     // Chame a função para verificar o usuário quando a página carregar
     $(document).ready(function () {
@@ -575,3 +584,5 @@ function filtrarTabela() {
     </script>
 </body>
 </html>
+
+ava
