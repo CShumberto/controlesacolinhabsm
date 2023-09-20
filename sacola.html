@@ -7,6 +7,14 @@
     <!-- CSS do DataTables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 <!-- Firebase Authentication -->
+	<!-- Inclua a definição da função initFirebase() antes de qualquer script que a chame -->
+<script>
+function initFirebase() {
+    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
+    firebase.initializeApp(firebaseConfig);
+    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
+}
+</script>
 <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js" onload="initFirebase()"></script>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
