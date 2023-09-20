@@ -99,10 +99,10 @@ function initFirebase() {
             </ul>
         </div>
 
-        <!-- Exibir email do usuário logado -->
-        <span class="navbar-text">
-            Usuário: <span id="userEmailDisplay">carregando...</span>
-        </span>
+     <span class="navbar-text">
+    Usuário: <span id="userEmailDisplay">carregando...</span>
+</span>
+
         
         <!-- Botão "Sair" com estilo Bootstrap -->
         <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
@@ -316,45 +316,15 @@ function filtrarTabela() {
         // Inicializar o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Função para verificar o usuário atual e definir a loja correspondente
-      function verificarUsuario() {
+       // Função para verificar o usuário atual e exibir o email na navbar
+function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // O usuário está logado
             const emailUsuarioLogado = user.email;
-            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-            // Verifique o email do usuário e defina o filtro da loja correspondente
-            switch (emailUsuarioLogado) {
-                case "humberto@barbosasm.com.br":
-                    filtroLoja = "1001";
-                    break;
-                case "fcaixa03@barbosasm.com.br":
-                    filtroLoja = "1003";
-                    break;
-                case "fcaixa04@barbosasm.com.br":
-                    filtroLoja = "1004";
-                    break;
-                default:
-                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
-                    const filtroLojaElement = document.getElementById("filtroLoja");
-                    filtroLojaElement.style.display = "block";
-
-                    // Ocultar as outras opções no menu suspenso
-                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
-                        const option = filtroLojaElement.options[i];
-                        if (option.value !== filtroLoja) {
-                            option.disabled = true;
-                        }
-                    }
-                    break;
-            }
-
-            // Defina o valor do filtro da loja no campo de seleção
-            const selectFiltroLoja = document.getElementById("filtroLoja");
-            selectFiltroLoja.value = filtroLoja;
-
-            filtrarTabela();
+            // Exiba o email do usuário na navbar
+            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
@@ -362,11 +332,6 @@ function filtrarTabela() {
     });
 }
 
-    // Chame a função para verificar o usuário quando a página carregar
-    $(document).ready(function () {
-        verificarUsuario();
-        carregarDados(); // Carregue os dados da tabela, se necessário
-    });
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
