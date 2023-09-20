@@ -308,35 +308,57 @@ function filtrarTabela() {
         // Inicializar o Firebase
         firebase.initializeApp(firebaseConfig);
 
-     // Exibir email do usuário logado
-const userEmailDisplay = document.getElementById("userEmailDisplay");
+        // Função para verificar o usuário atual e definir a loja correspondente
+      function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
+            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-function exibirEmailUsuarioLogado() {
-    const user = firebase.auth().currentUser;
-    if (user) {
-        userEmailDisplay.textContent = "Usuário: " + user.email;
-    } else {
-        // Caso o usuário não esteja logado, você pode definir um texto alternativo ou redirecionar para a página de login
-        userEmailDisplay.textContent = "Usuário não logado";
-    }
+            // Verifique o email do usuário e defina o filtro da loja correspondente
+            switch (emailUsuarioLogado) {
+                case "humberto@barbosasm.com.br":
+                    filtroLoja = "1001";
+                    break;
+                case "fcaixa03@barbosasm.com.br":
+                    filtroLoja = "1003";
+                    break;
+                case "fcaixa04@barbosasm.com.br":
+                    filtroLoja = "1004";
+                    break;
+                default:
+                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
+                    const filtroLojaElement = document.getElementById("filtroLoja");
+                    filtroLojaElement.style.display = "block";
+
+                    // Ocultar as outras opções no menu suspenso
+                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
+                        const option = filtroLojaElement.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
+                    break;
+            }
+
+            // Defina o valor do filtro da loja no campo de seleção
+            const selectFiltroLoja = document.getElementById("filtroLoja");
+            selectFiltroLoja.value = filtroLoja;
+
+            filtrarTabela();
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
+        }
+    });
 }
 
-// Chame a função para exibir o email do usuário quando a página carregar e sempre que o estado de autenticação mudar
-$(document).ready(function () {
-    exibirEmailUsuarioLogado();
-    verificarUsuario();
-    carregarDados(); // Carregue os dados da tabela, se necessário
-});
-
-// Esta função será chamada sempre que o estado de autenticação mudar
-firebase.auth().onAuthStateChanged(function (user) {
-    exibirEmailUsuarioLogado();
-    if (user) {
-        // O usuário está logado, você pode fazer outras ações relacionadas à autenticação aqui, se necessário
-    } else {
-        // O usuário não está logado, você pode fazer outras ações relacionadas à autenticação aqui, se necessário
-    }
-});
+    // Chame a função para verificar o usuário quando a página carregar
+    $(document).ready(function () {
+        verificarUsuario();
+        carregarDados(); // Carregue os dados da tabela, se necessário
+    });
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
@@ -563,4 +585,3 @@ firebase.auth().onAuthStateChanged(function (user) {
 </body>
 </html>
 
-ava
