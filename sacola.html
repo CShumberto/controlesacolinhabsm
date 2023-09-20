@@ -119,87 +119,93 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
 
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
-  <h1>Menu dropdown com base no email logado</h1>
-<div id="menu-container">
-    <select id="menu-dropdown" class="form-select" onchange="filtrarTabela()"></select>
+
+<div class="form-group">
+    <label for="filtroLoja">Número da Loja:</label>
+    <select class="form-control" id="filtroLoja">
+        <option value="1001">Loja 1001</option>
+        <option value="1003">Loja 1003</option>
+        <option value="1004">Loja 1004</option>
+    </select>
 </div>
+// ...
 
-<div class="col-md-4">
-        <label for="filtroOperador">Filtrar por Operador:</label>
-        <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
-    </div>
-   
-</div>
-<script>
-// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
-function filtrarTabela() {
-    const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
-    const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
-
-    const tbody = document.querySelector('tbody');
-    const linhas = tbody.getElementsByTagName('tr');
-
-    // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
-    for (let i = 0; i < linhas.length; i++) {
-        const linha = linhas[i];
-        const colunaOperador = linha.getElementsByTagName('td')[2];
-        const colunaLoja = linha.getElementsByTagName('td')[1];
-
-        if (colunaOperador && colunaLoja) {
-            const operador = colunaOperador.textContent.toLowerCase();
-            const loja = colunaLoja.textContent.toLowerCase();
-
-            // Verificar se a linha atende aos critérios de filtro
-            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
-                linha.style.display = '';
-            } else {
-                linha.style.display = 'none';
-            }
-        }
-    }
-}
-<script>
-// Obtenha uma referência para o elemento de menu dropdown
-const menuDropdown = document.getElementById("menu-dropdown");
-
-// Função para atualizar o menu dropdown com base no email logado
-function atualizarMenuDropdown(email) {
-    const options = [];
-
-    if (email === "humberto@barbosasm.com.br") {
-        options.push({ value: "1001", text: "Opção 1" });
-    } else if (email === "fcaixa02@barbosasm.com.br") {
-        options.push({ value: "1002", text: "Opção 2" });
-    }
-
-    // Limpe as opções existentes e adicione as novas opções
-    menuDropdown.innerHTML = "";
-    options.forEach((option) => {
-        const optionElement = document.createElement("option");
-        optionElement.value = option.value;
-        optionElement.textContent = option.text;
-        menuDropdown.appendChild(optionElement);
-    });
-}
-
-// Função para verificar o usuário atual e atualizar o menu dropdown
+// Função para verificar o usuário atual e definir a loja correspondente
 function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // O usuário está logado
             const emailUsuarioLogado = user.email;
+            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-            // Atualize o menu dropdown com base no email logado
-            atualizarMenuDropdown(emailUsuarioLogado);
+            // Verifique o email do usuário e defina o filtro da loja correspondente
+            switch (emailUsuarioLogado) {
+                case "humberto@barbosasm.com.br":
+                    filtroLoja = "1001";
+                    break;
+                case "fcaixa03@barbosasm.com.br":
+                    filtroLoja = "1003";
+                    break;
+                case "fcaixa04@barbosasm.com.br":
+                    filtroLoja = "1004";
+                    break;
+                default:
+                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
+                    const filtroLojaElement = document.getElementById("filtroLoja");
+                    filtroLojaElement.style.display = "block";
 
-            // Exiba o email onde desejar, por exemplo, na navbar
-            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+                    // Ocultar as outras opções no menu suspenso
+                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
+                        const option = filtroLojaElement.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
+                    break;
+            }
+
+            // Defina o valor do filtro da loja no campo de seleção
+            const selectFiltroLoja = document.getElementById("filtroLoja");
+            selectFiltroLoja.value = filtroLoja;
+
+            // Adicione um evento de alteração ao campo de seleção
+            selectFiltroLoja.addEventListener("change", function () {
+                filtrarTabela();
+            });
+
+            filtrarTabela();
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
         }
     });
 }
+
+// ...
+
+// Função para filtrar a tabela com base no valor selecionado no campo de seleção
+function filtrarTabela() {
+    const selectFiltroLoja = document.getElementById("filtroLoja");
+    const valorFiltro = selectFiltroLoja.value;
+
+    // Use a função DataTables para filtrar a tabela com base no valor do filtro
+    const tabela = $("#tabela-dados").DataTable();
+    tabela.column(1).search(valorFiltro).draw(); // Coluna 1 é a coluna "Número da Loja" na tabela
+}
+
+// ...
+
+// Chame a função para verificar o usuário quando a página carregar
+$(document).ready(function () {
+    verificarUsuario();
+    carregarDados(); // Carregue os dados da tabela, se necessário
+});
+
+// ...
+
+
+
+
 
 </script>
     <!-- Tabela de dados -->
