@@ -51,56 +51,28 @@
     <!-- ... (seu código existente) ... -->
 </head>
 <body>
- <!-- Navbar com fundo azul (azul) -->
-<nav class="navbar navbar-expand-lg navbar-light bg-info">
-    <div class="container">
-        <!-- Título do Navbar -->
-        <a class="navbar-brand" href="#">CRUD Firebase Firestore</a>
-
-        <!-- Botão de alternância para dispositivos móveis -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Itens do Navbar -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <!-- Item "Requisição Sacola" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Requisição Sacola</a>
-                </li>
-
-                <!-- Item "Lançar Sacola" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Lançar Sacola</a>
-                </li>
-
-                <!-- Item "Cadastrar Operador" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Cadastrar Operador</a>
-                </li>
-
-                <!-- Item "Dashboard" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Dashboard</a>
-                </li>
-
-                <!-- Item "Sobre" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sobre</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Exibir email do usuário logado -->
-        <span class="navbar-text">
-            Usuário: <span id="userEmail">carregando...</span>
-        </span>
-        
-        <!-- Botão "Sair" com estilo Bootstrap -->
-        <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">SACOLINHABSM</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Sobre</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contato</a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
+
 
 <!-- JavaScript para redirecionar para index.html ao clicar em "Sair" -->
 <script>
