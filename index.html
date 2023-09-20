@@ -88,6 +88,9 @@
     localStorage.setItem('userEmail', emailUsuario);
     window.location.href = 'sacola.html';
   }
+       // Chame a função para redirecionar para sacola.html
+    redirecionarParaSacola(emailUsuario);
+  }
             .catch(function (error) {
                 // Show error message
                 document.getElementById("error-message").innerText = "Credenciais inválidas. Por favor, verifique o e-mail e a senha.";
