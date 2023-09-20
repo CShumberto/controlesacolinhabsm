@@ -144,10 +144,7 @@ function verificarUsuario() {
                     filtroLoja = "1001";
                     break;
                 case "fcaixa03@barbosasm.com.br":
-                    filtroLoja = "1003";
-                    break;
-                case "fcaixa04@barbosasm.com.br":
-                    filtroLoja = "1004";
+                    filtroLoja = "1002"; // Alterado para 1002 neste caso
                     break;
                 default:
                     // Defina o estilo de exibição do campo de filtro como "block" caso contrário
@@ -168,11 +165,6 @@ function verificarUsuario() {
             const selectFiltroLoja = document.getElementById("filtroLoja");
             selectFiltroLoja.value = filtroLoja;
 
-            // Adicione um evento de alteração ao campo de seleção
-            selectFiltroLoja.addEventListener("change", function () {
-                filtrarTabela();
-            });
-
             filtrarTabela();
         } else {
             // O usuário não está logado, redirecione-o para a página de login
@@ -180,30 +172,6 @@ function verificarUsuario() {
         }
     });
 }
-
-// ...
-
-// Função para filtrar a tabela com base no valor selecionado no campo de seleção
-function filtrarTabela() {
-    const selectFiltroLoja = document.getElementById("filtroLoja");
-    const valorFiltro = selectFiltroLoja.value;
-
-    // Use a função DataTables para filtrar a tabela com base no valor do filtro
-    const tabela = $("#tabela-dados").DataTable();
-    tabela.column(1).search(valorFiltro).draw(); // Coluna 1 é a coluna "Número da Loja" na tabela
-}
-
-// ...
-
-// Chame a função para verificar o usuário quando a página carregar
-$(document).ready(function () {
-    verificarUsuario();
-    carregarDados(); // Carregue os dados da tabela, se necessário
-});
-
-// ...
-
-
 
 
 
