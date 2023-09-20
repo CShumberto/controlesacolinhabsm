@@ -72,47 +72,9 @@
     </div>
   </div>
 </nav>
-
-
-<!-- JavaScript para redirecionar para index.html ao clicar em "Sair" -->
-<script>
-document.getElementById("btnSair").addEventListener("click", function() {
-    // Redirecionar para index.html
-    window.location.href = "index.html";
-});
-</script>
-
-    <script>
-        // Função para exibir o email do usuário logado
-        function exibirEmailUsuario() {
-            const user = firebase.auth().currentUser;
-            if (user) {
-                const userEmail = user.email;
-                document.getElementById("userEmail").textContent = userEmail;
-            } else {
-                document.getElementById("userEmail").textContent = "Nenhum usuário logado";
-            }
-        }
-
-        // Função para fazer logout do usuário
-        function fazerLogout() {
-            firebase.auth().signOut().then(() => {
-                // Redirecionar para a página de login ou onde desejar
-                window.location.href = "index.html";
-            }).catch((error) => {
-                console.error("Erro ao fazer logout:", error);
-            });
-        }
-
-        // Chame a função para exibir o email do usuário quando a página carregar
-        $(document).ready(function () {
-            exibirEmailUsuario();
-        });
-
-        // Adicione um ouvinte de evento ao botão "Sair"
-        document.getElementById("btnSair").addEventListener("click", fazerLogout);
-    </script>
-
+<li class="nav-item">
+  <a class="nav-link" href="#">Sair</a>
+</li>
 
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
