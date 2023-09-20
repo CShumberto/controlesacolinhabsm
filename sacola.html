@@ -93,7 +93,8 @@
 
         <!-- Exibir email do usuário logado -->
         <span class="navbar-text">
-		            Usuário: <span id="user-email">carregando...</span>
+            Usuário: <span id="userEmailDisplay">carregando...</span>
+        </span>
         
         <!-- Botão "Sair" com estilo Bootstrap -->
         <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
@@ -112,27 +113,9 @@ var userEmail = localStorage.getItem("userEmail");
 
 // Exiba o email onde desejar, por exemplo, na navbar
 document.getElementById("userEmailDisplay").textContent = userEmail;
-
-
-// Função para obter parâmetros da URL por nome
-function getParameterByName(name) {
-    var url = new URL(window.location.href);
-    var paramValue = url.searchParams.get(name);
-    return paramValue;
-}
-
-// Obtenha o email do usuário da URL
-var userEmail = getParameterByName("email");
-
-// Verifique se o email foi passado como parâmetro
-if (userEmail) {
-    // Exiba o email na página
-    document.getElementById("user-email").textContent = "Bem-vindo, " + userEmail;
-} else {
-    // Se o email não estiver disponível na URL, faça o tratamento adequado
-    document.getElementById("user-email").textContent = "Bem-vindo!";
-}
 </script>
+
+
 
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
@@ -331,23 +314,33 @@ function filtrarTabela() {
         if (user) {
             // O usuário está logado
             const emailUsuarioLogado = user.email;
-        firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        // O usuário está logado
-        const emailUsuarioLogado = user.email;
-        let filtroLoja = emailUsuarioLogado.replace(/[^0-9]/g, ''); // Extrai apenas os números do email
+            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-        // Defina o valor do filtro da loja no campo de seleção
-        const selectFiltroLoja = document.getElementById("filtroLoja");
-        selectFiltroLoja.value = filtroLoja;
+            // Verifique o email do usuário e defina o filtro da loja correspondente
+            switch (emailUsuarioLogado) {
+                case "humberto@barbosasm.com.br":
+                    filtroLoja = "1001";
+                    break;
+                case "fcaixa03@barbosasm.com.br":
+                    filtroLoja = "1003";
+                    break;
+                case "fcaixa04@barbosasm.com.br":
+                    filtroLoja = "1004";
+                    break;
+                default:
+                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
+                    const filtroLojaElement = document.getElementById("filtroLoja");
+                    filtroLojaElement.style.display = "block";
 
-        filtrarTabela();
-    } else {
-        // O usuário não está logado, redirecione-o para a página de login
-        window.location.href = "index.html";
-    }
-});
-
+                    // Ocultar as outras opções no menu suspenso
+                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
+                        const option = filtroLojaElement.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
+                    break;
+            }
 
             // Defina o valor do filtro da loja no campo de seleção
             const selectFiltroLoja = document.getElementById("filtroLoja");
