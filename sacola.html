@@ -6,9 +6,8 @@
 
     <!-- CSS do DataTables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-
-    <!-- Firebase Authentication -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+<!-- Firebase Authentication -->
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -37,140 +36,275 @@
         .dataTables_wrapper {
             padding: 0; /* Remova o preenchimento */
             margin: 0; /* Remova as margens */
-        }
+          
+        }   
     </style>
 </head>
 <body>
-    <!-- Navbar com fundo azul -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
-        <div class="container">
-            <!-- Título do Navbar -->
-            <a class="navbar-brand" href="#">CRUD Firebase Firestore</a>
+    <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!-- Adicione as importações do Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            <!-- Botão de alternância para dispositivos móveis -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <!-- ... (seu código existente) ... -->
+</head>
+<body>
+ <!-- Navbar com fundo azul (azul) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-info">
+    <div class="container">
+        <!-- Título do Navbar -->
+        <a class="navbar-brand" href="#">CRUD Firebase Firestore</a>
 
-            <!-- Itens do Navbar -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <!-- Item "Requisição Sacola" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Requisição Sacola</a>
-                    </li>
+        <!-- Botão de alternância para dispositivos móveis -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    <!-- Item "Lançar Sacola" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Lançar Sacola</a>
-                    </li>
+        <!-- Itens do Navbar -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Item "Requisição Sacola" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Requisição Sacola</a>
+                </li>
 
-                    <!-- Item "Cadastrar Operador" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Cadastrar Operador</a>
-                    </li>
+                <!-- Item "Lançar Sacola" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Lançar Sacola</a>
+                </li>
 
-                    <!-- Item "Dashboard" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Dashboard</a>
-                    </li>
+                <!-- Item "Cadastrar Operador" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Cadastrar Operador</a>
+                </li>
 
-                    <!-- Item "Sobre" -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Sobre</a>
-                    </li>
-                </ul>
-            </div>
+                <!-- Item "Dashboard" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
 
-            <!-- Exibir email do usuário logado -->
-            <span class="navbar-text">
-                Usuário: <span id="userEmail">carregando...</span>
-            </span>
-            
-            <!-- Botão "Sair" com estilo Bootstrap -->
-            <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
+                <!-- Item "Sobre" -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sobre</a>
+                </li>
+            </ul>
         </div>
-    </nav>
 
-    <h1 class="mt-4">CRUD Firebase Firestore com DataTables</h1>
+        <!-- Exibir email do usuário logado -->
+        <span class="navbar-text">
+            Usuário: <span id="userEmail">carregando...</span>
+        </span>
+        
+        <!-- Botão "Sair" com estilo Bootstrap -->
+        <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
+    </div>
+</nav>
+
+<!-- JavaScript para redirecionar para index.html ao clicar em "Sair" -->
+<script>
+document.getElementById("btnSair").addEventListener("click", function() {
+    // Redirecionar para index.html
+    window.location.href = "index.html";
+});
+</script>
+
+    <script>
+        // Função para exibir o email do usuário logado
+        function exibirEmailUsuario() {
+            const user = firebase.auth().currentUser;
+            if (user) {
+                const userEmail = user.email;
+                document.getElementById("userEmail").textContent = userEmail;
+            } else {
+                document.getElementById("userEmail").textContent = "Nenhum usuário logado";
+            }
+        }
+
+        // Função para fazer logout do usuário
+        function fazerLogout() {
+            firebase.auth().signOut().then(() => {
+                // Redirecionar para a página de login ou onde desejar
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("Erro ao fazer logout:", error);
+            });
+        }
+
+        // Chame a função para exibir o email do usuário quando a página carregar
+        $(document).ready(function () {
+            exibirEmailUsuario();
+        });
+
+        // Adicione um ouvinte de evento ao botão "Sair"
+        document.getElementById("btnSair").addEventListener("click", fazerLogout);
+    </script>
+
 
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
-    
     <!-- Campos de filtro -->
-    <div class="row mb-3">
-        <div class="col-md-4">
-            <label for="filtroLoja">Filtrar por Loja:</label>
-            <select class="form-select" id="filtroLoja" onchange="filtrarPorLoja()">
-                <option value="">Todas as Lojas</option>
-                <option value="Loja A">Loja A</option>
-                <option value="Loja B">Loja B</option>
-                <option value="Loja C">Loja C</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label for="filtroStatus">Filtrar por Status:</label>
-            <select class="form-select" id="filtroStatus" onchange="filtrarPorStatus()">
-                <option value="">Todos os Status</option>
-                <option value="Pendente">Pendente</option>
-                <option value="Aprovado">Aprovado</option>
-                <option value="Entregue">Entregue</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label for="filtroData">Filtrar por Data:</label>
-            <input type="text" class="form-control" id="filtroData" placeholder="Selecione uma data">
-        </div>
+  <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="filtroLoja">Filtrar por Loja:</label>
+                <select class="form-select" id="filtroLoja" onchange="filtrarTabela()">
+                    <option value="">Todas as Lojas</option>
+                    <option value="1001">1001</option>
+                    <option value="1002">1002</option>
+                    <option value="1003">1003</option>
+                    <option value="1004">1004</option>
+                    <option value="1005">1005</option>
+                    <option value="1006">1006</option>
+                    <option value="1008">1008</option>
+		    <option value="1009">1009</option>
+                    <option value="1010">1010</option>
+                    <option value="1011">1011</option>
+                    <option value="1012">1012</option>
+                    <option value="1014">1014</option>
+                    <option value="1015">1015</option>
+                    <option value="1018">1018</option>
+                    <option value="1019">1019</option>
+                    <option value="1020">1020</option>
+                    <option value="1021">1021</option>
+                    <option value="1023">1023</option>
+                    <option value="1024">1024</option>
+                    <option value="1026">1026</option>
+                    <option value="1028">1028</option>
+                    <option value="1029">1029</option>
+                    <option value="1031">1031</option>
+                    <option value="1033">1033</option>
+                    <option value="1035">1035</option>
+                    <option value="1036">1036</option>
+                    <option value="1037">1037</option>
+                    <option value="1038">1038</option>
+                    <option value="1039">1039</option>
+                    <option value="1040">1040</option>
+                    <option value="1041">1041</option>
+                    <option value="1042">1042</option>
+                </select>
+            </div>
+<div class="col-md-4">
+        <label for="filtroOperador">Filtrar por Operador:</label>
+        <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
+   
+</div>
+<script>
+// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
+function filtrarTabela() {
+    const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
+    const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
 
+    const tbody = document.querySelector('tbody');
+    const linhas = tbody.getElementsByTagName('tr');
+
+    // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
+    for (let i = 0; i < linhas.length; i++) {
+        const linha = linhas[i];
+        const colunaOperador = linha.getElementsByTagName('td')[2];
+        const colunaLoja = linha.getElementsByTagName('td')[1];
+
+        if (colunaOperador && colunaLoja) {
+            const operador = colunaOperador.textContent.toLowerCase();
+            const loja = colunaLoja.textContent.toLowerCase();
+
+            // Verificar se a linha atende aos critérios de filtro
+            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        }
+    }
+}
+
+</script>
     <!-- Tabela de dados -->
-    <table id="tabelaRegistros" class="table table-bordered">
+    <table id="tabela-dados" class="display mt-3">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Loja</th>
-                <th>Descrição</th>
-                <th>Status</th>
-                <th>Data</th>
-                <th>Ações</th>
+                <th>Dia</th>
+                <th>Número da Loja</th>
+                <th>Nome do Operador</th>
+                <th>TOTAL Easy Open Bag G</th>
+                <th>TOTAL Planeta Agradece P</th>
+                <th>Venda total mensal (R$)</th>
+                <th>Total de Sacolinhas (UN)</th>
+                <th>Valor total sacolinha G (R$)</th>
+                <th>Valor total sacolinha P (R$)</th>
+                <th>Valor Total sacolinha (R$)</th>
+                <th>% Faturamento</th>
+                <th>Observação</th>
+                <th>Editar</th>
+                <th>Excluir</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Os dados da tabela serão preenchidos dinamicamente aqui -->
-        </tbody>
+        <tbody></tbody>
     </table>
 
-    <!-- Formulário de edição/adição de registros -->
-    <div class="modal fade" id="modalRegistro" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Modal para adicionar/editar registro -->
+    <div class="modal fade" id="modalRegistro" tabindex="-1" role="dialog" aria-labelledby="modalRegistroLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="modalRegistroLabel">Adicionar Registro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
+                    <!-- Formulário de adição/editação de registro -->
                     <form id="formularioRegistro">
-                        <div class="mb-3">
-                            <label for="inputLoja" class="form-label">Loja:</label>
-                            <input type="text" class="form-control" id="inputLoja" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputDescricao" class="form-label">Descrição:</label>
-                            <input type="text" class="form-control" id="inputDescricao" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputStatus" class="form-label">Status:</label>
-                            <select class="form-select" id="inputStatus" required>
-                                <option value="Pendente">Pendente</option>
-                                <option value="Aprovado">Aprovado</option>
-                                <option value="Entregue">Entregue</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="inputData" class="form-label">Data:</label>
-                            <input type="text" class="form-control" id="inputData" required>
-                        </div>
                         <input type="hidden" id="registroId">
+                        <div class="form-group">
+                            <label for="dia">Dia:</label>
+                            <input type="date" class="form-control" id="dia" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroLoja">Número da Loja:</label>
+                            <input type="text" class="form-control" id="numeroLoja">
+                        </div>
+                        <div class="form-group">
+                            <label for="nomeOperador">Nome do Operador:</label>
+                            <input type="text" class="form-control" id="nomeOperador">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalEasyOpenBagG">TOTAL Easy Open Bag G:</label>
+                            <input type="number" step="any" class="form-control" id="totalEasyOpenBagG">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalPlanetaAgradeceP">TOTAL Planeta Agradece P:</label>
+                            <input type="number" step="any" class="form-control" id="totalPlanetaAgradeceP">
+                        </div>
+                        <div class="form-group">
+                            <label for="vendaTotalMensal">Venda total mensal (R$):</label>
+                            <input type="number" step="any" class="form-control" id="vendaTotalMensal">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalSacolinhas">Total de Sacolinhas (UN):</label>
+                            <input type="number" step="any" class="form-control" id="totalSacolinhas" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="valorSacolinhaG">Valor total sacolinha G (R$):</label>
+                            <input type="number" step="any" class="form-control" id="valorSacolinhaG" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="valorSacolinhaP">Valor total sacolinha P (R$):</label>
+                            <input type="number" step="any" class="form-control" id="valorSacolinhaP" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="valorTotalSacolinha">Valor Total sacolinha (R$):</label>
+                            <input type="number" step="any" class="form-control" id="valorTotalSacolinha" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="percentualFaturamento">% Faturamento:</label>
+                            <input type="number" step="any" class="form-control" id="percentualFaturamento" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="observacao">Observação:</label>
+                            <textarea class="form-control" id="observacao" rows="3"></textarea>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -182,9 +316,9 @@
     </div>
 
     <script>
-        // Inicializar o Firebase
+        // Configuração do Firebase
         const firebaseConfig = {
-            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
@@ -193,221 +327,285 @@
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
+// Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Função para verificar o usuário logado
-        function verificarUsuario() {
-            const user = firebase.auth().currentUser;
-            if (user) {
-                // Usuário está logado
-                document.getElementById("userEmail").textContent = user.email;
+        // Inicializar o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Função para verificar o usuário atual e definir a loja correspondente
+      function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
+            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
+
+            // Verifique o email do usuário e defina o filtro da loja correspondente
+            switch (emailUsuarioLogado) {
+                case "humberto@barbosasm.com.br":
+                    filtroLoja = "1001";
+                    break;
+                case "fcaixa03@barbosasm.com.br":
+                    filtroLoja = "1003";
+                    break;
+                case "fcaixa04@barbosasm.com.br":
+                    filtroLoja = "1004";
+                    break;
+                default:
+                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
+                    const filtroLojaElement = document.getElementById("filtroLoja");
+                    filtroLojaElement.style.display = "block";
+
+                    // Ocultar as outras opções no menu suspenso
+                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
+                        const option = filtroLojaElement.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
+                    break;
+            }
+
+            // Defina o valor do filtro da loja no campo de seleção
+            const selectFiltroLoja = document.getElementById("filtroLoja");
+            selectFiltroLoja.value = filtroLoja;
+
+            filtrarTabela();
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
+        }
+    });
+}
+
+    // Chame a função para verificar o usuário quando a página carregar
+    $(document).ready(function () {
+        verificarUsuario();
+        carregarDados(); // Carregue os dados da tabela, se necessário
+    });
+
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
+        const db = firebase.firestore();
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+        // Função para calcular campos dependentes
+        function calcularCamposDependentes() {
+            const easyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const planetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+
+            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+            const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+            const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
+
+            $("#totalSacolinhas").val(totalSacolinhasUN);
+            $("#valorSacolinhaG").val(valorTotalSacolinhaG);
+            $("#valorSacolinhaP").val(valorTotalSacolinhaP);
+            $("#valorTotalSacolinha").val(valorTotalSacolinhaTOTAL);
+            $("#percentualFaturamento").val(percentualFaturamento);
+        }
+
+        // Função para limpar o formulário no modal
+        function limparFormulario() {
+            $("#registroId").val("");
+            $("#dia").val("");
+            $("#numeroLoja").val("");
+            $("#nomeOperador").val("");
+            $("#totalEasyOpenBagG").val("");
+            $("#totalPlanetaAgradeceP").val("");
+            $("#vendaTotalMensal").val("");
+            $("#observacao").val("");
+            calcularCamposDependentes();
+        }
+
+        // Função para adicionar um novo registro
+        function adicionarRegistro() {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const totalSacolinhasUN = parseFloat($("#totalSacolinhas").val()) || 0;
+            const valorSacolinhaG = parseFloat($("#valorSacolinhaG").val()) || 0;
+            const valorSacolinhaP = parseFloat($("#valorSacolinhaP").val()) || 0;
+            const valorTotalSacolinha = parseFloat($("#valorTotalSacolinha").val()) || 0;
+            const percentualFaturamento = parseFloat($("#percentualFaturamento").val()) || 0;
+            const observacao = $("#observacao").val();
+
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.add({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                    'Valor total sacolinha G (R$)': valorSacolinhaG,
+                    'Valor total sacolinha P (R$)': valorSacolinhaP,
+                    'Valor Total sacolinha (R$)': valorTotalSacolinha,
+                    '% Faturamento': percentualFaturamento,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro adicionado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao adicionar registro:", error);
+                });
             } else {
-                // Usuário não está logado, redirecionar para a página de login
-                window.location.href = "index.html";
+                alert("Preencha todos os campos obrigatórios.");
             }
         }
 
-        // Evento de clique no botão "Sair"
-        document.getElementById("btnSair").addEventListener("click", function() {
-            firebase.auth().signOut().then(function() {
-                // Redirecionar para index.html após sair
-                window.location.href = "index.html";
-            }).catch(function(error) {
-                console.error("Erro ao sair:", error);
-            });
-        });
+        // Função para editar um registro existente
+        function editarRegistro(docId) {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const totalSacolinhasUN = parseFloat($("#totalSacolinhas").val()) || 0;
+            const valorSacolinhaG = parseFloat($("#valorSacolinhaG").val()) || 0;
+            const valorSacolinhaP = parseFloat($("#valorSacolinhaP").val()) || 0;
+            const valorTotalSacolinha = parseFloat($("#valorTotalSacolinha").val()) || 0;
+            const percentualFaturamento = parseFloat($("#percentualFaturamento").val()) || 0;
+            const observacao = $("#observacao").val();
 
-        // Função para inicializar o DataTable
-        function inicializarDataTable() {
-            $('#tabelaRegistros').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese.json"
-                }
-            });
-        }
-
-        // Função para preencher a tabela com dados do Firestore
-        function preencherTabela() {
-            // Obtenha a referência para a coleção no Firestore (substitua "suaColecao" pelo nome da sua coleção)
-            const db = firebase.firestore();
-            const registrosRef = db.collection("suaColecao");
-
-            // Limpe a tabela antes de preencher novamente
-            $('#tabelaRegistros tbody').empty();
-
-            // Consulta os registros no Firestore
-            registrosRef.get().then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    const registro = doc.data();
-                    const dataFormatada = new Date(registro.data.toDate()).toLocaleDateString();
-
-                    // Crie uma nova linha na tabela com os dados do registro
-                    const newRow = `<tr>
-                        <td>${doc.id}</td>
-                        <td>${registro.loja}</td>
-                        <td>${registro.descricao}</td>
-                        <td>${registro.status}</td>
-                        <td>${dataFormatada}</td>
-                        <td>
-                            <button class="btn btn-sm btn-warning editarRegistro" data-id="${doc.id}">Editar</button>
-                            <button class="btn btn-sm btn-danger excluirRegistro" data-id="${doc.id}">Excluir</button>
-                        </td>
-                    </tr>`;
-
-                    $('#tabelaRegistros tbody').append(newRow);
-                });
-
-                // Inicialize novamente o DataTable
-                inicializarDataTable();
-            }).catch((error) => {
-                console.error("Erro ao obter registros:", error);
-            });
-        }
-
-        // Evento de clique no botão "Adicionar Registro"
-        document.getElementById("adicionarRegistro").addEventListener("click", function() {
-            // Limpe o formulário
-            document.getElementById("formularioRegistro").reset();
-            // Limpe o campo de ID oculto
-            document.getElementById("registroId").value = "";
-            // Abra o modal
-            $('#modalRegistro').modal('show');
-        });
-
-        // Evento de clique no botão "Salvar Registro"
-        document.getElementById("salvarRegistro").addEventListener("click", function() {
-            const db = firebase.firestore();
-            const registrosRef = db.collection("suaColecao");
-
-            // Obtenha os valores do formulário
-            const loja = document.getElementById("inputLoja").value;
-            const descricao = document.getElementById("inputDescricao").value;
-            const status = document.getElementById("inputStatus").value;
-            const data = new Date(document.getElementById("inputData").value);
-
-            // Obtenha o valor do campo ID oculto
-            const registroId = document.getElementById("registroId").value;
-
-            // Dados do registro a serem salvos no Firestore
-            const registro = {
-                loja,
-                descricao,
-                status,
-                data
-            };
-
-            // Se o registroId não estiver vazio, atualize um registro existente
-            if (registroId) {
-                registrosRef.doc(registroId).update(registro).then(() => {
-                    // Feche o modal após atualizar
-                    $('#modalRegistro').modal('hide');
-                    // Atualize a tabela
-                    preencherTabela();
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.doc(docId).update({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                    'Valor total sacolinha G (R$)': valorSacolinhaG,
+                    'Valor total sacolinha P (R$)': valorSacolinhaP,
+                    'Valor Total sacolinha (R$)': valorTotalSacolinha,
+                    '% Faturamento': percentualFaturamento,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro atualizado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
                 }).catch((error) => {
                     console.error("Erro ao atualizar registro:", error);
                 });
             } else {
-                // Caso contrário, adicione um novo registro
-                registrosRef.add(registro).then(() => {
-                    // Feche o modal após adicionar
-                    $('#modalRegistro').modal('hide');
-                    // Atualize a tabela
-                    preencherTabela();
-                }).catch((error) => {
-                    console.error("Erro ao adicionar registro:", error);
-                });
+                alert("Preencha todos os campos obrigatórios.");
             }
-        });
+        }
 
-        // Evento de clique no botão "Editar" em uma linha da tabela
-        $('#tabelaRegistros tbody').on('click', '.editarRegistro', function() {
-            const db = firebase.firestore();
-            const registrosRef = db.collection("suaColecao");
-
-            const registroId = $(this).data("id");
-
-            // Consulte o registro no Firestore com base no ID
-            registrosRef.doc(registroId).get().then((doc) => {
-                if (doc.exists) {
-                    const registro = doc.data();
-
-                    // Preencha o formulário com os dados do registro
-                    document.getElementById("inputLoja").value = registro.loja;
-                    document.getElementById("inputDescricao").value = registro.descricao;
-                    document.getElementById("inputStatus").value = registro.status;
-                    const dataFormatada = new Date(registro.data.toDate()).toLocaleDateString();
-                    document.getElementById("inputData").value = dataFormatada;
-
-                    // Preencha o campo de ID oculto
-                    document.getElementById("registroId").value = registroId;
-
-                    // Abra o modal de edição
-                    $('#modalRegistro').modal('show');
-                } else {
-                    console.error("Registro não encontrado");
-                }
-            }).catch((error) => {
-                console.error("Erro ao obter registro:", error);
-            });
-        });
-
-        // Evento de clique no botão "Excluir" em uma linha da tabela
-        $('#tabelaRegistros tbody').on('click', '.excluirRegistro', function() {
-            if (confirm("Deseja realmente excluir este registro?")) {
-                const db = firebase.firestore();
-                const registrosRef = db.collection("suaColecao");
-
-                const registroId = $(this).data("id");
-
-                // Exclua o registro no Firestore com base no ID
-                registrosRef.doc(registroId).delete().then(() => {
-                    // Atualize a tabela após excluir
-                    preencherTabela();
+        // Função para excluir um registro
+        function excluirRegistro(docId) {
+            if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                dadosCollection.doc(docId).delete().then(() => {
+                    alert("Registro excluído com sucesso!");
+                    limparFormulario();
+                    carregarDados();
                 }).catch((error) => {
                     console.error("Erro ao excluir registro:", error);
                 });
             }
-        });
-
-        // Função para filtrar a tabela por loja
-        function filtrarPorLoja() {
-            const filtroLoja = document.getElementById("filtroLoja").value;
-            const table = $('#tabelaRegistros').DataTable();
-            table.column(1).search(filtroLoja).draw();
         }
 
-        // Função para filtrar a tabela por status
-        function filtrarPorStatus() {
-            const filtroStatus = document.getElementById("filtroStatus").value;
-            const table = $('#tabelaRegistros').DataTable();
-            table.column(3).search(filtroStatus).draw();
-        }
-
-        // Função para inicializar o Datepicker
-        function inicializarDatepicker() {
-            $('#filtroData').datepicker({
-                format: 'dd/mm/yyyy',
-                language: 'pt-BR',
-                autoclose: true
+        // Função para preencher o formulário no modal com os dados do registro a ser editado
+        function preencherFormularioEditar(docId) {
+            // Buscar os dados do Firestore com base no ID do documento
+            dadosCollection.doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    $("#registroId").val(docId);
+                    $("#dia").val(data.Dia || '');
+                    $("#numeroLoja").val(data['Número da Loja'] || '');
+                    $("#nomeOperador").val(data['Nome do Operador'] || '');
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
+                    $("#totalSacolinhas").val(data['Total de Sacolinhas (UN)'] || '');
+                    $("#valorSacolinhaG").val(data['Valor total sacolinha G (R$)'] || '');
+                    $("#valorSacolinhaP").val(data['Valor total sacolinha P (R$)'] || '');
+                    $("#valorTotalSacolinha").val(data['Valor Total sacolinha (R$)'] || '');
+                    $("#percentualFaturamento").val(data['% Faturamento'] || '');
+                    $("#observacao").val(data['Observação'] || '');
+                    calcularCamposDependentes();
+                    $("#modalRegistroLabel").text("Editar Registro");
+                    $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
+                    $("#modalRegistro").modal("show");
+                } else {
+                    console.error('Documento não encontrado.');
+                }
+            }).catch((error) => {
+                console.error('Erro ao obter documento:', error);
             });
         }
 
-        // Evento de alteração do campo de filtro de data
-        $('#filtroData').on('change', function() {
-            filtrarPorData();
-        });
-
-        // Função para filtrar a tabela por data
-        function filtrarPorData() {
-            const filtroData = document.getElementById("filtroData").value;
-            const table = $('#tabelaRegistros').DataTable();
-            table.column(4).search(filtroData).draw();
+        // Função para carregar dados do Firebase e preencher a tabela
+        function carregarDados() {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const rowData = [
+                        data.Dia || '',
+                        data['Número da Loja'] || '',
+                        data['Nome do Operador'] || '',
+                        data['TOTAL Easy Open Bag G'] || '',
+                        data['TOTAL Planeta Agradece P'] || '',
+                        data['Venda total mensal (R$)'] || '',
+                        data['Total de Sacolinhas (UN)'] || '',
+                        data['Valor total sacolinha G (R$)'] || '',
+                        data['Valor total sacolinha P (R$)'] || '',
+                        data['Valor Total sacolinha (R$)'] || '',
+                        data['% Faturamento'] || '',
+                        data['Observação'] || '',
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
+                    ];
+                    tabela.row.add(rowData).draw();
+                });
+            }).catch((error) => {
+                console.error('Erro ao carregar dados:', error);
+            });
         }
 
-        // Quando a página carrega, verifique o usuário logado e preencha a tabela
-        verificarUsuario();
-        preencherTabela();
-        inicializarDatepicker();
+        // Chame a função para carregar dados quando a página carregar
+        $(document).ready(function () {
+            carregarDados();
+        });
+
+        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
+        $("#adicionarRegistro").click(function () {
+            limparFormulario();
+            $("#modalRegistroLabel").text("Adicionar Registro");
+            $("#salvarRegistro").off("click").click(adicionarRegistro);
+            $("#modalRegistro").modal("show");
+        });
+
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
+        });
+
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
+            calcularCamposDependentes();
+        });
+	      // Chame a função para verificar o usuário quando a página carregar
+        $(document).ready(function () {
+            verificarUsuario();
+            carregarDados(); // Carregue os dados da tabela, se necessário
+        });
     </script>
 </body>
 </html>
