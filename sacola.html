@@ -308,7 +308,7 @@ function filtrarTabela() {
         firebase.initializeApp(firebaseConfig);
 
         // Função para verificar o usuário atual e definir a loja correspondente
-      function verificarUsuario() {
+     function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // O usuário está logado
@@ -326,18 +326,9 @@ function filtrarTabela() {
                 case "fcaixa04@barbosasm.com.br":
                     filtroLoja = "1004";
                     break;
+                // Adicione casos para outros usuários e lojas, se necessário
                 default:
-                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
-                    const filtroLojaElement = document.getElementById("filtroLoja");
-                    filtroLojaElement.style.display = "block";
-
-                    // Ocultar as outras opções no menu suspenso
-                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
-                        const option = filtroLojaElement.options[i];
-                        if (option.value !== filtroLoja) {
-                            option.disabled = true;
-                        }
-                    }
+                    filtroLoja = "1002"; // Defina uma loja padrão para outros usuários
                     break;
             }
 
@@ -352,6 +343,7 @@ function filtrarTabela() {
         }
     });
 }
+
 
     // Chame a função para verificar o usuário quando a página carregar
     $(document).ready(function () {
