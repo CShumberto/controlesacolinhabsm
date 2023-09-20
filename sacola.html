@@ -166,32 +166,39 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
    
 </div>
 <script>
-// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
-function filtrarTabela() {
-    const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
-    const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
+// Função para verificar o usuário atual e definir a loja correspondente
+function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
+            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-    const tbody = document.querySelector('tbody');
-    const linhas = tbody.getElementsByTagName('tr');
-
-    // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
-    for (let i = 0; i < linhas.length; i++) {
-        const linha = linhas[i];
-        const colunaOperador = linha.getElementsByTagName('td')[2];
-        const colunaLoja = linha.getElementsByTagName('td')[1];
-
-        if (colunaOperador && colunaLoja) {
-            const operador = colunaOperador.textContent.toLowerCase();
-            const loja = colunaLoja.textContent.toLowerCase();
-
-            // Verificar se a linha atende aos critérios de filtro
-            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
-                linha.style.display = '';
-            } else {
-                linha.style.display = 'none';
+            // Verifique o email do usuário e defina o filtro da loja correspondente
+            switch (emailUsuarioLogado) {
+                case "humberto@barbosasm.com.br":
+                    filtroLoja = "1001";
+                    break;
+                case "fcaixa02@barbosasm.com.br":
+                    filtroLoja = "1002";
+                    break;
+                default:
+                    // Ocultar as opções no menu suspenso
+                    const selectFiltroLoja = document.getElementById("filtroLoja");
+                    selectFiltroLoja.style.display = "none";
+                    break;
             }
+
+            // Defina o valor do filtro da loja no campo de seleção
+            const selectFiltroLoja = document.getElementById("filtroLoja");
+            selectFiltroLoja.value = filtroLoja;
+
+            filtrarTabela();
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
         }
-    }
+    });
 }
 
 </script>
