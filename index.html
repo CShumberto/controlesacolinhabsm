@@ -95,21 +95,5 @@
 <script src="login/js/popper.min.js"></script>
 <script src="login/js/bootstrap.min.js"></script>
 <script src="login/js/main1.js"></script>
-    <script>
-  // Obter o e-mail do usuário logado
-  var userEmail = firebase.auth().currentUser.email;
-
-  // Redirecionar para a página sacola.html
-  window.location.href = "sacola.html";
-
-  // Atualizar a barra de navegação para mostrar o e-mail do usuário logado
-  var navbar = document.getElementById("navbar");
-  navbar.innerHTML = `
-    <li class="nav-item">
-      <a class="nav-link" href="#">${userEmail}</a>
-    </li>
-  `;
-</script>
-
 </body>
 </html>
