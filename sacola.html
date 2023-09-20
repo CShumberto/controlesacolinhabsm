@@ -311,13 +311,18 @@ function filtrarTabela() {
         // Função para verificar o usuário atual e definir a loja correspondente
      // ...
 
+// Função para atualizar o elemento com o email do usuário
+function atualizarEmailUsuario(email) {
+    const userEmailDisplay = document.getElementById("userEmailDisplay");
+    if (userEmailDisplay) {
+        userEmailDisplay.textContent = email || "Nenhum usuário logado";
+    }
+}
+
 // Função para verificar o usuário atual e definir a loja correspondente
 function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            // Limpar o email anterior do Local Storage
-            localStorage.removeItem("userEmail");
-
             // Obtenha o email do usuário atual
             const emailUsuarioLogado = user.email;
 
@@ -330,7 +335,8 @@ function verificarUsuario() {
             const selectFiltroLoja = document.getElementById("filtroLoja");
             selectFiltroLoja.value = filtroLoja;
 
-            filtrarTabela();
+            // Atualize o elemento com o email do usuário
+            atualizarEmailUsuario(emailUsuarioLogado);
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
@@ -340,12 +346,14 @@ function verificarUsuario() {
 
 // ...
 
+// Chame a função para verificar o usuário quando a página carregar
+$(document).ready(function () {
+    verificarUsuario();
+    carregarDados(); // Carregue os dados da tabela, se necessário
+});
 
-    // Chame a função para verificar o usuário quando a página carregar
-    $(document).ready(function () {
-        verificarUsuario();
-        carregarDados(); // Carregue os dados da tabela, se necessário
-    });
+
+ 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
