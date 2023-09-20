@@ -39,6 +39,13 @@ function initFirebase() {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+	<!-- pdfmake para exportar para PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+
+<!-- TableExport para exportar para Excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
+
 <script>
 function initFirebase() {
     // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
@@ -135,6 +142,30 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
 
     <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
+	<div class="btn-group mt-3">
+    <button class="btn btn-secondary" id="exportarPDF">Exportar para PDF</button>
+    <button class="btn btn-secondary" id="exportarExcel">Exportar para Excel</button>
+</div>
+<script>
+// ...
+
+// Event listener para exportar para PDF
+document.getElementById("exportarPDF").addEventListener("click", function() {
+    const data = $("#tabela-dados").DataTable();
+    data.buttons.info(0, data.page.info().length - 1);
+    data.buttons.info("D", 0, 0);
+    data.button(0).trigger();
+});
+
+// Event listener para exportar para Excel
+document.getElementById("exportarExcel").addEventListener("click", function() {
+    const data = $("#tabela-dados").DataTable();
+    data.buttons.info(0, data.page.info().length - 1);
+    data.buttons.info("D", 0, 0);
+    data.button(1).trigger();
+});
+</script>
+
     <!-- Campos de filtro -->
   <div class="row mb-3">
             <div class="col-md-4">
