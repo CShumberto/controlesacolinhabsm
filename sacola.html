@@ -128,9 +128,9 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
         <option value="1004">1004</option>
     </select>
 </div>
-// ...
+
 <script>
-// Função para verificar o usuário atual e definir a loja correspondente
+// Função para verificar o usuário atual e definir o filtro da loja correspondente
 function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -144,7 +144,10 @@ function verificarUsuario() {
                     filtroLoja = "1001";
                     break;
                 case "fcaixa03@barbosasm.com.br":
-                    filtroLoja = "1002"; // Alterado para 1002 neste caso
+                    filtroLoja = "1003";
+                    break;
+                case "fcaixa04@barbosasm.com.br":
+                    filtroLoja = "1004";
                     break;
                 default:
                     // Defina o estilo de exibição do campo de filtro como "block" caso contrário
@@ -165,6 +168,7 @@ function verificarUsuario() {
             const selectFiltroLoja = document.getElementById("filtroLoja");
             selectFiltroLoja.value = filtroLoja;
 
+            // Após definir o filtro, chame a função para filtrar a DataTable
             filtrarTabela();
         } else {
             // O usuário não está logado, redirecione-o para a página de login
@@ -172,7 +176,6 @@ function verificarUsuario() {
         }
     });
 }
-
 
 
 </script>
@@ -558,10 +561,11 @@ function verificarUsuario() {
             calcularCamposDependentes();
         });
 	      // Chame a função para verificar o usuário quando a página carregar
-        $(document).ready(function () {
-            verificarUsuario();
-            carregarDados(); // Carregue os dados da tabela, se necessário
-        });
+       $(document).ready(function () {
+    verificarUsuario();
+    carregarDados(); // Carregue os dados da tabela, se necessário
+});
+
     </script>
 </body>
 </html>
