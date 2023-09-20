@@ -166,7 +166,6 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
    
 </div>
 <script>
-// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
 function filtrarTabela() {
     const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
     const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
@@ -185,7 +184,7 @@ function filtrarTabela() {
             const loja = colunaLoja.textContent.toLowerCase();
 
             // Verificar se a linha atende aos critérios de filtro
-            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
+            if (operador.includes(filtroOperador) && loja === filtroLoja) {
                 linha.style.display = '';
             } else {
                 linha.style.display = 'none';
