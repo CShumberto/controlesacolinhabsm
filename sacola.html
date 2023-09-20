@@ -209,10 +209,10 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
                             <label for="dia">Dia:</label>
                             <input type="date" class="form-control" id="dia" required>
                         </div>
-                        <div class="form-group">
-                            <label for="numeroLoja">Número da Loja:</label>
-                            <input type="text" class="form-control" id="numeroLoja">
-                        </div>
+                       <div class="form-group">
+    <label for="numeroLoja">Número da Loja:</label>
+    <input type="text" class="form-control" id="numeroLoja" readonly>
+</div>
                         <div class="form-group">
                             <label for="nomeOperador">Nome do Operador:</label>
                             <input type="text" class="form-control" id="nomeOperador">
@@ -282,44 +282,30 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
         firebase.initializeApp(firebaseConfig);
 
         // Função para verificar o usuário atual e definir a loja correspondente
-      function verificarUsuario() {
+function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             // O usuário está logado
             const emailUsuarioLogado = user.email;
-            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-            // Verifique o email do usuário e defina o filtro da loja correspondente
-            switch (emailUsuarioLogado) {
-                case "humberto@barbosasm.com.br":
-                    filtroLoja = "1001";
-                    break;
-                case "fcaixa03@barbosasm.com.br":
-                    filtroLoja = "1003";
-                    break;
-                case "fcaixa04@barbosasm.com.br":
-                    filtroLoja = "1004";
-                    break;
-                default:
-                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
-                    const filtroLojaElement = document.getElementById("filtroLoja");
-                    filtroLojaElement.style.display = "block";
+            // Mapeie o email do usuário para o número da loja
+            const numeroLojaPorEmail = {
+                "humberto@barbosasm.com.br": "1001",
+                "fcaixa02@barbosasm.com.br": "1002",
+                // Adicione outros mapeamentos de email para número de loja conforme necessário
+            };
 
-                    // Ocultar as outras opções no menu suspenso
-                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
-                        const option = filtroLojaElement.options[i];
-                        if (option.value !== filtroLoja) {
-                            option.disabled = true;
-                        }
-                    }
-                    break;
+            // Obtenha o número da loja com base no email do usuário
+            const numeroLoja = numeroLojaPorEmail[emailUsuarioLogado];
+
+            if (numeroLoja) {
+                // Defina o valor do campo "Número da Loja"
+                document.getElementById("numeroLoja").value = numeroLoja;
+            } else {
+                // Caso o email do usuário não esteja mapeado, você pode tratar isso aqui
+                alert("Email do usuário não mapeado para um número de loja.");
             }
 
-            // Defina o valor do filtro da loja no campo de seleção
-            const selectFiltroLoja = document.getElementById("filtroLoja");
-            selectFiltroLoja.value = filtroLoja;
-
-            filtrarTabela();
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
