@@ -112,22 +112,15 @@ document.getElementById("btnSair").addEventListener("click", function() {
     window.location.href = "index.html";
 });
 </script>
-
-   <!-- No seu arquivo sacola.html -->
-<script>
- // Função para exibir o email do usuário
-function exibirEmailUsuario() {
-    const user = firebase.auth().currentUser;
+firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        const email = user.email;
-        document.getElementById('userEmail').textContent = email;
+        // O usuário está logado
+        const userEmail = document.getElementById('user-email');
+        userEmail.textContent = user.email;
+    } else {
+        // O usuário não está logado, redirecione para a página de login
+        window.location.replace('login.html');
     }
-}
-
-// Chame a função para exibir o email do usuário quando a página carregar
-$(document).ready(function () {
-    exibirEmailUsuario();
-    carregarDados(); // Carregue os dados da tabela, se necessário
 });
 
 
