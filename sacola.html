@@ -91,10 +91,11 @@
             </ul>
         </div>
 
-        <!-- Exibir email do usuário logado -->
-        <span class="navbar-text">
-            Usuário: <span id="userEmailDisplay">carregando...</span>
-        </span>
+       <!-- Exibir email do usuário logado -->
+<span class="navbar-text">
+    Usuário: <span id="userEmailDisplay">carregando...</span>
+</span>
+
         
         <!-- Botão "Sair" com estilo Bootstrap -->
         <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
@@ -326,6 +327,16 @@ function atualizarEmailUsuario(email) {
     }
 }
 
+// ...
+
+// Função para atualizar o elemento com o email do usuário
+function atualizarEmailUsuario(email) {
+    const userEmailDisplay = document.getElementById("userEmailDisplay");
+    if (userEmailDisplay) {
+        userEmailDisplay.textContent = email || "Nenhum usuário logado";
+    }
+}
+
 // Função para verificar o usuário atual e definir a loja correspondente
 function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
@@ -343,7 +354,7 @@ function verificarUsuario() {
             selectFiltroLoja.value = filtroLoja;
 
             // Atualize o elemento com o email do usuário
-            atualizarEmailUsuario(emailUsuarioLogado);
+            atualizarEmailUsuario(emailUsuarioLogado); // Atualize o email do usuário aqui
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
@@ -359,8 +370,6 @@ $(document).ready(function () {
     carregarDados(); // Carregue os dados da tabela, se necessário
 });
 
-
- 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
