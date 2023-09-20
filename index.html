@@ -84,6 +84,10 @@
                 // Success - redirect to the "sacola.html" page after successful login
                 window.location.href = "sacola.html";
             })
+            function redirecionarParaSacola(emailUsuario) {
+    localStorage.setItem('userEmail', emailUsuario);
+    window.location.href = 'sacola.html';
+  }
             .catch(function (error) {
                 // Show error message
                 document.getElementById("error-message").innerText = "Credenciais inválidas. Por favor, verifique o e-mail e a senha.";
