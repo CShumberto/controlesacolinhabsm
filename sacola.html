@@ -186,9 +186,24 @@ document.getElementById("userEmailDisplay").textContent = userEmail;
 function filtrarTabela() {
     const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
     const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
+    const userEmail = document.getElementById('userEmailDisplay').textContent;
 
     const tbody = document.querySelector('tbody');
     const linhas = tbody.getElementsByTagName('tr');
+
+    // Defina aqui as regras de filtragem com base no usuário logado (userEmail)
+    let lojasFiltradas = [];
+
+    if (userEmail === 'humberto@barbosasm.com.br') {
+        // Se o usuário for "humberto@barbosasm.com.br", filtre apenas a loja 1001
+        lojasFiltradas = ['1001'];
+    } else if (userEmail === 'fcaixa01@barbosasm.com.br') {
+        // Se o usuário for "fcaixa01@barbosasm.com.br", filtre apenas a loja 1002
+        lojasFiltradas = ['1002'];
+    } else {
+        // Caso contrário, não aplique nenhum filtro, exiba todas as lojas
+        lojasFiltradas = [];
+    }
 
     // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
     for (let i = 0; i < linhas.length; i++) {
@@ -201,7 +216,7 @@ function filtrarTabela() {
             const loja = colunaLoja.textContent.toLowerCase();
 
             // Verificar se a linha atende aos critérios de filtro
-            if (operador.includes(filtroOperador) && loja.includes(filtroLoja)) {
+            if (operador.includes(filtroOperador) && (lojasFiltradas.length === 0 || lojasFiltradas.includes(loja))) {
                 linha.style.display = '';
             } else {
                 linha.style.display = 'none';
@@ -209,6 +224,7 @@ function filtrarTabela() {
         }
     }
 }
+
 
 </script>
     <!-- Tabela de dados -->
