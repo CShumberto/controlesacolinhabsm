@@ -91,11 +91,10 @@
             </ul>
         </div>
 
-       <!-- Exibir email do usuário logado -->
-<span class="navbar-text">
-    Usuário: <span id="userEmailDisplay">carregando...</span>
-</span>
-
+        <!-- Exibir email do usuário logado -->
+        <span class="navbar-text">
+            Usuário: <span id="userEmailDisplay">carregando...</span>
+        </span>
         
         <!-- Botão "Sair" com estilo Bootstrap -->
         <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
@@ -109,18 +108,11 @@ document.getElementById("btnSair").addEventListener("click", function() {
     window.location.href = "index.html";
 });
 
-// Limpar o email anterior do Local Storage
-localStorage.removeItem("userEmail");
-
-// Obtenha o email do usuário atual
-var userEmail = user.email;
-
-// Armazene o email no Local Storage
-localStorage.setItem("userEmail", userEmail);
+// Recupere o email do usuário do Local Storage
+var userEmail = localStorage.getItem("userEmail");
 
 // Exiba o email onde desejar, por exemplo, na navbar
 document.getElementById("userEmailDisplay").textContent = userEmail;
-
 </script>
 
 
@@ -317,44 +309,44 @@ function filtrarTabela() {
         firebase.initializeApp(firebaseConfig);
 
         // Função para verificar o usuário atual e definir a loja correspondente
-     // ...
-
-// Função para atualizar o elemento com o email do usuário
-function atualizarEmailUsuario(email) {
-    const userEmailDisplay = document.getElementById("userEmailDisplay");
-    if (userEmailDisplay) {
-        userEmailDisplay.textContent = email || "Nenhum usuário logado";
-    }
-}
-
-// ...
-
-// Função para atualizar o elemento com o email do usuário
-function atualizarEmailUsuario(email) {
-    const userEmailDisplay = document.getElementById("userEmailDisplay");
-    if (userEmailDisplay) {
-        userEmailDisplay.textContent = email || "Nenhum usuário logado";
-    }
-}
-
-// Função para verificar o usuário atual e definir a loja correspondente
-function verificarUsuario() {
+      function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            // Obtenha o email do usuário atual
+            // O usuário está logado
             const emailUsuarioLogado = user.email;
+            let filtroLoja = ""; // Inicialize o filtro da loja como vazio
 
-            // Armazene o email no Local Storage
-            localStorage.setItem("userEmail", emailUsuarioLogado);
+            // Verifique o email do usuário e defina o filtro da loja correspondente
+            switch (emailUsuarioLogado) {
+                case "humberto@barbosasm.com.br":
+                    filtroLoja = "1001";
+                    break;
+                case "fcaixa03@barbosasm.com.br":
+                    filtroLoja = "1003";
+                    break;
+                case "fcaixa04@barbosasm.com.br":
+                    filtroLoja = "1004";
+                    break;
+                default:
+                    // Defina o estilo de exibição do campo de filtro como "block" caso contrário
+                    const filtroLojaElement = document.getElementById("filtroLoja");
+                    filtroLojaElement.style.display = "block";
 
-            let filtroLoja = emailUsuarioLogado.replace(/[^0-9]/g, ''); // Extrai apenas os números do email
+                    // Ocultar as outras opções no menu suspenso
+                    for (let i = 0; i < filtroLojaElement.options.length; i++) {
+                        const option = filtroLojaElement.options[i];
+                        if (option.value !== filtroLoja) {
+                            option.disabled = true;
+                        }
+                    }
+                    break;
+            }
 
             // Defina o valor do filtro da loja no campo de seleção
             const selectFiltroLoja = document.getElementById("filtroLoja");
             selectFiltroLoja.value = filtroLoja;
 
-            // Atualize o elemento com o email do usuário
-            atualizarEmailUsuario(emailUsuarioLogado); // Atualize o email do usuário aqui
+            filtrarTabela();
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
@@ -362,14 +354,11 @@ function verificarUsuario() {
     });
 }
 
-// ...
-
-// Chame a função para verificar o usuário quando a página carregar
-$(document).ready(function () {
-    verificarUsuario();
-    carregarDados(); // Carregue os dados da tabela, se necessário
-});
-
+    // Chame a função para verificar o usuário quando a página carregar
+    $(document).ready(function () {
+        verificarUsuario();
+        carregarDados(); // Carregue os dados da tabela, se necessário
+    });
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
