@@ -108,11 +108,18 @@ document.getElementById("btnSair").addEventListener("click", function() {
     window.location.href = "index.html";
 });
 
-// Recupere o email do usuário do Local Storage
-var userEmail = localStorage.getItem("userEmail");
+// Limpar o email anterior do Local Storage
+localStorage.removeItem("userEmail");
+
+// Obtenha o email do usuário atual
+var userEmail = user.email;
+
+// Armazene o email no Local Storage
+localStorage.setItem("userEmail", userEmail);
 
 // Exiba o email onde desejar, por exemplo, na navbar
 document.getElementById("userEmailDisplay").textContent = userEmail;
+
 </script>
 
 
