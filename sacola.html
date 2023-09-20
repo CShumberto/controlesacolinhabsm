@@ -62,40 +62,15 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Itens do Navbar -->
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <!-- Item "Requisição Sacola" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Requisição Sacola</a>
-                </li>
-
-                <!-- Item "Lançar Sacola" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Lançar Sacola</a>
-                </li>
-
-                <!-- Item "Cadastrar Operador" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Cadastrar Operador</a>
-                </li>
-
-                <!-- Item "Dashboard" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Dashboard</a>
-                </li>
-
-                <!-- Item "Sobre" -->
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Sobre</a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Exibir email do usuário logado -->
-        <span class="navbar-text">
-            Usuário: <span id="userEmail">carregando...</span>
-        </span>
+     <nav>
+  <a href="index.html">Início</a>
+  <a href="login.html">Login</a>
+  <a href="cadastro.html">Cadastro</a>
+  <a href="#">
+    <i class="fas fa-user"></i>
+    <span>{$usuario->email}</span>
+  </a>
+</nav>
         
         <!-- Botão "Sair" com estilo Bootstrap -->
         <button class="btn btn-danger ml-2" id="btnSair">Sair</button>
