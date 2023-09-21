@@ -270,7 +270,7 @@ function filtrarTabela() {
                         </div>
                         <div class="form-group">
     <label for="numeroLoja">Número da Loja:</label>
-    <input type="text" class="form-control" id="numeroLoja">
+    <input type="text" class="form-control" id="numeroLojaModal" onchange="filtrarTabela()">
 </div>
                         <div class="form-group">
                             <label for="nomeOperador">Nome do Operador:</label>
@@ -366,8 +366,8 @@ var dados = [
                 tabela.search(lojaCorrespondente.loja).draw();
 
                 // Defina o valor do campo de entrada no modal como o número da loja
-                if (document.getElementById("numeroLoja")) {
-                    document.getElementById("numeroLoja").value = lojaCorrespondente.loja;
+                if (document.getElementById("numeroLojaModal")) {
+                    document.getElementById("numeroLojaModal").value = lojaCorrespondente.loja;
                 }
             }
         } else {
