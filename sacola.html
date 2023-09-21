@@ -166,7 +166,7 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
 });
 </script>
 
-   <!-- Campos de filtro -->
+    <!-- Campos de filtro -->
   <div class="row mb-3">
             <div class="col-md-4">
                 <label for="filtroLoja">Filtrar por Loja:</label>
@@ -211,7 +211,29 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         <label for="filtroOperador">Filtrar por Operador:</label>
         <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
-  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var dropdown = document.getElementById("filtroLoja");
+
+        var dados = [
+            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+            // Outros dados aqui...
+        ];
+
+        for (var i = 0; i < dados.length; i++) {
+            var dado = dados[i];
+            var option = document.createElement("option");
+            option.value = dado.loja;
+            // Removendo o texto "Loja" da opção
+            option.text = dado.loja; // Agora exibirá apenas o número da loja
+            dropdown.appendChild(option);
+        }
+
+        // Restante do seu código permanece o mesmo.
+    });
+</script>
  
 <script>
 // Função para filtrar a tabela com base nos campos "Operador" e "Loja"
@@ -478,10 +500,8 @@ function filtrarTabela() {
     </div>
 
     <script>
-	    
 
-<script>
-     document.addEventListener("DOMContentLoaded", function() {
+ document.addEventListener("DOMContentLoaded", function() {
         var dropdown = document.getElementById("filtroLoja");
         var filtroOperador = document.getElementById("filtroOperador");
 
@@ -517,64 +537,41 @@ function filtrarTabela() {
                     return dado.email === userEmail;
                 });
 
-                // Atualize o dropdown com as lojas filtradas
-                dropdown.innerHTML = ""; // Limpa as opções existentes
+// Função para preencher o dropdown com base no email do usuário
+function preencherDropdown(emailUsuario) {
+    var dropdown = document.getElementById("filtroLoja");
 
-                for (var i = 0; i < lojasFiltradas.length; i++) {
-                    var dado = lojasFiltradas[i];
-                    var option = document.createElement("option");
-                    option.value = dado.loja;
-                    option.text = dado.loja;
-                    dropdown.appendChild(option);
-                }
-            } else {
-                // O usuário não está logado, você pode lidar com isso de acordo
-            }
-        });
+    // Limpe as opções atuais do dropdown
+    dropdown.innerHTML = "";
+
+    // Filtrar os dados do Firebase com base no email do usuário
+    var lojasFiltradas = dados.filter(function (dado) {
+        return dado.email === emailUsuario;
     });
 
-// Função para verificar o usuário atual e exibir o email na navbar e preencher o dropdown
-function verificarUsuario() {
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // O usuário está logado
-            const emailUsuarioLogado = user.email;
+    // Adicionar uma opção padrão ao dropdown
+    var optionPadrao = document.createElement("option");
+    optionPadrao.value = "";
+    optionPadrao.textContent = "Selecione";
+    dropdown.appendChild(optionPadrao);
 
-            // Verificar se o usuário está autorizado com base no email
-            const lojaAutorizada = obterLojaAutorizada(emailUsuarioLogado);
-
-            if (lojaAutorizada) {
-                // Exiba o email do usuário na navbar
-                document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
-
-                // Preencha o dropdown com base na loja autorizada
-                preencherDropdown(lojaAutorizada);
-            } else {
-                // O usuário não está autorizado, redirecione-o para a página de acesso negado
-                window.location.href = "acesso-negado.html";
-            }
-        } else {
-            // O usuário não está logado, redirecione-o para a página de login
-            window.location.href = "index.html";
-        }
+    // Preencher o dropdown com as lojas disponíveis para o usuário
+    lojasFiltradas.forEach(function (loja) {
+        var option = document.createElement("option");
+        option.value = loja.loja;
+        option.textContent = loja.loja;
+        dropdown.appendChild(option);
     });
+
+    // Adicionar a opção "Todas as Lojas"
+    var optionTodas = document.createElement("option");
+    optionTodas.value = "Todas as Lojas";
+    optionTodas.textContent = "Todas as Lojas";
+    dropdown.appendChild(optionTodas);
 }
-// Função para obter a loja autorizada com base no email do usuário
-function obterLojaAutorizada(emailUsuario) {
-    const lojasAutorizadas = {
-        "fcaixa01@barbosasm.com.br": "1001",
-        "fcaixa02@barbosasm.com.br": "1002",
-        "fcaixa03@barbosasm.com.br": "1003",
-        // Adicione outros emails e lojas autorizadas conforme necessário
-    };
 
-    return lojasAutorizadas[emailUsuario] || null;
-}
-	    // Chame a função verificarUsuario quando o DOM estiver carregado
-    document.addEventListener("DOMContentLoaded", function() {
-        verificarUsuario();
-    });
-	    
+
+
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
         const dadosCollection = db.collection('controlemensal-sacolinhas');
@@ -939,11 +936,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Dispare o evento onchange para que a tabela seja filtrada automaticamente
 filtroLoja.dispatchEvent(new Event('change'));
 });
-    document.addEventListener("DOMContentLoaded", function () {
-    verificarUsuario();
-    // Outras configurações e código podem ser adicionados aqui
-});
-
+    
     </script>
 </body>
 </html>
