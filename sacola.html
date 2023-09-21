@@ -489,7 +489,7 @@ function filtrarTabela() {
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-
+ 
     // Iniciar o Firebase
     firebase.initializeApp(firebaseConfig);
 
@@ -529,10 +529,13 @@ function filtrarTabela() {
                         { data: 'Observação' }
                     ]
                 });
+
+                // Disparar o evento onchange para que a tabela seja filtrada automaticamente
+                const filtroLoja = document.getElementById('filtroLoja');
+                filtroLoja.dispatchEvent(new Event('change'));
             });
         }
     });
-
 
 
        
@@ -918,7 +921,6 @@ document.addEventListener("DOMContentLoaded", function () {
 // Dispare o evento onchange para que a tabela seja filtrada automaticamente
 filtroLoja.dispatchEvent(new Event('change'));
 });
-    
-    </script>
+ 
 </body>
 </html>
