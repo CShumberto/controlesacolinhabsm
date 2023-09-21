@@ -16,3 +16,4 @@ const data = $("#tabela-dados").DataTable();
     // Defina a função de filtro com base no email do usuário
     tabela.column(2).search(emailToLoja[userEmail] || '', true, false).draw();
 });
+ 
