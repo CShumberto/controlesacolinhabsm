@@ -211,29 +211,7 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         <label for="filtroOperador">Filtrar por Operador:</label>
         <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var dropdown = document.getElementById("filtroLoja");
-
-        var dados = [
-            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
-            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
-            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
-            // Outros dados aqui...
-        ];
-
-        for (var i = 0; i < dados.length; i++) {
-            var dado = dados[i];
-            var option = document.createElement("option");
-            option.value = dado.loja;
-            // Removendo o texto "Loja" da opção
-            option.text = dado.loja; // Agora exibirá apenas o número da loja
-            dropdown.appendChild(option);
-        }
-
-        // Restante do seu código permanece o mesmo.
-    });
-</script>
+  
  
 <script>
 // Função para filtrar a tabela com base nos campos "Operador" e "Loja"
@@ -500,17 +478,6 @@ function filtrarTabela() {
     </div>
 
     <script>
-
-document.addEventListener("DOMContentLoaded", function() {
-        var dropdown = document.getElementById("filtroLoja");
-        var filtroOperador = document.getElementById("filtroOperador");
-
-        var dados = [
-            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
-            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
-            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
-            // Outros dados aqui...
-        ];
 	    
         // Configuração do Firebase
         const firebaseConfig = {
@@ -526,7 +493,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-       // Função para verificar o usuário atual e exibir o email na navbar
+       /// Função para verificar o usuário atual e exibir o email na navbar e preencher o dropdown
 function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -535,12 +502,49 @@ function verificarUsuario() {
 
             // Exiba o email do usuário na navbar
             document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+
+            // Preencha o dropdown com base no email do usuário
+            preencherDropdown(emailUsuarioLogado);
         } else {
             // O usuário não está logado, redirecione-o para a página de login
             window.location.href = "index.html";
         }
     });
 }
+
+// Função para preencher o dropdown com base no email do usuário
+function preencherDropdown(emailUsuario) {
+    var dropdown = document.getElementById("filtroLoja");
+
+    // Limpe as opções atuais do dropdown
+    dropdown.innerHTML = "";
+
+    // Filtrar os dados do Firebase com base no email do usuário
+    var lojasFiltradas = dados.filter(function (dado) {
+        return dado.email === emailUsuario;
+    });
+
+    // Adicionar uma opção padrão ao dropdown
+    var optionPadrao = document.createElement("option");
+    optionPadrao.value = "";
+    optionPadrao.textContent = "Selecione";
+    dropdown.appendChild(optionPadrao);
+
+    // Preencher o dropdown com as lojas disponíveis para o usuário
+    lojasFiltradas.forEach(function (loja) {
+        var option = document.createElement("option");
+        option.value = loja.loja;
+        option.textContent = loja.loja;
+        dropdown.appendChild(option);
+    });
+
+    // Adicionar a opção "Todas as Lojas"
+    var optionTodas = document.createElement("option");
+    optionTodas.value = "Todas as Lojas";
+    optionTodas.textContent = "Todas as Lojas";
+    dropdown.appendChild(optionTodas);
+}
+
 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
