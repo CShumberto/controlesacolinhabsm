@@ -481,74 +481,96 @@ function filtrarTabela() {
 	    
 
 <script>
-    // Configuração do Firebase
-    const firebaseConfig = {
-        apiKey: "SUA_API_KEY",
-        authDomain: "SEU_DOMÍNIO.firebaseapp.com",
-        databaseURL: "https://SEU_DOMÍNIO.firebaseio.com",
-        projectId: "SEU_PROJECT_ID",
-        storageBucket: "SEU_STORAGE_BUCKET",
-        messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-        appId: "SEU_APP_ID"
-    };
+     document.addEventListener("DOMContentLoaded", function() {
+        var dropdown = document.getElementById("filtroLoja");
+        var filtroOperador = document.getElementById("filtroOperador");
 
-    // Inicialize o Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Função para verificar o usuário atual e exibir o email na navbar e preencher o dropdown
-    function verificarUsuario() {
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // O usuário está logado
-                const emailUsuarioLogado = user.email;
-
-                // Verificar se o usuário está autorizado com base no email
-                const lojaAutorizada = obterLojaAutorizada(emailUsuarioLogado);
-
-                if (lojaAutorizada) {
-                    // Exiba o email do usuário na navbar
-                    document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
-
-                    // Preencha o dropdown com base na loja autorizada
-                    preencherDropdown(lojaAutorizada);
-                } else {
-                    // O usuário não está autorizado, redirecione-o para a página de acesso negado
-                    window.location.href = "acesso-negado.html";
-                }
-            } else {
-                // O usuário não está logado, redirecione-o para a página de login
-                window.location.href = "index.html";
-            }
-        });
-    }
-
-    // Função para obter a loja autorizada com base no email do usuário
-    function obterLojaAutorizada(emailUsuario) {
-        const lojasAutorizadas = {
-            "fcaixa01@barbosasm.com.br": "1001",
-            "fcaixa02@barbosasm.com.br": "1002",
-            "fcaixa03@barbosasm.com.br": "1003",
-            // Adicione outros emails e lojas autorizadas conforme necessário
+        var dados = [
+            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+            // Outros dados aqui...
+        ];
+	    
+        // Configuração do Firebase
+        const firebaseConfig = {
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-        return lojasAutorizadas[emailUsuario] || null;
-    }
+// Inicialize o Firebase
+      firebase.initializeApp(firebaseConfig);
 
-    // Função para preencher o dropdown com base na loja autorizada
-    function preencherDropdown(lojaAutorizada) {
-        var dropdown = document.getElementById("filtroLoja");
+        // Verifique o estado de autenticação do usuário
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // O usuário está logado
+                var userEmail = user.email;
 
-        // Limpa as opções existentes
-        dropdown.innerHTML = "";
+                // Agora você pode filtrar os dados com base no email logado
+                var lojasFiltradas = dados.filter(function(dado) {
+                    return dado.email === userEmail;
+                });
 
-        // Crie uma opção com a loja autorizada e a exiba no dropdown
-        var option = document.createElement("option");
-        option.value = lojaAutorizada;
-        option.text = lojaAutorizada;
-        dropdown.appendChild(option);
-    }
+                // Atualize o dropdown com as lojas filtradas
+                dropdown.innerHTML = ""; // Limpa as opções existentes
 
-    // Chame a função verificarUsuario quando o DOM estiver carregado
+                for (var i = 0; i < lojasFiltradas.length; i++) {
+                    var dado = lojasFiltradas[i];
+                    var option = document.createElement("option");
+                    option.value = dado.loja;
+                    option.text = dado.loja;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                // O usuário não está logado, você pode lidar com isso de acordo
+            }
+        });
+    });
+
+// Função para verificar o usuário atual e exibir o email na navbar e preencher o dropdown
+function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
+
+            // Verificar se o usuário está autorizado com base no email
+            const lojaAutorizada = obterLojaAutorizada(emailUsuarioLogado);
+
+            if (lojaAutorizada) {
+                // Exiba o email do usuário na navbar
+                document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+
+                // Preencha o dropdown com base na loja autorizada
+                preencherDropdown(lojaAutorizada);
+            } else {
+                // O usuário não está autorizado, redirecione-o para a página de acesso negado
+                window.location.href = "acesso-negado.html";
+            }
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
+        }
+    });
+}
+// Função para obter a loja autorizada com base no email do usuário
+function obterLojaAutorizada(emailUsuario) {
+    const lojasAutorizadas = {
+        "fcaixa01@barbosasm.com.br": "1001",
+        "fcaixa02@barbosasm.com.br": "1002",
+        "fcaixa03@barbosasm.com.br": "1003",
+        // Adicione outros emails e lojas autorizadas conforme necessário
+    };
+
+    return lojasAutorizadas[emailUsuario] || null;
+}
+	    // Chame a função verificarUsuario quando o DOM estiver carregado
     document.addEventListener("DOMContentLoaded", function() {
         verificarUsuario();
     });
