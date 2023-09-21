@@ -4,7 +4,7 @@ form.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const email = form['email'].value;
-    const loja = form['loja'].value;
+    const loja = parseInt(form['loja'].value); // Converter para número inteiro
     const operador = form['operador'].value;
     const senha = form['senha'].value;
 
