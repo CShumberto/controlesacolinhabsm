@@ -307,25 +307,36 @@ document.addEventListener("DOMContentLoaded", function () {
 filtroLoja.dispatchEvent(new Event('change'));
 });
 
-// O código que você já tem aqui...
+document.addEventListener("DOMContentLoaded", function () {
+    // Crie um objeto que mapeie os emails para os números das lojas
+    const emailToLoja = {
+        'gestaofrentecaixa@gmail.com': 'Todas as Lojas',
+        'fcaixa01@barbosasm.com.br': '1001',
+        'fcaixa02@barbosasm.com.br': '1002',
+        // Adicione os demais emails e números das lojas aqui...
+    };
 
-// Crie um objeto que mapeie os emails para os números das lojas
-const emailToLoja = {
-  'gestaofrentecaixa@gmail.com': 'Todas as Lojas',
-  'fcaixa01@barbosasm.com.br': '1001',
-  'fcaixa02@barbosasm.com.br': '1002',
-  // Adicione os demais emails e números das lojas aqui...
-};
+    // Obtém o elemento select
+    const filtroLoja = document.getElementById('filtroLoja');
 
-// Obtém o elemento select
-const filtroLoja = document.getElementById('filtroLoja');
+    // Obtém o email do usuário logado
+    const userEmail = document.getElementById('userEmailDisplay').textContent;
 
-// Obtém o email do usuário logado
-const userEmail = document.getElementById('userEmailDisplay').textContent;
+    // Define o valor do select com base no email do usuário
+    filtroLoja.value = emailToLoja[userEmail] || 'Todas as Lojas';
 
-// Define o valor do select com base no email do usuário
-filtroLoja.value = emailToLoja[userEmail] || 'Todas as Lojas';
+    // Dispara o evento onchange para que a tabela seja filtrada automaticamente
+    filtroLoja.dispatchEvent(new Event('change'));
 
-// Dispara o evento onchange para que a tabela seja filtrada automaticamente
-filtroLoja.dispatchEvent(new Event('change'));
+    // Armazena o valor do filtro no localStorage
+    localStorage.setItem('filtroLoja', filtroLoja.value);
+
+    // Recupera o valor do filtro do localStorage e define-o no campo de filtro de loja
+    const filtroLojaLocalStorage = localStorage.getItem('filtroLoja');
+    if (filtroLojaLocalStorage) {
+        filtroLoja.value = filtroLojaLocalStorage;
+        filtroLoja.dispatchEvent(new Event('change'));
+    }
+});
+
 
