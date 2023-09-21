@@ -537,23 +537,6 @@ function filtrarTabela() {
     }
   });   
 
-       // Função para verificar o usuário atual e exibir o email na navbar
-function verificarUsuario() {
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // O usuário está logado
-            const emailUsuarioLogado = user.email;
-
-            // Exiba o email do usuário na navbar
-            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
-        } else {
-            // O usuário não está logado, redirecione-o para a página de login
-            window.location.href = "index.html";
-        }
-    });
-}
-
-
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
         const dadosCollection = db.collection('controlemensal-sacolinhas');
@@ -918,6 +901,8 @@ document.addEventListener("DOMContentLoaded", function () {
 // Dispare o evento onchange para que a tabela seja filtrada automaticamente
 filtroLoja.dispatchEvent(new Event('change'));
 });
- 
+    
+    </script>
 </body>
 </html>
+
