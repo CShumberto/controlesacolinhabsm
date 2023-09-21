@@ -323,6 +323,8 @@ function filtrarTabela() {
     </div>
 
     <script>
+
+
         // Configuração do Firebase
         const firebaseConfig = {
            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
@@ -336,7 +338,12 @@ function filtrarTabela() {
 
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
-
+var dados = [
+    { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+    { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+    { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+    // Outros dados aqui...
+];	    
      function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -364,7 +371,10 @@ function filtrarTabela() {
         }
     });
 }
-
+// Evento DOMContentLoaded para chamar verificarUsuario() quando a página carregar
+        document.addEventListener("DOMContentLoaded", function () {
+            verificarUsuario();
+        });
 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
@@ -588,10 +598,7 @@ function filtrarTabela() {
             verificarUsuario();
             carregarDados(); // Carregue os dados da tabela, se necessário
         });
-	    document.addEventListener("DOMContentLoaded", function () {
-    verificarUsuario();
-});
-
+	    
     </script>
 </body>
 </html>
