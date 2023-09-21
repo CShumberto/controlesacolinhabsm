@@ -76,13 +76,13 @@ function filtrarTabela() {
 
 // Configuração do Firebase
 const firebaseConfig = {
-    apiKey: "sua-api-key-aqui",
-    authDomain: "seu-dominio.firebaseapp.com",
-    databaseURL: "https://seu-database.firebaseio.com",
-    projectId: "seu-projeto-id",
-    storageBucket: "seu-bucket.appspot.com",
-    messagingSenderId: "seu-sender-id",
-    appId: "seu-app-id"
+    apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
 };
 
 // Inicialize o Firebase
