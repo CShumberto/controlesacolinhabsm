@@ -4,21 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
-    <script>
-function initFirebase() {
-    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
-    firebase.initializeApp(firebaseConfig);
-    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
-}
-</script>
-<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js" onload="initFirebase()"></script>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
-
-    <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Estilos CSS aqui */
+    </style>
 </head>
 <body>
     <div class="container">
@@ -27,7 +15,7 @@ function initFirebase() {
             <label for="email">E-mail:</label>
             <input type="email" id="email" required>
 
-            <label for="loja">Loja:</label>
+            <label for="loja">Loja (Número):</label>
             <input type="number" id="loja" required>
 
             <label for="operador">Operador:</label>
@@ -39,11 +27,47 @@ function initFirebase() {
             <button type="submit">Entrar</button>
         </form>
     </div>
- <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
-<script src="firebase-config.js"></script>
-<script src="app.js"></script>
 
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Captura do formulário
+        const form = document.getElementById('login-form');
+
+        // Adiciona um ouvinte de evento para o envio do formulário
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = form['email'].value;
+            const loja = parseInt(form['loja'].value);
+            const operador = form['operador'].value;
+            const senha = form['senha'].value;
+
+            try {
+                const user = await firebase.auth().signInWithEmailAndPassword(email, senha);
+                console.log(`Usuário autenticado: ${user.user.email}`);
+
+                // Redirecionar para a página "sacola.html" após o login bem-sucedido
+                window.location.href = 'sacola.html';
+            } catch (error) {
+                console.error(error);
+                alert('Erro ao fazer login. Verifique suas credenciais.');
+            }
+        });
+    </script>
 </body>
 </html>
