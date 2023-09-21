@@ -325,8 +325,6 @@ function filtrarTabela() {
     <script>
 
 
-
-
 	     document.addEventListener("DOMContentLoaded", function() {
 	    
         // Configuração do Firebase
@@ -344,37 +342,26 @@ function filtrarTabela() {
         firebase.initializeApp(firebaseConfig);
 
        // Função para verificar o usuário atual e exibir o email na navbar
-function verificarUsuario() {
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // O usuário está logado
-            const emailUsuarioLogado = user.email;
+// ...
 
-            // Exiba o email do usuário na navbar
-            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
-        } else {
-            // O usuário não está logado, redirecione-o para a página de login
-            window.location.href = "index.html";
-        }
-    });
-}
-var dropdown = document.getElementById("filtroLoja");
+// Dentro da função verificarUsuario
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        // O usuário está logado
+        const emailUsuarioLogado = user.email;
 
-        var dados = [
-            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
-            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
-            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
-            // Outros dados aqui...
-        ];
+        // Exiba o email do usuário na navbar
+        document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
 
-        for (var i = 0; i < dados.length; i++) {
-            var dado = dados[i];
-            var option = document.createElement("option");
-            option.value = dado.loja;
-            // Removendo o texto "Loja" da opção
-            option.text = dado.loja; // Agora exibirá apenas o número da loja
-            dropdown.appendChild(option);
-        }
+        // Selecione automaticamente o item do menu dropdown com base no email do usuário
+        const dropdown = document.getElementById("filtroLoja");
+        dropdown.value = emailUsuarioLogado; // Supondo que o valor corresponde ao email
+    } else {
+        // O usuário não está logado, redirecione-o para a página de login
+        window.location.href = "index.html";
+    }
+});
+
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
