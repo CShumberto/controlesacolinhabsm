@@ -211,27 +211,56 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         <label for="filtroOperador">Filtrar por Operador:</label>
         <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
-  <script>
+ <script>
     document.addEventListener("DOMContentLoaded", function() {
         var dropdown = document.getElementById("filtroLoja");
+        var filtroOperador = document.getElementById("filtroOperador");
 
-        var dados = [
-            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
-            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
-            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
-            // Outros dados aqui...
-        ];
+        // Inicialize o Firebase
+        var firebaseConfig = {
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+        firebase.initializeApp(firebaseConfig);
 
-        for (var i = 0; i < dados.length; i++) {
-            var dado = dados[i];
-            var option = document.createElement("option");
-            option.value = dado.loja;
-            // Removendo o texto "Loja" da opção
-            option.text = dado.loja; // Agora exibirá apenas o número da loja
-            dropdown.appendChild(option);
-        }
+        // Verifique o estado de autenticação do usuário
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // O usuário está logado
+                var userEmail = user.email;
 
-        // Restante do seu código permanece o mesmo.
+                // Agora você pode filtrar os dados com base no email logado
+                var dados = [
+                    { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+                    { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+                    { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+                    // Outros dados aqui...
+                ];
+
+                var lojasFiltradas = dados.filter(function(dado) {
+                    return dado.email === userEmail;
+                });
+
+                // Atualize o dropdown com as lojas filtradas
+                dropdown.innerHTML = ""; // Limpa as opções existentes
+
+                for (var i = 0; i < lojasFiltradas.length; i++) {
+                    var dado = lojasFiltradas[i];
+                    var option = document.createElement("option");
+                    option.value = dado.loja;
+                    option.text = dado.loja;
+                    dropdown.appendChild(option);
+                }
+            } else {
+                // O usuário não está logado, redirecione-o para a página index.html
+                window.location.href = "index.html";
+            }
+        });
     });
 </script>
  
