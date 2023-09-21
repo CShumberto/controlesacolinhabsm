@@ -479,66 +479,63 @@ function filtrarTabela() {
 
     <script>
         // Configuração do Firebase
-        const firebaseConfig = {
-           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+	    
+  const firebaseConfig = {
+    apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
     authDomain: "controlemensal-sacolinhas.firebaseapp.com",
     databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
     projectId: "controlemensal-sacolinhas",
     storageBucket: "controlemensal-sacolinhas.appspot.com",
     messagingSenderId: "925424065013",
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
-        };
+  };
 
- 
-    // Iniciar o Firebase
-    firebase.initializeApp(firebaseConfig);
+  // Inicialize o Firebase
+  firebase.initializeApp(firebaseConfig);
 
-    // Obter o usuário autenticado
-    const auth = firebase.auth();
-    auth.onAuthStateChanged((user) => {
-        // Se o usuário estiver autenticado, obter os dados
-        if (user) {
-            // Obter os dados do banco de dados
-            const dadosCollection = firebase.firestore().collection('controlemensal-sacolinhas');
+  // Obtenha o usuário autenticado
+  const auth = firebase.auth();
+  auth.onAuthStateChanged((user) => {
+    // Se o usuário estiver autenticado, obtenha os dados
+    if (user) {
+      // Obtenha os dados do banco de dados
+      const dadosCollection = firebase.firestore().collection('controlemensal-sacolinhas');
 
-            // Obter todos os dados do Firestore
-            dadosCollection.get().then((querySnapshot) => {
-                // Filtrar os dados pelo ID do usuário autenticado
-                const dadosFiltrados = querySnapshot.docs
-                    .filter((doc) => doc.data().usuario === user.uid)
-                    .map((doc) => doc.data());
+      // Obtenha todos os dados do Firestore
+      dadosCollection.get().then((querySnapshot) => {
+        // Filtrar os dados pelo ID do usuário autenticado
+        const dadosFiltrados = querySnapshot.docs
+          .filter((doc) => doc.data().usuario === user.uid)
+          .map((doc) => doc.data());
 
-                // Agora você tem os dados filtrados que correspondem ao usuário autenticado
-                console.log(dadosFiltrados);
+        // Agora você tem os dados filtrados correspondentes ao usuário autenticado
+        console.log(dadosFiltrados);
 
-                // Criar a DataTable com os dados filtrados
-                const datatable = $('#datatable').DataTable({
-                    data: dadosFiltrados,
-                    columns: [
-                        { data: 'Dia' },
-                        { data: 'Número da Loja' },
-                        { data: 'Nome do Operador' },
-                        { data: 'TOTAL Easy Open Bag G' },
-                        { data: 'TOTAL Planeta Agradece P' },
-                        { data: 'Venda total mensal (R$)' },
-                        { data: 'Total de Sacolinhas (UN)' },
-                        { data: 'Valor total sacolinha G (R$)' },
-                        { data: 'Valor total sacolinha P (R$)' },
-                        { data: 'Valor Total sacolinha (R$)' },
-                        { data: '% Faturamento' },
-                        { data: 'Observação' }
-                    ]
-                });
+        // Crie a DataTable com os dados filtrados
+        const datatable = $('#datatable').DataTable({
+          data: dadosFiltrados,
+          columns: [
+            { data: 'Dia' },
+            { data: 'Número da Loja' },
+            { data: 'Nome do Operador' },
+            { data: 'TOTAL Easy Open Bag G' },
+            { data: 'TOTAL Planeta Agradece P' },
+            { data: 'Venda total mensal (R$)' },
+            { data: 'Total de Sacolinhas (UN)' },
+            { data: 'Valor total sacolinha G (R$)' },
+            { data: 'Valor total sacolinha P (R$)' },
+            { data: 'Valor Total sacolinha (R$)' },
+            { data: '% Faturamento' },
+            { data: 'Observação' }
+          ]
+        });
 
-                // Disparar o evento onchange para que a tabela seja filtrada automaticamente
-                const filtroLoja = document.getElementById('filtroLoja');
-                filtroLoja.dispatchEvent(new Event('change'));
-            });
-        }
-    });
-
-
-       
+        // Dispare o evento onchange para que a tabela seja filtrada automaticamente
+        const filtroLoja = document.getElementById('filtroLoja');
+        filtroLoja.dispatchEvent(new Event('change'));
+      });
+    }
+  });   
 
        // Função para verificar o usuário atual e exibir o email na navbar
 function verificarUsuario() {
