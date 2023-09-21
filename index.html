@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
+    <script>
+function initFirebase() {
+    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
+    firebase.initializeApp(firebaseConfig);
+    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
+}
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js" onload="initFirebase()"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
