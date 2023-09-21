@@ -165,134 +165,134 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
     data.button(1).trigger();
 });
 </script>
-
-    <!-- Campos de filtro -->
-  <div class="row mb-3">
-            <div class="col-md-4">
-                <label for="filtroLoja">Filtrar por Loja:</label>
-                <select class="form-select" id="filtroLoja" onchange="filtrarTabela()">
-                    <option value="">Selecione</option>
-		    <option value="Todas as Lojas">Todas as Lojas</option>
-                    <option value="1001">1001</option>
-                    <option value="1002">1002</option>
-                    <option value="1003">1003</option>
-                    <option value="1004">1004</option>
-                    <option value="1005">1005</option>
-                    <option value="1006">1006</option>
-                    <option value="1008">1008</option>
-		    <option value="1009">1009</option>
-                    <option value="1010">1010</option>
-                    <option value="1011">1011</option>
-                    <option value="1012">1012</option>
-                    <option value="1014">1014</option>
-                    <option value="1015">1015</option>
-                    <option value="1018">1018</option>
-                    <option value="1019">1019</option>
-                    <option value="1020">1020</option>
-                    <option value="1021">1021</option>
-                    <option value="1023">1023</option>
-                    <option value="1024">1024</option>
-                    <option value="1026">1026</option>
-                    <option value="1028">1028</option>
-                    <option value="1029">1029</option>
-                    <option value="1031">1031</option>
-                    <option value="1033">1033</option>
-                    <option value="1035">1035</option>
-                    <option value="1036">1036</option>
-                    <option value="1037">1037</option>
-                    <option value="1038">1038</option>
-                    <option value="1039">1039</option>
-                    <option value="1040">1040</option>
-                    <option value="1041">1041</option>
-                    <option value="1042">1042</option>
-                </select>
-            </div>
-<div class="col-md-4">
-        <label for="filtroOperador">Filtrar por Operador:</label>
-        <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
+ <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="filtroLoja">Filtrar por Loja:</label>
+            <select class="form-select" id="filtroLoja" onchange="filtrarTabela()">
+                <option value="">Selecione</option>
+                <option value="Todas as Lojas">Todas as Lojas</option>
+                <option value="1001">Loja 1001</option>
+                <option value="1002">Loja 1002</option>
+                <option value="1003">Loja 1003</option>
+                <option value="1004">Loja 1004</option>
+                <option value="1005">Loja 1005</option>
+                <option value="1006">Loja 1006</option>
+                <option value="1008">Loja 1008</option>
+                <option value="1009">Loja 1009</option>
+                <option value="1010">Loja 1010</option>
+                <option value="1011">Loja 1011</option>
+                <option value="1012">Loja 1012</option>
+                <option value="1014">Loja 1014</option>
+                <option value="1015">Loja 1015</option>
+                <option value="1018">Loja 1018</option>
+                <option value="1019">Loja 1019</option>
+                <option value="1020">Loja 1020</option>
+                <option value="1021">Loja 1021</option>
+                <option value="1023">Loja 1023</option>
+                <option value="1024">Loja 1024</option>
+                <option value="1026">Loja 1026</option>
+                <option value="1028">Loja 1028</option>
+                <option value="1029">Loja 1029</option>
+                <option value="1031">Loja 1031</option>
+                <option value="1033">Loja 1033</option>
+                <option value="1035">Loja 1035</option>
+                <option value="1036">Loja 1036</option>
+                <option value="1037">Loja 1037</option>
+                <option value="1038">Loja 1038</option>
+                <option value="1039">Loja 1039</option>
+                <option value="1040">Loja 1040</option>
+                <option value="1041">Loja 1041</option>
+                <option value="1042">Loja 1042</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="filtroOperador">Filtrar por Operador:</label>
+            <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
+        </div>
     </div>
-   
-</div>
-<select class="form-select" id="filtroLoja" onchange="filtrarTabela()">
-    <option value="">Selecione</option>
-</select>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    var dropdown = document.getElementById("filtroLoja");
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var dropdown = document.getElementById("filtroLoja");
 
-    var dados = [
-        { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
-        { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
-        { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
-        { email: "fcaixa04@barbosasm.com.br", loja: "1004" },
-        { email: "fcaixa05@barbosasm.com.br", loja: "1005" },
-        { email: "fcaixa06@barbosasm.com.br", loja: "1006" },
-        { email: "fcaixa08@barbosasm.com.br", loja: "1008" },
-        { email: "fcaixa09@barbosasm.com.br", loja: "1009" },
-        { email: "fcaixa10@barbosasm.com.br", loja: "1010" },
-        { email: "fcaixa11@barbosasm.com.br", loja: "1011" },
-        { email: "fcaixa12@barbosasm.com.br", loja: "1012" },
-        { email: "fcaixa13@barbosasm.com.br", loja: "1013" },
-        { email: "fcaixa14@barbosasm.com.br", loja: "1014" },
-        { email: "fcaixa15@barbosasm.com.br", loja: "1015" },
-        { email: "fcaixa16@barbosasm.com.br", loja: "1016" },
-        { email: "fcaixa18@barbosasm.com.br", loja: "1018" },
-        { email: "fcaixa19@barbosasm.com.br", loja: "1019" },
-        { email: "fcaixa20@barbosasm.com.br", loja: "1020" },
-        { email: "fcaixa21@barbosasm.com.br", loja: "1021" },
-        { email: "fcaixa23@barbosasm.com.br", loja: "1023" },
-        { email: "fcaixa24@barbosasm.com.br", loja: "1024" },
-        { email: "fcaixa25@barbosasm.com.br", loja: "1025" },
-        { email: "fcaixa26@barbosasm.com.br", loja: "1026" },
-        { email: "fcaixa28@barbosasm.com.br", loja: "1028" },
-        { email: "fcaixa29@barbosasm.com.br", loja: "1029" },
-        { email: "fcaixa31@barbosasm.com.br", loja: "1031" },
-        { email: "fcaixa33@barbosasm.com.br", loja: "1033" },
-        { email: "fcaixa35@barbosasm.com.br", loja: "1035" },
-        { email: "fcaixa36@barbosasm.com.br", loja: "1036" },
-        { email: "fcaixa37@barbosasm.com.br", loja: "1037" },
-        { email: "fcaixa38@barbosasm.com.br", loja: "1038" },
-        { email: "fcaixa39@barbosasm.com.br", loja: "1039" },
-        { email: "fcaixa40@barbosasm.com.br", loja: "1040" },
-        { email: "fcaixa41@barbosasm.com.br", loja: "1041" },
-        { email: "fcaixa42@barbosasm.com.br", loja: "1042" },
-        { email: "fcaixa43@barbosasm.com.br", loja: "1043" },
-        { email: "fcaixa44@barbosasm.com.br", loja: "1044" }
-    ];
+            var dados = [
+                { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+                { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+                { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+                { email: "fcaixa04@barbosasm.com.br", loja: "1004" },
+                { email: "fcaixa05@barbosasm.com.br", loja: "1005" },
+                { email: "fcaixa06@barbosasm.com.br", loja: "1006" },
+                { email: "fcaixa08@barbosasm.com.br", loja: "1008" },
+                { email: "fcaixa09@barbosasm.com.br", loja: "1009" },
+                { email: "fcaixa10@barbosasm.com.br", loja: "1010" },
+                { email: "fcaixa11@barbosasm.com.br", loja: "1011" },
+                { email: "fcaixa12@barbosasm.com.br", loja: "1012" },
+                { email: "fcaixa14@barbosasm.com.br", loja: "1014" },
+                { email: "fcaixa15@barbosasm.com.br", loja: "1015" },
+                { email: "fcaixa18@barbosasm.com.br", loja: "1018" },
+                { email: "fcaixa19@barbosasm.com.br", loja: "1019" },
+                { email: "fcaixa20@barbosasm.com.br", loja: "1020" },
+                { email: "fcaixa21@barbosasm.com.br", loja: "1021" },
+                { email: "fcaixa23@barbosasm.com.br", loja: "1023" },
+                { email: "fcaixa24@barbosasm.com.br", loja: "1024" },
+                { email: "fcaixa26@barbosasm.com.br", loja: "1026" },
+                { email: "fcaixa28@barbosasm.com.br", loja: "1028" },
+                { email: "fcaixa29@barbosasm.com.br", loja: "1029" },
+                { email: "fcaixa31@barbosasm.com.br", loja: "1031" },
+                { email: "fcaixa33@barbosasm.com.br", loja: "1033" },
+                { email: "fcaixa35@barbosasm.com.br", loja: "1035" },
+                { email: "fcaixa36@barbosasm.com.br", loja: "1036" },
+                { email: "fcaixa37@barbosasm.com.br", loja: "1037" },
+                { email: "fcaixa38@barbosasm.com.br", loja: "1038" },
+                { email: "fcaixa39@barbosasm.com.br", loja: "1039" },
+                { email: "fcaixa40@barbosasm.com.br", loja: "1040" },
+                { email: "fcaixa41@barbosasm.com.br", loja: "1041" },
+                { email: "fcaixa42@barbosasm.com.br", loja: "1042" }
+                // Adicione mais dados de loja aqui
+            ];
 
-    for (var i = 0; i < dados.length; i++) {
-        var dado = dados[i];
-        var option = document.createElement("option");
-        option.value = dado.loja;
-        option.text = dado.loja;
-        dropdown.appendChild(option);
-    }
-});
+            for (var i = 0; i < dados.length; i++) {
+                var dado = dados[i];
+                var option = document.createElement("option");
+                option.value = dado.loja;
+                option.text = "Loja " + dado.loja;
+                dropdown.appendChild(option);
+            }
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Encontre o elemento do dropdown
-    var dropdown = document.getElementById("filtroLoja");
+            // Defina aqui a lógica para obter o número da loja do usuário
+            var userLoja = "1002"; // Exemplo: defina o número da loja do usuário
 
-    // Verifique se o usuário está logado e qual é o seu número da loja
-    var userLoja = userData.loja;
+            // Itere pelas opções do dropdown
+            for (var i = 0; i < dropdown.options.length; i++) {
+                var option = dropdown.options[i];
 
-    // Itere pelas opções do dropdown
-    for (var i = 0; i < dropdown.options.length; i++) {
-        var option = dropdown.options[i];
+                // Verifique se o valor da opção corresponde ao número da loja do usuário
+                if (option.value === userLoja) {
+                    // Defina a opção como selecionada
+                    option.selected = true;
 
-        // Verifique se o valor da opção corresponde ao número da loja do usuário
-        if (option.value === userLoja) {
-            // Defina a opção como selecionada
-            option.selected = true;
+                    // Desabilite a opção para que o usuário não possa alterá-la
+                    option.disabled = true;
+                }
+            }
+        });
 
-            // Desabilite a opção para que o usuário não possa alterá-la
-            option.disabled = true;
+        function filtrarTabela() {
+            // Adicione a lógica para filtrar a tabela aqui com base nos valores selecionados
+            var filtroLoja = document.getElementById("filtroLoja").value;
+            var filtroOperador = document.getElementById("filtroOperador").value;
+            
+            // Exemplo de lógica de filtragem
+            // Você pode adaptar isso ao seu caso específico
+            if (filtroLoja !== "" || filtroOperador !== "") {
+                // Implemente aqui a lógica de filtragem da tabela
+                console.log("Filtrando por loja: " + filtroLoja);
+                console.log("Filtrando por operador: " + filtroOperador);
+            } else {
+                // Se nenhum filtro estiver selecionado, exiba todos os resultados
+                console.log("Mostrando todos os resultados.");
+            }
         }
-    }
-});
-</script>
-
 
 </script>
     <!-- Tabela de dados -->
