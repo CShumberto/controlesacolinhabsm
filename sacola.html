@@ -211,30 +211,8 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         <label for="filtroOperador">Filtrar por Operador:</label>
         <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var dropdown = document.getElementById("filtroLoja");
-
-        var dados = [
-            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
-            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
-            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
-            // Outros dados aqui...
-        ];
-
-        for (var i = 0; i < dados.length; i++) {
-            var dado = dados[i];
-            var option = document.createElement("option");
-            option.value = dado.loja;
-            // Removendo o texto "Loja" da opção
-            option.text = dado.loja; // Agora exibirá apenas o número da loja
-            dropdown.appendChild(option);
-        }
-
-        // Restante do seu código permanece o mesmo.
-    });
-</script>
- 
+   
+</div>
 <script>
 // Função para filtrar a tabela com base nos campos "Operador" e "Loja"
 function filtrarTabela() {
@@ -501,6 +479,25 @@ function filtrarTabela() {
 
     <script>
 
+	     document.addEventListener("DOMContentLoaded", function() {
+        var dropdown = document.getElementById("filtroLoja");
+
+        var dados = [
+            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+            // Outros dados aqui...
+        ];
+
+        for (var i = 0; i < dados.length; i++) {
+            var dado = dados[i];
+            var option = document.createElement("option");
+            option.value = dado.loja;
+            // Removendo o texto "Loja" da opção
+            option.text = dado.loja; // Agora exibirá apenas o número da loja
+            dropdown.appendChild(option);
+        }
+
         // Configuração do Firebase
         const firebaseConfig = {
            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
@@ -513,35 +510,26 @@ function filtrarTabela() {
         };
 
 // Inicialize o Firebase
-      firebase.initializeApp(firebaseConfig);
+        firebase.initializeApp(firebaseConfig);
 
-        // Verifique o estado de autenticação do usuário
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                // O usuário está logado
-                var userEmail = user.email;
+        // Inicializar o Firebase
+        firebase.initializeApp(firebaseConfig);
 
-                // Agora você pode filtrar os dados com base no email logado
-                var lojasFiltradas = dados.filter(function(dado) {
-                    return dado.email === userEmail;
-                });
+       // Função para verificar o usuário atual e exibir o email na navbar
+function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
 
-                // Atualize o dropdown com as lojas filtradas
-                dropdown.innerHTML = ""; // Limpa as opções existentes
-
-                for (var i = 0; i < lojasFiltradas.length; i++) {
-                    var dado = lojasFiltradas[i];
-                    var option = document.createElement("option");
-                    option.value = dado.loja;
-                    option.text = dado.loja;
-                    dropdown.appendChild(option);
-                }
-            } else {
-                // O usuário não está logado, você pode lidar com isso de acordo
-            }
-        });
+            // Exiba o email do usuário na navbar
+            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
+        }
     });
-
+}
 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
