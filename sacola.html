@@ -323,10 +323,6 @@ function filtrarTabela() {
     </div>
 
     <script>
-
-
-	     document.addEventListener("DOMContentLoaded", function() {
-	    
         // Configuração do Firebase
         const firebaseConfig = {
            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
@@ -341,26 +337,34 @@ function filtrarTabela() {
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-       // Função para verificar o usuário atual e exibir o email na navbar
-// ...
+     function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
 
-// Dentro da função verificarUsuario
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        // O usuário está logado
-        const emailUsuarioLogado = user.email;
+            // Exiba o email do usuário na navbar
+            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
 
-        // Exiba o email do usuário na navbar
-        document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+            // Encontre a loja correspondente ao email do usuário
+            const lojaCorrespondente = dados.find(item => item.email === emailUsuarioLogado);
 
-        // Selecione automaticamente o item do menu dropdown com base no email do usuário
-        const dropdown = document.getElementById("filtroLoja");
-        dropdown.value = emailUsuarioLogado; // Supondo que o valor corresponde ao email
-    } else {
-        // O usuário não está logado, redirecione-o para a página de login
-        window.location.href = "index.html";
-    }
-});
+            if (lojaCorrespondente) {
+                // Se encontrarmos a loja correspondente, selecione-a no menu dropdown
+                const dropdown = document.getElementById("filtroLoja");
+                dropdown.value = lojaCorrespondente.loja;
+
+                // Aplique o filtro na tabela DataTable
+                const tabela = $('#tabela-dados').DataTable(); // Supondo que você esteja usando DataTables.js
+                tabela.search(lojaCorrespondente.loja).draw();
+            }
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
+        }
+    });
+}
+
 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
@@ -584,6 +588,10 @@ firebase.auth().onAuthStateChanged(function (user) {
             verificarUsuario();
             carregarDados(); // Carregue os dados da tabela, se necessário
         });
+	    document.addEventListener("DOMContentLoaded", function () {
+    verificarUsuario();
+});
+
     </script>
 </body>
 </html>
