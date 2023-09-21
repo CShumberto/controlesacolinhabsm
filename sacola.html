@@ -4,74 +4,40 @@
     <meta charset="UTF-8">
     <title>CRUD Firebase Firestore com DataTables</title>
 
-    <!-- CSS do DataTables -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-<!-- Firebase Authentication -->
-	<!-- Inclua a definição da função initFirebase() antes de qualquer script que a chame -->
-<script>
-function initFirebase() {
-    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
-    firebase.initializeApp(firebaseConfig);
-    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
-}
-</script>
-<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js" onload="initFirebase()"></script>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
-
-    <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- JavaScript do DataTables -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-
- 
-
-    <!-- Bootstrap CSS e JS -->
+    <!-- Importações de CSS e JavaScript -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Ícones FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-
-    <!-- Datepicker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.pt-BR.min.js"></script>
-	<!-- pdfmake para exportar para PDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
-
-<!-- TableExport para exportar para Excel -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
-
-<script>
-function initFirebase() {
-    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
-    firebase.initializeApp(firebaseConfig);
-    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
-}
-</script>
-
-    <style>
-        /* Estilos personalizados para a tabela */
-        .dataTables_wrapper {
-            padding: 0; /* Remova o preenchimento */
-            margin: 0; /* Remova as margens */
-          
-        }   
-    </style>
-</head>
-<body>
-    <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <!-- Adicione as importações do Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/TableExport/5.2.0/js/tableexport.min.js"></script>
+    
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
 
-    <!-- ... (seu código existente) ... -->
+    <!-- Configuração do Firebase -->
+    <script>
+        function initFirebase() {
+            firebase.initializeApp(firebaseConfig);
+            verificarUsuario();
+        }
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js" onload="initFirebase()"></script>
+    
+    <!-- Outros estilos personalizados -->
+    <style>
+        .dataTables_wrapper {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-info">
