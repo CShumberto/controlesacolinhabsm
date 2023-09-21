@@ -306,4 +306,25 @@ document.addEventListener("DOMContentLoaded", function () {
 // Dispare o evento onchange para que a tabela seja filtrada automaticamente
 filtroLoja.dispatchEvent(new Event('change'));
 });
+// Adicione esse código no final do seu script JavaScript existente
+
+// Crie um objeto que mapeie os emails para os números das lojas
+const emailToLoja = {
+  'gestaofrentecaixa@gmail.com': 'Todas as Lojas',
+  'fcaixa01@barbosasm.com.br': '1001',
+  'fcaixa02@barbosasm.com.br': '1002',
+  // Adicione os demais emails e números das lojas aqui...
+};
+
+// Obtém o elemento select
+const filtroLoja = document.getElementById('filtroLoja');
+
+// Obtém o email do usuário logado
+const userEmail = document.getElementById('userEmailDisplay').textContent;
+
+// Define o valor do select com base no email do usuário
+filtroLoja.value = emailToLoja[userEmail] || 'Todas as Lojas';
+
+// Dispara o evento onchange para que a tabela seja filtrada automaticamente
+filtroLoja.dispatchEvent(new Event('change'));
 
