@@ -124,12 +124,47 @@ function initFirebase() {
     </div>
 </nav>
 
- <!-- Botão para adicionar um novo registro -->
+<!-- JavaScript para redirecionar para index.html ao clicar em "Sair" -->
+<script>
+document.getElementById("btnSair").addEventListener("click", function() {
+    // Redirecionar para index.html
+    window.location.href = "index.html";
+});
+
+// Recupere o email do usuário do Local Storage
+var userEmail = localStorage.getItem("userEmail");
+
+// Exiba o email onde desejar, por exemplo, na navbar
+document.getElementById("userEmailDisplay").textContent = userEmail;
+</script>
+
+
+
+    <!-- Botão para adicionar um novo registro -->
     <button id="adicionarRegistro" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Adicionar Registro</button>
 	<div class="btn-group mt-3">
     <button class="btn btn-secondary" id="exportarPDF">Exportar para PDF</button>
     <button class="btn btn-secondary" id="exportarExcel">Exportar para Excel</button>
 </div>
+<script>
+// ...
+
+// Event listener para exportar para PDF
+document.getElementById("exportarPDF").addEventListener("click", function() {
+    const data = $("#tabela-dados").DataTable();
+    data.buttons.info(0, data.page.info().length - 1);
+    data.buttons.info("D", 0, 0);
+    data.button(0).trigger();
+});
+
+// Event listener para exportar para Excel
+document.getElementById("exportarExcel").addEventListener("click", function() {
+    const data = $("#tabela-dados").DataTable();
+    data.buttons.info(0, data.page.info().length - 1);
+    data.buttons.info("D", 0, 0);
+    data.button(1).trigger();
+});
+</script>
 
     <!-- Campos de filtro -->
   <div class="row mb-3">
@@ -178,9 +213,176 @@ function initFirebase() {
     </div>
    
 </div>
+<script>
+// Função para filtrar a tabela com base nos campos "Operador" e "Loja"
+function filtrarTabela() {
+    const filtroOperador = document.getElementById('filtroOperador').value.toLowerCase();
+    const filtroLoja = document.getElementById('filtroLoja').value.toLowerCase();
+    const userEmail = document.getElementById('userEmailDisplay').textContent;
+
+    const tbody = document.querySelector('tbody');
+    const linhas = tbody.getElementsByTagName('tr');
+
+    // Defina aqui as regras de filtragem com base no usuário logado (userEmail)
+    let lojasFiltradas = [];
+
+    if (userEmail === 'gestaofrentecaixa@gmail.com') {
+        // Se o usuário for "gestaofrentecaixa@gmail.com", não aplique nenhum filtro, exiba todas as lojas
+        lojasFiltradas = [];
+    } else if (userEmail === 'fcaixa01@barbosasm.com.br') {
+        // Se o usuário for "fcaixa01@barbosasm.com.br", filtre apenas a loja 1001
+        lojasFiltradas = ['1001'];
+    } else if (userEmail === 'fcaixa02@barbosasm.com.br') {
+        // Se o usuário for "fcaixa02@barbosasm.com.br", filtre apenas a loja 1002
+        lojasFiltradas = ['1002'];
+    } else if (userEmail === 'fcaixa03@barbosasm.com.br') {
+        // Se o usuário for "fcaixa03@barbosasm.com.br", filtre apenas a loja 1003
+        lojasFiltradas = ['1003'];
+    } else if (userEmail === 'fcaixa04@barbosasm.com.br') {
+        // Se o usuário for "fcaixa04@barbosasm.com.br", filtre apenas a loja 1004
+        lojasFiltradas = ['1004'];
+    } else if (userEmail === 'fcaixa05@barbosasm.com.br') {
+        // Se o usuário for "fcaixa05@barbosasm.com.br", filtre apenas a loja 1005
+        lojasFiltradas = ['1005'];
+    } else if (userEmail === 'fcaixa06@barbosasm.com.br') {
+        // Se o usuário for "fcaixa06@barbosasm.com.br", filtre apenas a loja 1006
+        lojasFiltradas = ['1006'];
+    } else if (userEmail === 'fcaixa07@barbosasm.com.br') {
+        // Se o usuário for "fcaixa07@barbosasm.com.br", filtre apenas a loja 1007
+        lojasFiltradas = ['1007'];
+    } else if (userEmail === 'fcaixa08@barbosasm.com.br') {
+        // Se o usuário for "fcaixa08@barbosasm.com.br", filtre apenas a loja 1008
+        lojasFiltradas = ['1008'];
+    } else if (userEmail === 'fcaixa09@barbosasm.com.br') {
+        // Se o usuário for "fcaixa09@barbosasm.com.br", filtre apenas a loja 1009
+        lojasFiltradas = ['1009'];
+    } else if (userEmail === 'fcaixa10@barbosasm.com.br') {
+        // Se o usuário for "fcaixa10@barbosasm.com.br", filtre apenas a loja 1010
+        lojasFiltradas = ['1010'];
+    } else if (userEmail === 'fcaixa11@barbosasm.com.br') {
+        // Se o usuário for "fcaixa11@barbosasm.com.br", filtre apenas a loja 1011
+        lojasFiltradas = ['1011'];
+    } else if (userEmail === 'fcaixa12@barbosasm.com.br') {
+        // Se o usuário for "fcaixa12@barbosasm.com.br", filtre apenas a loja 1012
+        lojasFiltradas = ['1012'];
+    } else if (userEmail === 'fcaixa13@barbosasm.com.br') {
+        // Se o usuário for "fcaixa13@barbosasm.com.br", filtre apenas a loja 1013
+        lojasFiltradas = ['1013'];
+    } else if (userEmail === 'fcaixa14@barbosasm.com.br') {
+        // Se o usuário for "fcaixa14@barbosasm.com.br", filtre apenas a loja 1014
+        lojasFiltradas = ['1014'];
+    } else if (userEmail === 'fcaixa15@barbosasm.com.br') {
+        // Se o usuário for "fcaixa15@barbosasm.com.br", filtre apenas a loja 1015
+        lojasFiltradas = ['1015'];
+    } else if (userEmail === 'fcaixa16@barbosasm.com.br') {
+        // Se o usuário for "fcaixa16@barbosasm.com.br", filtre apenas a loja 1016
+        lojasFiltradas = ['1016'];
+    } else if (userEmail === 'fcaixa17@barbosasm.com.br') {
+        // Se o usuário for "fcaixa17@barbosasm.com.br", filtre apenas a loja 1017
+        lojasFiltradas = ['1017'];
+    } else if (userEmail === 'fcaixa18@barbosasm.com.br') {
+        // Se o usuário for "fcaixa18@barbosasm.com.br", filtre apenas a loja 1018
+        lojasFiltradas = ['1018'];
+    } else if (userEmail === 'fcaixa19@barbosasm.com.br') {
+        // Se o usuário for "fcaixa19@barbosasm.com.br", filtre apenas a loja 1019
+        lojasFiltradas = ['1019'];
+    } else if (userEmail === 'fcaixa20@barbosasm.com.br') {
+        // Se o usuário for "fcaixa20@barbosasm.com.br", filtre apenas a loja 1020
+        lojasFiltradas = ['1020'];
+    } else if (userEmail === 'fcaixa21@barbosasm.com.br') {
+        // Se o usuário for "fcaixa21@barbosasm.com.br", filtre apenas a loja 1021
+        lojasFiltradas = ['1021'];
+    } else if (userEmail === 'fcaixa22@barbosasm.com.br') {
+        // Se o usuário for "fcaixa22@barbosasm.com.br", filtre apenas a loja 1022
+        lojasFiltradas = ['1022'];
+    } else if (userEmail === 'fcaixa23@barbosasm.com.br') {
+        // Se o usuário for "fcaixa23@barbosasm.com.br", filtre apenas a loja 1023
+        lojasFiltradas = ['1023'];
+    } else if (userEmail === 'fcaixa24@barbosasm.com.br') {
+        // Se o usuário for "fcaixa24@barbosasm.com.br", filtre apenas a loja 1024
+        lojasFiltradas = ['1024'];
+    } else if (userEmail === 'fcaixa25@barbosasm.com.br') {
+        // Se o usuário for "fcaixa25@barbosasm.com.br", filtre apenas a loja 1025
+        lojasFiltradas = ['1025'];
+    } else if (userEmail === 'fcaixa26@barbosasm.com.br') {
+        // Se o usuário for "fcaixa26@barbosasm.com.br", filtre apenas a loja 1026
+        lojasFiltradas = ['1026'];
+    } else if (userEmail === 'fcaixa27@barbosasm.com.br') {
+        // Se o usuário for "fcaixa27@barbosasm.com.br", filtre apenas a loja 1027
+        lojasFiltradas = ['1027'];
+    } else if (userEmail === 'fcaixa28@barbosasm.com.br') {
+        // Se o usuário for "fcaixa28@barbosasm.com.br", filtre apenas a loja 1028
+        lojasFiltradas = ['1028'];
+    } else if (userEmail === 'fcaixa29@barbosasm.com.br') {
+        // Se o usuário for "fcaixa29@barbosasm.com.br", filtre apenas a loja 1029
+        lojasFiltradas = ['1029'];
+    } else if (userEmail === 'fcaixa30@barbosasm.com.br') {
+        // Se o usuário for "fcaixa30@barbosasm.com.br", filtre apenas a loja 1030
+        lojasFiltradas = ['1030'];
+    } else if (userEmail === 'fcaixa31@barbosasm.com.br') {
+        // Se o usuário for "fcaixa31@barbosasm.com.br", filtre apenas a loja 1031
+        lojasFiltradas = ['1031'];
+    } else if (userEmail === 'fcaixa32@barbosasm.com.br') {
+        // Se o usuário for "fcaixa32@barbosasm.com.br", filtre apenas a loja 1032
+        lojasFiltradas = ['1032'];
+    } else if (userEmail === 'fcaixa33@barbosasm.com.br') {
+        // Se o usuário for "fcaixa33@barbosasm.com.br", filtre apenas a loja 1033
+        lojasFiltradas = ['1033'];
+    } else if (userEmail === 'fcaixa34@barbosasm.com.br') {
+        // Se o usuário for "fcaixa34@barbosasm.com.br", filtre apenas a loja 1034
+        lojasFiltradas = ['1034'];
+    } else if (userEmail === 'fcaixa35@barbosasm.com.br') {
+        // Se o usuário for "fcaixa35@barbosasm.com.br", filtre apenas a loja 1035
+        lojasFiltradas = ['1035'];
+    } else if (userEmail === 'fcaixa36@barbosasm.com.br') {
+        // Se o usuário for "fcaixa36@barbosasm.com.br", filtre apenas a loja 1036
+        lojasFiltradas = ['1036'];
+    } else if (userEmail === 'fcaixa37@barbosasm.com.br') {
+        // Se o usuário for "fcaixa37@barbosasm.com.br", filtre apenas a loja 1037
+        lojasFiltradas = ['1037'];
+    } else if (userEmail === 'fcaixa38@barbosasm.com.br') {
+        // Se o usuário for "fcaixa38@barbosasm.com.br", filtre apenas a loja 1038
+        lojasFiltradas = ['1038'];
+    } else if (userEmail === 'fcaixa39@barbosasm.com.br') {
+        // Se o usuário for "fcaixa39@barbosasm.com.br", filtre apenas a loja 1039
+        lojasFiltradas = ['1039'];
+    } else if (userEmail === 'fcaixa40@barbosasm.com.br') {
+        // Se o usuário for "fcaixa40@barbosasm.com.br", filtre apenas a loja 1040
+        lojasFiltradas = ['1040'];
+    } else if (userEmail === 'fcaixa41@barbosasm.com.br') {
+        // Se o usuário for "fcaixa41@barbosasm.com.br", filtre apenas a loja 1041
+        lojasFiltradas = ['1041'];
+    } else if (userEmail === 'fcaixa42@barbosasm.com.br') {
+        // Se o usuário for "fcaixa42@barbosasm.com.br", filtre apenas a loja 1042
+        lojasFiltradas = ['1042'];
+    } else if (userEmail === 'fcaixa43@barbosasm.com.br') {
+        // Se o usuário for "fcaixa43@barbosasm.com.br", filtre apenas a loja 1043
+        lojasFiltradas = ['1043'];
+    }
+
+    // Iterar pelas linhas da tabela e mostrar/ocultar com base nos filtros
+    for (let i = 0; i < linhas.length; i++) {
+        const linha = linhas[i];
+        const colunaOperador = linha.getElementsByTagName('td')[2];
+        const colunaLoja = linha.getElementsByTagName('td')[1];
+
+        if (colunaOperador && colunaLoja) { 
+            const operador = colunaOperador.textContent.toLowerCase();
+            const loja = colunaLoja.textContent.toLowerCase();
+
+            // Verificar se a linha atende aos critérios de filtro
+            if (operador.includes(filtroOperador) && (lojasFiltradas.length === 0 || lojasFiltradas.includes(loja))) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        }
+    }
+}
 
 
-<!-- Tabela de dados -->
+</script>
+    <!-- Tabela de dados -->
     <table id="tabela-dados" class="display mt-3">
         <thead>
             <tr>
@@ -274,8 +476,407 @@ function initFirebase() {
             </div>
         </div>
     </div>
-    <script src="appsc.js"></script>
+
+    <script>
+        // Configuração do Firebase
+        const firebaseConfig = {
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId: "controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+
+// Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Inicializar o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+       // Função para verificar o usuário atual e exibir o email na navbar
+function verificarUsuario() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            // O usuário está logado
+            const emailUsuarioLogado = user.email;
+
+            // Exiba o email do usuário na navbar
+            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+        } else {
+            // O usuário não está logado, redirecione-o para a página de login
+            window.location.href = "index.html";
+        }
+    });
+}
 
 
-	</body>
+        // Obtenha uma referência para a coleção onde deseja armazenar os dados
+        const db = firebase.firestore();
+        const dadosCollection = db.collection('controlemensal-sacolinhas');
+
+        // Função para calcular campos dependentes
+        function calcularCamposDependentes() {
+            const easyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const planetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+
+            const totalSacolinhasUN = easyOpenBagG + planetaAgradeceP;
+            const valorTotalSacolinhaG = (easyOpenBagG * 0.07).toFixed(2);
+            const valorTotalSacolinhaP = (planetaAgradeceP * 0.09).toFixed(2);
+            const valorTotalSacolinhaTOTAL = (parseFloat(valorTotalSacolinhaG) + parseFloat(valorTotalSacolinhaP)).toFixed(2);
+            const percentualFaturamento = ((parseFloat(valorTotalSacolinhaTOTAL) / vendaMensal) * 100).toFixed(2);
+
+            $("#totalSacolinhas").val(totalSacolinhasUN);
+            $("#valorSacolinhaG").val(valorTotalSacolinhaG);
+            $("#valorSacolinhaP").val(valorTotalSacolinhaP);
+            $("#valorTotalSacolinha").val(valorTotalSacolinhaTOTAL);
+            $("#percentualFaturamento").val(percentualFaturamento);
+        }
+
+        // Função para limpar o formulário no modal
+        function limparFormulario() {
+            $("#registroId").val("");
+            $("#dia").val("");
+            $("#numeroLoja").val("");
+            $("#nomeOperador").val("");
+            $("#totalEasyOpenBagG").val("");
+            $("#totalPlanetaAgradeceP").val("");
+            $("#vendaTotalMensal").val("");
+            $("#observacao").val("");
+            calcularCamposDependentes();
+        }
+
+        // Função para adicionar um novo registro
+        function adicionarRegistro() {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const totalSacolinhasUN = parseFloat($("#totalSacolinhas").val()) || 0;
+            const valorSacolinhaG = parseFloat($("#valorSacolinhaG").val()) || 0;
+            const valorSacolinhaP = parseFloat($("#valorSacolinhaP").val()) || 0;
+            const valorTotalSacolinha = parseFloat($("#valorTotalSacolinha").val()) || 0;
+            const percentualFaturamento = parseFloat($("#percentualFaturamento").val()) || 0;
+            const observacao = $("#observacao").val();
+
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.add({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                    'Valor total sacolinha G (R$)': valorSacolinhaG,
+                    'Valor total sacolinha P (R$)': valorSacolinhaP,
+                    'Valor Total sacolinha (R$)': valorTotalSacolinha,
+                    '% Faturamento': percentualFaturamento,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro adicionado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao adicionar registro:", error);
+                });
+            } else {
+                alert("Preencha todos os campos obrigatórios.");
+            }
+        }
+
+        // Função para editar um registro existente
+        function editarRegistro(docId) {
+            const dia = $("#dia").val();
+            const numeroLoja = $("#numeroLoja").val();
+            const nomeOperador = $("#nomeOperador").val();
+            const totalEasyOpenBagG = parseFloat($("#totalEasyOpenBagG").val()) || 0;
+            const totalPlanetaAgradeceP = parseFloat($("#totalPlanetaAgradeceP").val()) || 0;
+            const vendaTotalMensal = parseFloat($("#vendaTotalMensal").val()) || 0;
+            const totalSacolinhasUN = parseFloat($("#totalSacolinhas").val()) || 0;
+            const valorSacolinhaG = parseFloat($("#valorSacolinhaG").val()) || 0;
+            const valorSacolinhaP = parseFloat($("#valorSacolinhaP").val()) || 0;
+            const valorTotalSacolinha = parseFloat($("#valorTotalSacolinha").val()) || 0;
+            const percentualFaturamento = parseFloat($("#percentualFaturamento").val()) || 0;
+            const observacao = $("#observacao").val();
+
+            if (dia && numeroLoja && nomeOperador) {
+                dadosCollection.doc(docId).update({
+                    Dia: dia,
+                    'Número da Loja': numeroLoja,
+                    'Nome do Operador': nomeOperador,
+                    'TOTAL Easy Open Bag G': totalEasyOpenBagG,
+                    'TOTAL Planeta Agradece P': totalPlanetaAgradeceP,
+                    'Venda total mensal (R$)': vendaTotalMensal,
+                    'Total de Sacolinhas (UN)': totalSacolinhasUN,
+                    'Valor total sacolinha G (R$)': valorSacolinhaG,
+                    'Valor total sacolinha P (R$)': valorSacolinhaP,
+                    'Valor Total sacolinha (R$)': valorTotalSacolinha,
+                    '% Faturamento': percentualFaturamento,
+                    'Observação': observacao,
+                }).then(() => {
+                    alert("Registro atualizado com sucesso!");
+                    $("#modalRegistro").modal("hide");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao atualizar registro:", error);
+                });
+            } else {
+                alert("Preencha todos os campos obrigatórios.");
+            }
+        }
+
+        // Função para excluir um registro
+        function excluirRegistro(docId) {
+            if (confirm("Tem certeza de que deseja excluir este registro?")) {
+                dadosCollection.doc(docId).delete().then(() => {
+                    alert("Registro excluído com sucesso!");
+                    limparFormulario();
+                    carregarDados();
+                }).catch((error) => {
+                    console.error("Erro ao excluir registro:", error);
+                });
+            }
+        }
+
+        // Função para preencher o formulário no modal com os dados do registro a ser editado
+        function preencherFormularioEditar(docId) {
+            // Buscar os dados do Firestore com base no ID do documento
+            dadosCollection.doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    $("#registroId").val(docId);
+                    $("#dia").val(data.Dia || '');
+                    $("#numeroLoja").val(data['Número da Loja'] || '');
+                    $("#nomeOperador").val(data['Nome do Operador'] || '');
+                    $("#totalEasyOpenBagG").val(data['TOTAL Easy Open Bag G'] || '');
+                    $("#totalPlanetaAgradeceP").val(data['TOTAL Planeta Agradece P'] || '');
+                    $("#vendaTotalMensal").val(data['Venda total mensal (R$)'] || '');
+                    $("#totalSacolinhas").val(data['Total de Sacolinhas (UN)'] || '');
+                    $("#valorSacolinhaG").val(data['Valor total sacolinha G (R$)'] || '');
+                    $("#valorSacolinhaP").val(data['Valor total sacolinha P (R$)'] || '');
+                    $("#valorTotalSacolinha").val(data['Valor Total sacolinha (R$)'] || '');
+                    $("#percentualFaturamento").val(data['% Faturamento'] || '');
+                    $("#observacao").val(data['Observação'] || '');
+                    calcularCamposDependentes();
+                    $("#modalRegistroLabel").text("Editar Registro");
+                    $("#salvarRegistro").off("click").click(() => editarRegistro(docId));
+                    $("#modalRegistro").modal("show");
+                } else {
+                    console.error('Documento não encontrado.');
+                }
+            }).catch((error) => {
+                console.error('Erro ao obter documento:', error);
+            });
+        }
+
+        // Função para carregar dados do Firebase e preencher a tabela
+        function carregarDados() {
+            dadosCollection.get().then((querySnapshot) => {
+                const tabela = $('#tabela-dados').DataTable();
+                tabela.clear().draw(); // Limpa a tabela antes de adicionar dados
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const rowData = [
+                        data.Dia || '',
+                        data['Número da Loja'] || '',
+                        data['Nome do Operador'] || '',
+                        data['TOTAL Easy Open Bag G'] || '',
+                        data['TOTAL Planeta Agradece P'] || '',
+                        data['Venda total mensal (R$)'] || '',
+                        data['Total de Sacolinhas (UN)'] || '',
+                        data['Valor total sacolinha G (R$)'] || '',
+                        data['Valor total sacolinha P (R$)'] || '',
+                        data['Valor Total sacolinha (R$)'] || '',
+                        data['% Faturamento'] || '',
+                        data['Observação'] || '',
+                        `<button onclick="preencherFormularioEditar('${doc.id}')" class="btn btn-warning" data-toggle="modal" data-target="#modalRegistro"><i class="fas fa-edit"></i></button>`,
+                        `<button onclick="excluirRegistro('${doc.id}')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>`,
+                    ];
+                    tabela.row.add(rowData).draw();
+                });
+            }).catch((error) => {
+                console.error('Erro ao carregar dados:', error);
+            });
+        }
+
+        // Chame a função para carregar dados quando a página carregar
+        $(document).ready(function () {
+            carregarDados();
+        });
+
+        // Ao clicar no botão "Adicionar Registro", limpar o formulário e abrir o modal
+        $("#adicionarRegistro").click(function () {
+            limparFormulario();
+            $("#modalRegistroLabel").text("Adicionar Registro");
+            $("#salvarRegistro").off("click").click(adicionarRegistro);
+            $("#modalRegistro").modal("show");
+        });
+
+        // Ao fechar o modal, limpar o formulário
+        $("#modalRegistro").on("hidden.bs.modal", function () {
+            limparFormulario();
+        });
+
+        // Calcular campos dependentes ao alterar os valores
+        $("#totalEasyOpenBagG, #totalPlanetaAgradeceP, #vendaTotalMensal").change(function () {
+            calcularCamposDependentes();
+        });
+	      // Chame a função para verificar o usuário quando a página carregar
+        $(document).ready(function () {
+            verificarUsuario();
+            carregarDados(); // Carregue os dados da tabela, se necessário
+        });
+
+// Coloque esse código no final do seu script JavaScript existente
+document.addEventListener("DOMContentLoaded", function () {
+    const userEmail = document.getElementById('userEmailDisplay').textContent;
+    const filtroLoja = document.getElementById('filtroLoja');
+
+    if (userEmail === 'gestaofrentecaixa@gmail.com') {
+        // Se o usuário for "gestaofrentecaixa@gmail.com", selecione a opção "Todas as Lojas" automaticamente
+        filtroLoja.value = 'Todas as Lojas';
+    } else if (userEmail === 'fcaixa01@barbosasm.com.br') {
+        // Se o usuário for "fcaixa01@barbosasm.com.br", selecione a loja 1001 automaticamente
+        filtroLoja.value = '1001';
+    } else if (userEmail === 'fcaixa02@barbosasm.com.br') {
+        // Se o usuário for "fcaixa02@barbosasm.com.br", selecione a loja 1002 automaticamente
+        filtroLoja.value = '1002';
+    } else if (userEmail === 'fcaixa03@barbosasm.com.br') {
+        // Se o usuário for "fcaixa03@barbosasm.com.br", selecione a loja 1003 automaticamente
+        filtroLoja.value = '1003';
+} else if (userEmail === 'fcaixa04@barbosasm.com.br') {
+    // Se o usuário for "fcaixa04@barbosasm.com.br", selecione a loja 1004 automaticamente
+    filtroLoja.value = '1004';
+} else if (userEmail === 'fcaixa05@barbosasm.com.br') {
+    // Se o usuário for "fcaixa05@barbosasm.com.br", selecione a loja 1005 automaticamente
+    filtroLoja.value = '1005';
+} else if (userEmail === 'fcaixa06@barbosasm.com.br') {
+    // Se o usuário for "fcaixa06@barbosasm.com.br", selecione a loja 1006 automaticamente
+    filtroLoja.value = '1006';
+} else if (userEmail === 'fcaixa07@barbosasm.com.br') {
+    // Se o usuário for "fcaixa07@barbosasm.com.br", selecione a loja 1007 automaticamente
+    filtroLoja.value = '1007';
+} else if (userEmail === 'fcaixa08@barbosasm.com.br') {
+    // Se o usuário for "fcaixa08@barbosasm.com.br", selecione a loja 1008 automaticamente
+    filtroLoja.value = '1008';
+} else if (userEmail === 'fcaixa09@barbosasm.com.br') {
+    // Se o usuário for "fcaixa09@barbosasm.com.br", selecione a loja 1009 automaticamente
+    filtroLoja.value = '1009';
+} else if (userEmail === 'fcaixa10@barbosasm.com.br') {
+    // Se o usuário for "fcaixa10@barbosasm.com.br", selecione a loja 1010 automaticamente
+    filtroLoja.value = '1010';
+} else if (userEmail === 'fcaixa11@barbosasm.com.br') {
+    // Se o usuário for "fcaixa11@barbosasm.com.br", selecione a loja 1011 automaticamente
+    filtroLoja.value = '1011';
+} else if (userEmail === 'fcaixa12@barbosasm.com.br') {
+    // Se o usuário for "fcaixa12@barbosasm.com.br", selecione a loja 1012 automaticamente
+    filtroLoja.value = '1012';
+} else if (userEmail === 'fcaixa13@barbosasm.com.br') {
+    // Se o usuário for "fcaixa13@barbosasm.com.br", selecione a loja 1013 automaticamente
+    filtroLoja.value = '1013';
+} else if (userEmail === 'fcaixa14@barbosasm.com.br') {
+    // Se o usuário for "fcaixa14@barbosasm.com.br", selecione a loja 1014 automaticamente
+    filtroLoja.value = '1014';
+} else if (userEmail === 'fcaixa15@barbosasm.com.br') {
+    // Se o usuário for "fcaixa15@barbosasm.com.br", selecione a loja 1015 automaticamente
+    filtroLoja.value = '1015';
+} else if (userEmail === 'fcaixa16@barbosasm.com.br') {
+    // Se o usuário for "fcaixa16@barbosasm.com.br", selecione a loja 1016 automaticamente
+    filtroLoja.value = '1016';
+} else if (userEmail === 'fcaixa17@barbosasm.com.br') {
+    // Se o usuário for "fcaixa17@barbosasm.com.br", selecione a loja 1017 automaticamente
+    filtroLoja.value = '1017';
+} else if (userEmail === 'fcaixa18@barbosasm.com.br') {
+    // Se o usuário for "fcaixa18@barbosasm.com.br", selecione a loja 1018 automaticamente
+    filtroLoja.value = '1018';
+} else if (userEmail === 'fcaixa19@barbosasm.com.br') {
+    // Se o usuário for "fcaixa19@barbosasm.com.br", selecione a loja 1019 automaticamente
+    filtroLoja.value = '1019';
+} else if (userEmail === 'fcaixa20@barbosasm.com.br') {
+    // Se o usuário for "fcaixa20@barbosasm.com.br", selecione a loja 1020 automaticamente
+    filtroLoja.value = '1020';
+} else if (userEmail === 'fcaixa21@barbosasm.com.br') {
+    // Se o usuário for "fcaixa21@barbosasm.com.br", selecione a loja 1021 automaticamente
+    filtroLoja.value = '1021';
+} else if (userEmail === 'fcaixa22@barbosasm.com.br') {
+    // Se o usuário for "fcaixa22@barbosasm.com.br", selecione a loja 1022 automaticamente
+    filtroLoja.value = '1022';
+} else if (userEmail === 'fcaixa23@barbosasm.com.br') {
+    // Se o usuário for "fcaixa23@barbosasm.com.br", selecione a loja 1023 automaticamente
+    filtroLoja.value = '1023';
+} else if (userEmail === 'fcaixa24@barbosasm.com.br') {
+    // Se o usuário for "fcaixa24@barbosasm.com.br", selecione a loja 1024 automaticamente
+    filtroLoja.value = '1024';
+} else if (userEmail === 'fcaixa25@barbosasm.com.br') {
+    // Se o usuário for "fcaixa25@barbosasm.com.br", selecione a loja 1025 automaticamente
+    filtroLoja.value = '1025';
+} else if (userEmail === 'fcaixa26@barbosasm.com.br') {
+    // Se o usuário for "fcaixa26@barbosasm.com.br", selecione a loja 1026 automaticamente
+    filtroLoja.value = '1026';
+} else if (userEmail === 'fcaixa27@barbosasm.com.br') {
+    // Se o usuário for "fcaixa27@barbosasm.com.br", selecione a loja 1027 automaticamente
+    filtroLoja.value = '1027';
+} else if (userEmail === 'fcaixa28@barbosasm.com.br') {
+    // Se o usuário for "fcaixa28@barbosasm.com.br", selecione a loja 1028 automaticamente
+    filtroLoja.value = '1028';
+} else if (userEmail === 'fcaixa29@barbosasm.com.br') {
+    // Se o usuário for "fcaixa29@barbosasm.com.br", selecione a loja 1029 automaticamente
+    filtroLoja.value = '1029';
+} else if (userEmail === 'fcaixa30@barbosasm.com.br') {
+    // Se o usuário for "fcaixa30@barbosasm.com.br", selecione a loja 1030 automaticamente
+    filtroLoja.value = '1030';
+} else if (userEmail === 'fcaixa31@barbosasm.com.br') {
+    // Se o usuário for "fcaixa31@barbosasm.com.br", selecione a loja 1031 automaticamente
+    filtroLoja.value = '1031';
+} else if (userEmail === 'fcaixa32@barbosasm.com.br') {
+    // Se o usuário for "fcaixa32@barbosasm.com.br", selecione a loja 1032 automaticamente
+    filtroLoja.value = '1032';
+} else if (userEmail === 'fcaixa33@barbosasm.com.br') {
+    // Se o usuário for "fcaixa33@barbosasm.com.br", selecione a loja 1033 automaticamente
+    filtroLoja.value = '1033';
+} else if (userEmail === 'fcaixa34@barbosasm.com.br') {
+    // Se o usuário for "fcaixa34@barbosasm.com.br", selecione a loja 1034 automaticamente
+    filtroLoja.value = '1034';
+} else if (userEmail === 'fcaixa35@barbosasm.com.br') {
+    // Se o usuário for "fcaixa35@barbosasm.com.br", selecione a loja 1035 automaticamente
+    filtroLoja.value = '1035';
+} else if (userEmail === 'fcaixa36@barbosasm.com.br') {
+    // Se o usuário for "fcaixa36@barbosasm.com.br", selecione a loja 1036 automaticamente
+    filtroLoja.value = '1036';
+} else if (userEmail === 'fcaixa37@barbosasm.com.br') {
+    // Se o usuário for "fcaixa37@barbosasm.com.br", selecione a loja 1037 automaticamente
+    filtroLoja.value = '1037';
+} else if (userEmail === 'fcaixa38@barbosasm.com.br') {
+    // Se o usuário for "fcaixa38@barbosasm.com.br", selecione a loja 1038 automaticamente
+    filtroLoja.value = '1038';
+} else if (userEmail === 'fcaixa39@barbosasm.com.br') {
+    // Se o usuário for "fcaixa39@barbosasm.com.br", selecione a loja 1039 automaticamente
+    filtroLoja.value = '1039';
+} else if (userEmail === 'fcaixa40@barbosasm.com.br') {
+    // Se o usuário for "fcaixa40@barbosasm.com.br", selecione a loja 1040 automaticamente
+    filtroLoja.value = '1040';
+} else if (userEmail === 'fcaixa41@barbosasm.com.br') {
+    // Se o usuário for "fcaixa41@barbosasm.com.br", selecione a loja 1041 automaticamente
+    filtroLoja.value = '1041';
+} else if (userEmail === 'fcaixa42@barbosasm.com.br') {
+    // Se o usuário for "fcaixa42@barbosasm.com.br", selecione a loja 1042 automaticamente
+    filtroLoja.value = '1042';
+} else if (userEmail === 'fcaixa43@barbosasm.com.br') {
+    // Se o usuário for "fcaixa43@barbosasm.com.br", selecione a loja 1043 automaticamente
+    filtroLoja.value = '1043';
+}
+
+// Dispare o evento onchange para que a tabela seja filtrada automaticamente
+filtroLoja.dispatchEvent(new Event('change'));
+});
+    
+    </script>
+</body>
 </html>
