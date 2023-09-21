@@ -15,7 +15,7 @@
             <label for="email">E-mail:</label>
             <input type="email" id="email" required>
 
-            <label for="loja">Loja (Número):</label>
+            <label for="loja">Loja Número:</label>
             <input type="number" id="loja" required>
 
             <label for="operador">Operador:</label>
@@ -31,6 +31,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth.js"></script>
+    <script>
+function initFirebase() {
+    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
+    firebase.initializeApp(firebaseConfig);
+    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
+}
+</script>
     <script>
         // Configuração do Firebase
         const firebaseConfig = {
