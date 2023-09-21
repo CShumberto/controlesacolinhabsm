@@ -489,27 +489,44 @@ function filtrarTabela() {
     appId: "1:925424065013:web:cf961586c6300ceb1468bc"
         };
 
-// Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
+// Inicializar o Firebase
+firebase.initializeApp(firebaseConfig);
 
-        // Inicializar o Firebase
-        firebase.initializeApp(firebaseConfig);
+// Obter uma referência ao Firestore
+var db = firebase.firestore();
 
-       // Função para verificar o usuário atual e exibir o email na navbar
-function verificarUsuario() {
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            // O usuário está logado
-            const emailUsuarioLogado = user.email;
+// Configurar DataTable
+$(document).ready(function() {
+  // Inicializar a tabela DataTable
+  var tabelaUsuarios = $('#tabela-usuarios').DataTable();
 
-            // Exiba o email do usuário na navbar
-            document.getElementById("userEmailDisplay").textContent = emailUsuarioLogado;
+  // Obter o ID do usuário logado
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      var userId = user.uid;
+
+      // Consultar os dados do usuário no Firestore com base no ID do usuário
+      db.collection("usuarios").doc(userId).get().then(function(doc) {
+        if (doc.exists) {
+          var userData = doc.data();
+          // Adicionar os dados do usuário à tabela
+          tabelaUsuarios.row.add([
+            userData.nome,
+            userData.email,
+            // Adicione outras colunas conforme necessário
+          ]).draw();
         } else {
-            // O usuário não está logado, redirecione-o para a página de login
-            window.location.href = "index.html";
+          console.log("Nenhum documento de usuário encontrado!");
         }
-    });
-}
+      }).catch(function(error) {
+        console.error("Erro ao obter dados do usuário:", error);
+      });
+    } else {
+      // O usuário não está logado, redirecione-o ou faça outra ação apropriada
+      console.log("Usuário não está logado.");
+    }
+  });
+});
 
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
