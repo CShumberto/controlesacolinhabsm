@@ -166,7 +166,7 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
 });
 </script>
 
-    <!-- Campos de filtro -->
+   <!-- Campos de filtro -->
   <div class="row mb-3">
             <div class="col-md-4">
                 <label for="filtroLoja">Filtrar por Loja:</label>
@@ -211,8 +211,7 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         <label for="filtroOperador">Filtrar por Operador:</label>
         <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
-   
-<script>
+  <script>
     document.addEventListener("DOMContentLoaded", function() {
         var dropdown = document.getElementById("filtroLoja");
 
@@ -235,6 +234,7 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         // Restante do seu código permanece o mesmo.
     });
 </script>
+ 
 <script>
 // Função para filtrar a tabela com base nos campos "Operador" e "Loja"
 function filtrarTabela() {
@@ -513,7 +513,6 @@ function filtrarTabela() {
 
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
-
 
        // Função para verificar o usuário atual e exibir o email na navbar
 function verificarUsuario() {
