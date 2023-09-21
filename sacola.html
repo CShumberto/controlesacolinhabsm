@@ -493,7 +493,15 @@ function filtrarTabela() {
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-       /// Função para verificar o usuário atual e exibir o email na navbar e preencher o dropdown
+       // Supondo que 'dados' seja um array com os dados das lojas
+var dados = [
+    { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+    { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+    { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+    // Outros dados das lojas aqui
+];
+
+// Função para verificar o usuário atual e exibir o email na navbar e preencher o dropdown
 function verificarUsuario() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
@@ -544,8 +552,6 @@ function preencherDropdown(emailUsuario) {
     optionTodas.textContent = "Todas as Lojas";
     dropdown.appendChild(optionTodas);
 }
-
-
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
