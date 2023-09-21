@@ -212,7 +212,29 @@ document.getElementById("exportarExcel").addEventListener("click", function() {
         <input type="text" class="form-control" id="filtroOperador" onkeyup="filtrarTabela()">
     </div>
    
-</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var dropdown = document.getElementById("filtroLoja");
+
+        var dados = [
+            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+            // Outros dados aqui...
+        ];
+
+        for (var i = 0; i < dados.length; i++) {
+            var dado = dados[i];
+            var option = document.createElement("option");
+            option.value = dado.loja;
+            // Removendo o texto "Loja" da opção
+            option.text = dado.loja; // Agora exibirá apenas o número da loja
+            dropdown.appendChild(option);
+        }
+
+        // Restante do seu código permanece o mesmo.
+    });
+</script>
 <script>
 // Função para filtrar a tabela com base nos campos "Operador" e "Loja"
 function filtrarTabela() {
@@ -492,8 +514,6 @@ function filtrarTabela() {
 // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Inicializar o Firebase
-        firebase.initializeApp(firebaseConfig);
 
        // Função para verificar o usuário atual e exibir o email na navbar
 function verificarUsuario() {
