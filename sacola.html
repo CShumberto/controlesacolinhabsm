@@ -498,7 +498,7 @@ var db = firebase.firestore();
 // Configurar DataTable
 $(document).ready(function() {
   // Inicializar a tabela DataTable
-  var tabelaUsuarios = $('#tabela-usuarios').DataTable();
+  var tabelaUsuarios = $('#tabela-dados').DataTable();
 
   // Obter o ID do usuário logado
   firebase.auth().onAuthStateChanged(function(user) {
