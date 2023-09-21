@@ -323,6 +323,12 @@ function filtrarTabela() {
     </div>
 
     <script>
+
+
+
+
+	     document.addEventListener("DOMContentLoaded", function() {
+	    
         // Configuração do Firebase
         const firebaseConfig = {
            apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
@@ -335,9 +341,6 @@ function filtrarTabela() {
         };
 
 // Inicialize o Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Inicializar o Firebase
         firebase.initializeApp(firebaseConfig);
 
        // Função para verificar o usuário atual e exibir o email na navbar
@@ -355,7 +358,23 @@ function verificarUsuario() {
         }
     });
 }
+var dropdown = document.getElementById("filtroLoja");
 
+        var dados = [
+            { email: "fcaixa01@barbosasm.com.br", loja: "1001" },
+            { email: "fcaixa02@barbosasm.com.br", loja: "1002" },
+            { email: "fcaixa03@barbosasm.com.br", loja: "1003" },
+            // Outros dados aqui...
+        ];
+
+        for (var i = 0; i < dados.length; i++) {
+            var dado = dados[i];
+            var option = document.createElement("option");
+            option.value = dado.loja;
+            // Removendo o texto "Loja" da opção
+            option.text = dado.loja; // Agora exibirá apenas o número da loja
+            dropdown.appendChild(option);
+        }
 
         // Obtenha uma referência para a coleção onde deseja armazenar os dados
         const db = firebase.firestore();
