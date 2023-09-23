@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuários</title>
+
+<!-- Firebase Authentication -->
+	<!-- Inclua a definição da função initFirebase() antes de qualquer script que a chame -->
+<script>
+function initFirebase() {
+    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
+    firebase.initializeApp(firebaseConfig);
+    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
+}
+</script>
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-app-compat.js" onload="initFirebase()"></script>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.6/firebase-auth-compat.js"></script>
+
+    <!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function initFirebase() {
+    // Inicialize o Firebase e, em seguida, chame a função que usa firebase.auth
+    firebase.initializeApp(firebaseConfig);
+    verificarUsuario(); // Certifique-se de que esta função seja chamada após a inicialização do Firebase.
+}
+</script>
+
+</head>
+<body>
+    <h1>Cadastro de Usuários</h1>
+    <form id="cadastroForm">
+        <label for="loja">Loja:</label>
+        <input type="text" id="loja" name="loja" required><br>
+
+        <label for="operador">Operador:</label>
+        <input type="text" id="operador" name="operador" required><br>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Usuários</h2>
+    <ul id="listaUsuarios"></ul>
+
+    
+    <script>
+        // Inicialize o Firebase
+        const firebaseConfig = {
+           apiKey: "AIzaSyC28CYNjHhUi8rOwrASXdRJ1cm2PV6fEW4",
+    authDomain: "controlemensal-sacolinhas.firebaseapp.com",
+    databaseURL: "https://controlemensal-sacolinhas-default-rtdb.firebaseio.com",
+    projectId:"controlemensal-sacolinhas",
+    storageBucket: "controlemensal-sacolinhas.appspot.com",
+    messagingSenderId: "925424065013",
+    appId: "1:925424065013:web:cf961586c6300ceb1468bc"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Função para adicionar um usuário
+        function addUsuario() {
+            const loja = document.querySelector("#loja").value;
+            const operador = document.querySelector("#operador").value;
+
+            const docRef = db.collection("usuarios-sacolinhas").doc();
+            docRef.set({
+                loja: loja,
+                operador: operador
+            });
+
+            alert("Usuário cadastrado com sucesso!");
+            document.querySelector("#cadastroForm").reset();
+            listarUsuarios();
+        }
+
+        // Função para listar todos os usuários
+        function listarUsuarios() {
+            const usuariosCol = db.collection("usuarios-sacolinhas");
+            const usuariosSnapshot = await usuariosCol.get();
+            const usuariosList = usuariosSnapshot.docs.map(doc => doc.data());
+
+            document.querySelector("#listaUsuarios").innerHTML = "";
+            usuariosList.forEach((usuario) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `Loja: ${usuario.loja}, Operador: ${usuario.operador}`;
+                document.querySelector("#listaUsuarios").appendChild(listItem);
+            });
+        }
+
+        // Eventos
+        document.querySelector("#cadastroForm").addEventListener("submit", addUsuario);
+        listarUsuarios();
+    </script>
+</body>
+</html>
